@@ -10,6 +10,12 @@ sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(i2c)
 t = 0
 duration = 0.5
 maglist = []
+
+while t <= 5:
+    t += duration
+    time.sleep(duration)
+    
+t = 0
 while t <= 60:
     mag_x, mag_y, mag_z = sensor.magnetic
     maglist.append([mag_x,mag_y,mag_z])
