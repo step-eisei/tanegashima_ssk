@@ -39,13 +39,16 @@ try:
         
             t += duration
             time.sleep(duration)
-    
+
+        magx = [maglist[i][0] for i in range(len(maglist))]
+        magy = [maglist[i][1] for i in range(len(maglist))]
+        magz = [maglist[i][2] for i in range(len(maglist))]
 
         # 最大値，最小値の算出
         p = 5 # 上位何%をpickするか
-        Xmax, Xmin = percentpick(mag_x)
-        Ymax, Ymin = percentpick(mag_y)
-        Zmax, Zmin = percentpick(mag_z)
+        Xmax, Xmin = percentpick(magx)
+        Ymax, Ymin = percentpick(magy)
+        Zmax, Zmin = percentpick(magz)
        
         with open('mag.csv', 'a', newline='') as f:
             writer = csv.writer(f)
