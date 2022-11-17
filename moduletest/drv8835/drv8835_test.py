@@ -6,12 +6,6 @@
 import RPi.GPIO as GPIO
 import time
 
-def forward(): # IN1を1，IN2を0にする
-
-def reverse(): # IN1を0，IN2を1にする
-
-def stop(pin):
-
 IN1 = 24
 IN2 = 23
 
