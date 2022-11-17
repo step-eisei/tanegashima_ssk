@@ -1,124 +1,63 @@
+# drv8835 並列接続
+# IN/IN mode動作テスト
+# IN/IN modeはCoast(空転)があり，慣性的な原則でドライバに優しい
+# out1が+，out2が-になるように配線する
+
 import RPi.GPIO as GPIO
 import time
 
-PIN_AIN1 = 24
-PIN_AIN2 = 23
-PIN_PWMA = 12
-PIN_BIN1 = 16
-PIN_BIN2 = 26
-PIN_PWMB = 13
-DUTY_A = 10
-DUTY_B = 10
+def forward(): # IN1を1，IN2を0にする
+    pwmIN1.start(0)
+    pwmIN2.start(0)
+    for i in range(10):
+        pwmIN1.ChangeDutyCycle(duty/10*(i+1))
+        time.sleep(duty/10)
 
-ROT_DUR = 10 # [s]
+def reverse(): # IN1を0，IN2を1にする
+    pwmIN1.start(0)
+    pwmIN2.start(0)
+    for i in range(10):
+        pwmIN2.ChangeDutyCycle(duty/10*(i+1))
+        time.sleep(duty/10)
 
-GPIO.setmode(GPIO.BCM)
+def stop(pin):
+    for i in range(10):
+        pin.ChangeDutyCycle(duty*(1-(i+1)/10))
+        time.sleep(duty/10)
 
-# 左モータ
-GPIO.setup(PIN_AIN1, GPIO.OUT)
-GPIO.setup(PIN_AIN2, GPIO.OUT)
+IN1 = 24
+IN2 = 23
 
-# 左モータPWM
-GPIO.setup(PIN_PWMA, GPIO.OUT)
-pwm_left = GPIO.PWM(PIN_PWMA, 300)
-pwm_left.start(10)
-pwm_left.ChangeDutyCycle(DUTY_A)
-
-# 右モータ
-GPIO.setup(PIN_BIN1, GPIO.OUT)
-GPIO.setup(PIN_BIN2, GPIO.OUT)
-
-# 右モータPWM
-GPIO.setup(PIN_PWMB, GPIO.OUT)
-pwm_right = GPIO.PWM(PIN_PWMB, 300)
-pwm_right.start(10)
-pwm_right.ChangeDutyCycle(DUTY_B)
-
-# sleep
-time.sleep(2)
-
-# ----------------------------------------
-
-# # 前進
-# GPIO.output(PIN_AIN1, GPIO.LOW)
-# GPIO.output(PIN_AIN2, GPIO.HIGH)
-# GPIO.output(PIN_BIN1, GPIO.HIGH)
-# GPIO.output(PIN_BIN2, GPIO.LOW)
-# time.sleep(3)
-
-# # 後進
-# GPIO.output(PIN_AIN1, GPIO.HIGH)
-# GPIO.output(PIN_AIN2, GPIO.LOW)
-# GPIO.output(PIN_BIN1, GPIO.LOW)
-# GPIO.output(PIN_BIN2, GPIO.HIGH)
-# time.sleep(3)
-
-# 右旋回
-GPIO.output(PIN_AIN1, GPIO.HIGH)
-GPIO.output(PIN_AIN2, GPIO.LOW)
-GPIO.output(PIN_BIN1, GPIO.HIGH)
-GPIO.output(PIN_BIN2, GPIO.LOW)
-time.sleep(ROT_DUR)
-
-# 右モータ停止 左モータ停止
-GPIO.output(PIN_AIN1, GPIO.LOW)
-GPIO.output(PIN_AIN2, GPIO.LOW)
-GPIO.output(PIN_BIN1, GPIO.LOW)
-GPIO.output(PIN_BIN2, GPIO.LOW)
-time.sleep(3)
-
-# 左旋回
-GPIO.output(PIN_AIN1, GPIO.LOW)
-GPIO.output(PIN_AIN2, GPIO.HIGH)
-GPIO.output(PIN_BIN1, GPIO.LOW)
-GPIO.output(PIN_BIN2, GPIO.HIGH)
-time.sleep(ROT_DUR)
-
-
-# ----------------------------------------
-
-# # 右モータ後進
-# GPIO.output(PIN_AIN1, GPIO.HIGH)
-# GPIO.output(PIN_AIN2, GPIO.LOW)
-# time.sleep(3)
-
-# # 右モータブレーキ？
-# GPIO.output(PIN_AIN1, GPIO.HIGH)
-# GPIO.output(PIN_AIN2, GPIO.HIGH)
-# time.sleep(1)
-
-# # 右モータ前進
-# GPIO.output(PIN_AIN1, GPIO.LOW)
-# GPIO.output(PIN_AIN2, GPIO.HIGH)
-# time.sleep(3)
-
-# # 右モータ停止？
-# GPIO.output(PIN_AIN1, GPIO.LOW)
-# GPIO.output(PIN_AIN2, GPIO.LOW)
-# time.sleep(3)
-
-# #----------------------------------------
-# # 左モータ前進
-# GPIO.output(PIN_BIN1, GPIO.HIGH)
-# GPIO.output(PIN_BIN2, GPIO.LOW)
-# time.sleep(3)
-
-# # 左モータブレーキ？
-# GPIO.output(PIN_BIN1, GPIO.HIGH)
-# GPIO.output(PIN_BIN2, GPIO.HIGH)
-# time.sleep(1)
-
-# # 左モータ後進
-# GPIO.output(PIN_BIN1, GPIO.LOW)
-# GPIO.output(PIN_BIN2, GPIO.HIGH)
-# time.sleep(3)
-
-# # 左モータ停止？
-# GPIO.output(PIN_BIN1, GPIO.LOW)
-# GPIO.output(PIN_BIN2, GPIO.LOW)
-# time.sleep(3)
-
-#----------------------------------------
-pwm_left.stop()
-pwm_right.stop()
-GPIO.cleanup()
+t = 3 # [s]
+pwm = 50 # Hz
+duty = 60 # duty比
+# GPIO.setmode(GPIO.BOARD) # 物理的な番号を指定するように設定
+try:
+    GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
+    # 左モータ
+    GPIO.setup(IN1, GPIO.OUT)
+    GPIO.setup(IN2, GPIO.OUT)
+    pwmIN1 = GPIO.pwm(IN1, pwm) # pin, Hz
+    pwmIN2 = GPIO.pwm(IN2, pwm) # pin, Hz
+    
+    ("正回転開始")
+    forward()
+    time.sleep(t)
+    stop(pwmIN1)
+    time.sleep(t)
+    ("正回転終了\n逆回転開始")
+    reverse()
+    time.sleep(t)
+    stop(pwmIN2)
+    time.sleep(t)
+    ("逆回転終了")
+    
+    # モータ初期化
+    GPIO.cleanup()
+except KeyboardInterrupt:
+    pwmIN1.stop()
+    pwmIN2.stop()
+    GPIO.output(IN1, False)
+    GPIO.output(IN2, False)
+    GPIO.cleanup()
+    print("強制終了しました")
