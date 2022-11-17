@@ -7,25 +7,10 @@ import RPi.GPIO as GPIO
 import time
 
 def forward(): # IN1を1，IN2を0にする
-    print("start0")
-    pwmIN1.start(0)
-    pwmIN2.start(0)
-    print("for")
-    for i in range(10):
-        pwmIN1.ChangeDutyCycle(int(duty/10*(i+1)))
-        time.sleep(duty/10)
 
 def reverse(): # IN1を0，IN2を1にする
-    pwmIN1.start(0)
-    pwmIN2.start(0)
-    for i in range(10):
-        pwmIN2.ChangeDutyCycle(int(duty/10*(i+1)))
-        time.sleep(duty/10)
 
 def stop(pin):
-    for i in range(10):
-        pin.ChangeDutyCycle(int(duty*(1-(i+1)/10)))
-        time.sleep(duty/10)
 
 IN1 = 24
 IN2 = 23
@@ -43,16 +28,34 @@ try:
     pwmIN2 = GPIO.PWM(IN2, pwm) # pin, Hz
     
     print("forward start")
-    forward()
+    print("start0")
+    pwmIN1.start(0)
+    pwmIN2.start(0)
+    print("for")
+    for i in range(10):
+        pwmIN1.ChangeDutyCycle(int(duty/10*(i+1)))
+        time.sleep(duty/10)
     print("sleep")
     time.sleep(t)
+    
     print("stop")
-    stop(pwmIN1)
+    for i in range(10):
+        pwmIN1.ChangeDutyCycle(int(duty*(1-(i+1)/10)))
+        time.sleep(duty/10)
     time.sleep(t)
+    
     print("forward fin.\nreverse start")
-    reverse()
+    pwmIN1.start(0)
+    pwmIN2.start(0)
+    for i in range(10):
+        pwmIN2.ChangeDutyCycle(int(duty/10*(i+1)))
+        time.sleep(duty/10)
     time.sleep(t)
-    stop(pwmIN2)
+    
+    print("stop")
+    for i in range(10):
+        pwmIN2.ChangeDutyCycle(int(duty*(1-(i+1)/10)))
+        time.sleep(duty/10)
     time.sleep(t)
     print("reverse fin.")
     
