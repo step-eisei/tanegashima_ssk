@@ -33,29 +33,24 @@ pwm = 50 # Hz
 duty = 60 # duty比
 # GPIO.setmode(GPIO.BOARD) # 物理的な番号を指定するように設定
 try:
-    print("setmode")
-    GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
-    # 左モータ
     print("setup")
+    GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
     GPIO.setup(IN1, GPIO.OUT)
     GPIO.setup(IN2, GPIO.OUT)
-    print("pwm")
     pwmIN1 = GPIO.PWM(IN1, pwm) # pin, Hz
-    print("1fin.")
     pwmIN2 = GPIO.PWM(IN2, pwm) # pin, Hz
-    print("2fin.")
     
-    ("正回転開始")
+    ("forward start")
     forward()
     time.sleep(t)
     stop(pwmIN1)
     time.sleep(t)
-    ("正回転終了\n逆回転開始")
+    ("forward fin.\nreverse start")
     reverse()
     time.sleep(t)
     stop(pwmIN2)
     time.sleep(t)
-    ("逆回転終了")
+    ("reverse fin.")
     
     # モータ初期化
     GPIO.cleanup()
@@ -65,4 +60,4 @@ except KeyboardInterrupt:
     GPIO.output(IN1, False)
     GPIO.output(IN2, False)
     GPIO.cleanup()
-    print("強制終了しました")
+    print("finish")
