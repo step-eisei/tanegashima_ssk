@@ -7,8 +7,10 @@ import RPi.GPIO as GPIO
 import time
 
 def forward(): # IN1を1，IN2を0にする
+    print("start0")
     pwmIN1.start(0)
     pwmIN2.start(0)
+    print("for")
     for i in range(10):
         pwmIN1.ChangeDutyCycle(duty/10*(i+1))
         time.sleep(duty/10)
@@ -42,7 +44,9 @@ try:
     
     print("forward start")
     forward()
+    print("sleep")
     time.sleep(t)
+    print("stop")
     stop(pwmIN1)
     time.sleep(t)
     print("forward fin.\nreverse start")
