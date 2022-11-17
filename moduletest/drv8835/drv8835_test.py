@@ -41,7 +41,9 @@ try:
     GPIO.setup(IN2, GPIO.OUT)
     print("pwm")
     pwmIN1 = GPIO.PWM(IN1, pwm) # pin, Hz
+    print("1fin.")
     pwmIN2 = GPIO.PWM(IN2, pwm) # pin, Hz
+    print("2fin.")
     
     ("正回転開始")
     forward()
