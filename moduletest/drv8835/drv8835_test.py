@@ -12,19 +12,19 @@ def forward(): # IN1を1，IN2を0にする
     pwmIN2.start(0)
     print("for")
     for i in range(10):
-        pwmIN1.ChangeDutyCycle(duty/10*(i+1))
+        pwmIN1.ChangeDutyCycle(int(duty/10*(i+1)))
         time.sleep(duty/10)
 
 def reverse(): # IN1を0，IN2を1にする
     pwmIN1.start(0)
     pwmIN2.start(0)
     for i in range(10):
-        pwmIN2.ChangeDutyCycle(duty/10*(i+1))
+        pwmIN2.ChangeDutyCycle(int(duty/10*(i+1)))
         time.sleep(duty/10)
 
 def stop(pin):
     for i in range(10):
-        pin.ChangeDutyCycle(duty*(1-(i+1)/10))
+        pin.ChangeDutyCycle(int(duty*(1-(i+1)/10)))
         time.sleep(duty/10)
 
 IN1 = 24
