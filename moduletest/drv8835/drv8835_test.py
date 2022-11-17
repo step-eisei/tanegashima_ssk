@@ -37,8 +37,8 @@ try:
     # 左モータ
     GPIO.setup(IN1, GPIO.OUT)
     GPIO.setup(IN2, GPIO.OUT)
-    pwmIN1 = GPIO.pwm(IN1, pwm) # pin, Hz
-    pwmIN2 = GPIO.pwm(IN2, pwm) # pin, Hz
+    pwmIN1 = GPIO.PWM(IN1, pwm) # pin, Hz
+    pwmIN2 = GPIO.PWM(IN2, pwm) # pin, Hz
     
     ("正回転開始")
     forward()
