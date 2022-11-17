@@ -27,8 +27,8 @@ try:
     pwmIN2.start(0)
     print("for")
     for i in range(10):
-        pwmIN1.ChangeDutyCycle(int(duty/10*(i+1)))
-        time.sleep(duty/10)
+        pwmIN1.ChangeDutyCycle(6*(i+1))
+        time.sleep(0.1)
     print("sleep")
     time.sleep(t)
     
