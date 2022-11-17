@@ -33,10 +33,13 @@ pwm = 50 # Hz
 duty = 60 # duty比
 # GPIO.setmode(GPIO.BOARD) # 物理的な番号を指定するように設定
 try:
+    print("setmode")
     GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
     # 左モータ
+    print("setup")
     GPIO.setup(IN1, GPIO.OUT)
     GPIO.setup(IN2, GPIO.OUT)
+    print("pwm")
     pwmIN1 = GPIO.PWM(IN1, pwm) # pin, Hz
     pwmIN2 = GPIO.PWM(IN2, pwm) # pin, Hz
     
