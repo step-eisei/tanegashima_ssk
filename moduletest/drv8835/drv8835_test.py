@@ -40,17 +40,17 @@ try:
     pwmIN1 = GPIO.PWM(IN1, pwm) # pin, Hz
     pwmIN2 = GPIO.PWM(IN2, pwm) # pin, Hz
     
-    ("forward start")
+    print("forward start")
     forward()
     time.sleep(t)
     stop(pwmIN1)
     time.sleep(t)
-    ("forward fin.\nreverse start")
+    print("forward fin.\nreverse start")
     reverse()
     time.sleep(t)
     stop(pwmIN2)
     time.sleep(t)
-    ("reverse fin.")
+    print("reverse fin.")
     
     # モータ初期化
     GPIO.cleanup()
