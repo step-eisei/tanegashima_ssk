@@ -1,65 +1,22 @@
-# 並列接続では絶対に使用しないこと!!
-# coding: utf-8
-import RPi.GPIO as GPIO
-import time
+# 参考サイト：https://www.denshi.club/parts/2020/11/gpiozero8import-motor-2-tb6612.html
 
-MOTORPIN1 = 4
-MOTORPIN2 = 5
 
-GPIO.setwarnings(False)
-GPIO.setmode( GPIO.BCM )
-GPIO.setup(MOTORPIN1, GPIO.OUT )
-GPIO.setup(MOTORPIN2, GPIO.OUT )
 
-# PWM/100Hzに設定
-ML1 = GPIO.PWM(MOTORPIN1, 100)
-ML2 = GPIO.PWM(MOTORPIN2, 100)
-# 初期化
-ML1.start(0)
-ML2.start(0)
+from gpiozero import Motor
+from time import sleep
 
-if __name__ == '__main__':
-    try:
-        #モーター開始
-        ML1.ChangeDutyCycle(10)
-        ML2.ChangeDutyCycle(0)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(20)
-        ML2.ChangeDutyCycle(0)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(50)
-        ML2.ChangeDutyCycle(0)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(100)
-        ML2.ChangeDutyCycle(0)
-        time.sleep(3)
+print("forward")
+motor1 = Motor(23, 24)
+motor2 = Motor(16, 26)
+motor1.forward(0.2)
+motor2.forward(0.2)
+sleep(2)
 
-        ML1.ChangeDutyCycle(0)
-        ML2.ChangeDutyCycle(0)
+print("backward")
+motor1.backward(0.5)
+motor2.backward(0.5)
+sleep(3)
 
-        ML1.ChangeDutyCycle(0)
-        ML2.ChangeDutyCycle(10)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(0)
-        ML2.ChangeDutyCycle(20)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(0)
-        ML2.ChangeDutyCycle(50)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(0)
-        ML2.ChangeDutyCycle(100)
-        time.sleep(3)
-        ML1.ChangeDutyCycle(0)
-        ML2.ChangeDutyCycle(0)
-
-        ML1.ChangeDutyCycle(100)
-        ML2.ChangeDutyCycle(100)
-        time.sleep(3)
-
-        ML1.stop()
-        ML2.stop()
-    except KeyboardInterrupt:
-        ML1.stop()
-        ML2.stop()
-        GPIO.cleanup()
-        sys.exit(0)
+print("stop")
+motor1.stop()
+motor2.stop()
