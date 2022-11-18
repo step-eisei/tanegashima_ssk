@@ -35,7 +35,7 @@ try:
     print("stop")
     for i in range(10):
         pwmIN1.ChangeDutyCycle(int(duty*(1-(i+1)/10)))
-        time.sleep(duty/10)
+        time.sleep(0.1)
     time.sleep(t)
     
     print("forward fin.\nreverse start")
@@ -43,13 +43,13 @@ try:
     pwmIN2.start(0)
     for i in range(10):
         pwmIN2.ChangeDutyCycle(int(duty/10*(i+1)))
-        time.sleep(duty/10)
+        time.sleep(0.1)
     time.sleep(t)
     
     print("stop")
     for i in range(10):
         pwmIN2.ChangeDutyCycle(int(duty*(1-(i+1)/10)))
-        time.sleep(duty/10)
+        time.sleep(0.1)
     time.sleep(t)
     print("reverse fin.")
     
