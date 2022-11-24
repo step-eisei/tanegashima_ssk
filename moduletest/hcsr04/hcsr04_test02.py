@@ -21,11 +21,9 @@ def reading():
                 time.sleep(0.00001)
                 GPIO.output(TRIG, False)
         
-                while GPIO.input(ECHO) == 0:
-                signaloff = time.time()
+                while GPIO.input(ECHO) == 0: signaloff = time.time()
                 
-                while GPIO.input(ECHO) == 1:
-                signalon = time.time()
+                while GPIO.input(ECHO) == 1: signalon = time.time()
         
                 timepassed = signalon - signaloff
                 distance = timepassed * 17000
