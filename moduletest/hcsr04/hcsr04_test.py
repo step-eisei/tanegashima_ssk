@@ -31,6 +31,6 @@ def reading(sensor):
         return distance
         GPIO.cleanup()
     else:
-        print "Incorrect usonic() function varible."
+        print("Incorrect usonic() function varible.")
          
-print reading(0)
+print(reading(0))
