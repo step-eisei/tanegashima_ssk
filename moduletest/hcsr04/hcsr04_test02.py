@@ -7,8 +7,8 @@ def reading():
     GPIO.setwarnings(False)
      
     GPIO.setmode(GPIO.BCM)
-    TRIG = 14
-    ECHO = 15
+    TRIG = 17
+    ECHO = 27
     try:
         while True:
             try:
