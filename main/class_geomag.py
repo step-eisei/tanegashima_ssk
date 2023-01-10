@@ -82,7 +82,7 @@ def main():
         
     with open('lsm303.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerows(mag.maglist)
+        writer.writerows(maglist)
 
 if __name__ == "__main__":
     main()
