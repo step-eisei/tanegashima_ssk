@@ -40,7 +40,7 @@ class Gps:
 def main():
     gps = Gps()
     while True:
-        if gps.gps.__getattribute__gps.clean_sentences > 20: # ちゃんとしたデータがある程度たまったら出力する
+        if gps.gps.clean_sentences > 20: # ちゃんとしたデータがある程度たまったら出力する
             gps.getgps()
             print(f"lati:{gps.gps_latitude}, longi:{gps.gps_longitude}")
         time.sleep(3.0)
