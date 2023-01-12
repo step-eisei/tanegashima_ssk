@@ -31,18 +31,18 @@ class Pressure:
         self.get_calib_param()
         
     def writeReg(self,reg_address, data):
-        bus = SMBus(self.bus_number)
-        bus.write_byte_data(self.i2c_address,reg_address,data)
+        self.bus = SMBus(self.bus_number)
+        self.bus.write_byte_data(self.i2c_address,reg_address,data)
 
     def get_calib_param(self):
         calib = []
-        bus = SMBus(self.bus_number)
+        self.bus = SMBus(self.bus_number)
 
         for i in range (0x88,0x88+24):
-            calib.append(bus.read_byte_data(self.i2c_address,i))
-        calib.append(bus.read_byte_data(self.i2c_address,0xA1))
+            calib.append(self.bus.read_byte_data(self.i2c_address,i))
+        calib.append(self.bus.read_byte_data(self.i2c_address,0xA1))
         for i in range (0xE1,0xE1+7):
-            calib.append(bus.read_byte_data(self.i2c_address,i))
+            calib.append(self.bus.read_byte_data(self.i2c_address,i))
 
         self.digT.append((calib[1] << 8) | calib[0])
         self.digT.append((calib[3] << 8) | calib[2])
