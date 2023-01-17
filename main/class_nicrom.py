@@ -22,7 +22,7 @@ def main():
 
     try:
         print("start")
-        nicrom.start(t=10)
+        nicrom.heat(t=10)
 
         nicrom.end()
         print("end")
