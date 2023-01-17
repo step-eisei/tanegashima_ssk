@@ -3,6 +3,7 @@
 import class_yolo
 import class_geomag
 import class_gps
+import class_motor
 
 class Phase_camera:
   def __init__(self):
