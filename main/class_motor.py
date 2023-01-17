@@ -26,31 +26,31 @@ class Motor():
     
     def changeduty(self, duty_R, duty_L):
         if duty_R > 0:
-            self.pwm["AIN1"].ChangeDutyCycle(abs(duty_R))
-            self.pwm["AIN2"].ChangeDutyCycle(0)
+            self.pwms["AIN1"].ChangeDutyCycle(abs(duty_R))
+            self.pwms["AIN2"].ChangeDutyCycle(0)
         elif duty_R < 0:
-            self.pwm["AIN1"].ChangeDutyCycle(0)
-            self.pwm["AIN2"].ChangeDutyCycle(abs(duty_R))
+            self.pwms["AIN1"].ChangeDutyCycle(0)
+            self.pwms["AIN2"].ChangeDutyCycle(abs(duty_R))
         else:
-            self.pwm["AIN1"].ChangeDutyCycle(0)
-            self.pwm["AIN2"].ChangeDutyCycle(0)
+            self.pwms["AIN1"].ChangeDutyCycle(0)
+            self.pwms["AIN2"].ChangeDutyCycle(0)
 
         if duty_L > 0:
-            self.pwm["BIN1"].ChangeDutyCycle(abs(duty_L))
-            self.pwm["BIN2"].ChangeDutyCycle(0)
+            self.pwms["BIN1"].ChangeDutyCycle(abs(duty_L))
+            self.pwms["BIN2"].ChangeDutyCycle(0)
         elif duty_L < 0:
-            self.pwm["BIN1"].ChangeDutyCycle(0)
-            self.pwm["BIN2"].ChangeDutyCycle(abs(duty_L))
+            self.pwms["BIN1"].ChangeDutyCycle(0)
+            self.pwms["BIN2"].ChangeDutyCycle(abs(duty_L))
         else:
-            self.pwm["BIN1"].ChangeDutyCycle(0)
-            self.pwm["BIN2"].ChangeDutyCycle(0)
+            self.pwms["BIN1"].ChangeDutyCycle(0)
+            self.pwms["BIN2"].ChangeDutyCycle(0)
             
 
     def end(self):
-        self.pwmAIN1.stop()
-        self.pwmAIN2.stop()
-        self.pwmBIN1.stop()
-        self.pwmBIN2.stop()
+        self.pwms["AIN1"].stop()
+        self.pwms["AIN2"].stop()
+        self.pwms["BIN1"].stop()
+        self.pwms["BIN2"].stop()
         GPIO.output(self.AIN1, False)
         GPIO.output(self.AIN2, False)
         GPIO.output(self.BIN1, False)
