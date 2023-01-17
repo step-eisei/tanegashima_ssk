@@ -48,3 +48,14 @@ def main():
 if __name__ == "__main__":
     main()
     pass
+
+data = [10, 11, 12, 14, 1000]
+ave = np.mean(data)
+max = 0
+num = 0
+for i in range(len(data)):
+    if((ave-data[i])**2 > max):
+        num = i
+        max = (ave-data[i])**2
+data = np.delete(data, num)
+print(data)
