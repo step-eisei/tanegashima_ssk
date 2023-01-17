@@ -18,7 +18,7 @@ def main():
     template = Template(1, 2)
     print(template.a)
     template.function1()
-    motor.changeduty(self, 15, 15)
+    Motor.changeduty(self, 15, 15)
     GeoMagnetic.get()
     i = 0
     
