@@ -1,6 +1,7 @@
 # 距離フェーズ
 import class_distance
 import class_motor
+import class_geomag
 
 class Template:
     
