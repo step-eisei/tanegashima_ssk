@@ -45,9 +45,7 @@ class Distance:
                         max = (ave-distance_data[i])**2
                 distance_data = np.delete(distance_data, num)
                 print(distance_data)
-                distance = np.mean(distance_data)
-         
-                return distance
+                self.distance = np.mean(distance_data)
                 GPIO.cleanup()
             
             else:
@@ -60,7 +58,8 @@ class Distance:
 def main():
     while(True):
         distance = Distance(17,27)
-        print(distance.reading())
+        distance.reading()
+        print(distance.distance)
         time.sleep(1)
     pass
 
