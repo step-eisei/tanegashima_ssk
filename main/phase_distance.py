@@ -18,15 +18,11 @@ def main():
     template = Template(1, 2)
     print(template.a)
     template.function1()
+    
     Motor.changeduty(self, 15, 15)
     GeoMagnetic.get()
     i = 0
     
-    
-    
-    
-    
-
 if __name__ == "__main__":
     main()
     pass
