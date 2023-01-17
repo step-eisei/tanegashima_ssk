@@ -45,6 +45,7 @@ def main(yolo=class_yolo, geomag=class_geomag, gps=class_gps, motor=class_motor)
                     if(0):# red cone in the center of image
                         if(0):# distance of red cone is 1m
                             # goto phase_distance
+                            return 0
                             pass
                         else:
                             # forward n sec.
@@ -61,6 +62,7 @@ def main(yolo=class_yolo, geomag=class_geomag, gps=class_gps, motor=class_motor)
                         # get gps
                         if(0):# distance of red cone is over3m
                             # goto gps
+                            return -1
                             pass
                         else: bool_redcone=False
 
