@@ -19,6 +19,7 @@ class Distance:
             GPIO.setmode(GPIO.BCM)
             
             if sensor == 0:
+                #データ取得
                 for j in range(5):
                     GPIO.setup(self.TRIG,GPIO.OUT)
                     GPIO.setup(self.ECHO,GPIO.IN)
