@@ -27,11 +27,7 @@ class Phase_camera:
         pass
     
 def main(yolo=class_yolo, geomag=class_geomag, gps=class_gps, motor=class_motor):
-    Class_yolo = yolo
-    Class_geomag = geomag
-    Class_gps = gps
-    Class_motor = motor
-    Phase_camera = Phase_camera(Class_yolo, Class_geomag, Class_gps, Class_motor)
+    Phase_camera = Phase_camera(yolo, geomag, gps, motor)
     i=0
     bool_mag=True
     bool_takephoto=True
