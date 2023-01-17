@@ -59,3 +59,4 @@ for i in range(len(data)):
         max = (ave-data[i])**2
 data = np.delete(data, num)
 print(data)
+data = np.mean(data)
