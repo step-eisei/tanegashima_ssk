@@ -1,5 +1,6 @@
 # 距離フェーズ
-import distance
+import class_distance
+import class_motor
 
 class Template:
     
