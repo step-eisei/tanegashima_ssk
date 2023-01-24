@@ -29,19 +29,23 @@ class Distance:
                         GPIO.output(self.TRIG, True)
                         time.sleep(0.00001)
                         GPIO.output(self.TRIG, False)
+                        error=0
                         debugtime = time.time()
                         while GPIO.input(self.ECHO) == 0:
                             signaloff = time.time()
                             if(signaloff-debugtime>1):
                                 GPIO.output(self.TRIG, False)
                                 print("overflow")
-                        while GPIO.input(self.ECHO) == 1:
-                            signalon = time.time()
-                        timepassed = signalon - signaloff
-                        distance = timepassed * 17000
-                        distance_data.append(distance)
-                        print(f"data no.{cycle}")
-                        cycle+=1
+                                error=1
+                                break
+                        if(error==0):
+                            while GPIO.input(self.ECHO) == 1:
+                                signalon = time.time()
+                            timepassed = signalon - signaloff
+                            distance = timepassed * 17000
+                            distance_data.append(distance)
+                            print(f"data no.{cycle}")
+                            cycle+=1
                         
 
                 #外れ値を除外   
