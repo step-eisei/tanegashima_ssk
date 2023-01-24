@@ -27,13 +27,20 @@ class Distance:
                         GPIO.setup(self.ECHO,GPIO.IN)
                         GPIO.output(self.TRIG, GPIO.LOW)
                         time.sleep(0.3)
+                        print("point1")
                         GPIO.output(self.TRIG, True)
+                        print("point2")
                         time.sleep(0.00001)
                         GPIO.output(self.TRIG, False)
+                        print("point3")
                         while GPIO.input(self.ECHO) == 0:
+                            print("point4")
                             signaloff = time.time()
+                        print("point5")
                         while GPIO.input(self.ECHO) == 1:
+                            print("point6")
                             signalon = time.time()
+                        print("point7")
                         timepassed = signalon - signaloff
                         distance = timepassed * 17000
                         distance_data.append(distance)
