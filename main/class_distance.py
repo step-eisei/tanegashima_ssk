@@ -44,7 +44,6 @@ class Distance:
                             timepassed = signalon - signaloff
                             distance = timepassed * 17000
                             distance_data.append(distance)
-                            print(f"data no.{cycle}")
                             cycle+=1
                         
 
@@ -57,7 +56,7 @@ class Distance:
                         num = i
                         max = (ave-distance_data[i])**2
                 distance_data = np.delete(distance_data, num)
-                print(distance_data)
+#                 print(distance_data)
                 self.distance = np.mean(distance_data)
                 GPIO.cleanup()
             
