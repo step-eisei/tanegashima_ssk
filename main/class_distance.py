@@ -29,6 +29,7 @@ class Distance:
                     GPIO.output(self.TRIG, True)
                     time.sleep(0.00001)
                     GPIO.output(self.TRIG, False)
+                    print("for")
                     while GPIO.input(self.ECHO) == 0:
                         signaloff = time.time()
                     while GPIO.input(self.ECHO) == 1:
@@ -36,7 +37,6 @@ class Distance:
                     timepassed = signalon - signaloff
                     distance = timepassed * 17000
                     distance_data.append(distance)
-                    print("for")
 
                 #外れ値を除外   
                 ave = np.mean(distance_data)
