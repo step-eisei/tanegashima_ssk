@@ -1,5 +1,9 @@
 
 import time
+import class_motor
+import class_nicrom
+import class_distance
+import class_geomag
 
 def percentpick(listdata, p):
     n = int(len(listdata) *p/100)
@@ -16,8 +20,8 @@ class Deploy():
         self.mag = mag
     
     def run(self):
-        opend = False
-        moved = False
+        opend = False #距離センサでカプセルが取れたか確認
+        moved = False #その後その場で回転して動けているか
 
         while not(opend) or not(moved):
             self.dist_sens.reading()
@@ -45,19 +49,19 @@ class Deploy():
         self.calibrate()
     
     def rotate(self, angle):
-        t = 10 / 765 * angle
         if angle > 0:
             duty = 20
         else:
             duty = -20
+        t = abs(duty) / 765 * angle
 
         self.motor.changeduty(duty, -duty)
         time.sleep(t)
         self.motor.changeduty(0,0)
     
     def calibrate(self):
-        t = 10/765
         duty = 20
+        t = duty/765
         mag_list = []
 
         self.motor.changeduty(duty, -duty)
@@ -65,6 +69,7 @@ class Deploy():
         while total < t * 365:
             self.mag.get()
             mag_list.append((self.mag.x, self.mag.y, self.mag.z))
+            time.sleep(t)
             total += t
         
         magxs = [self.maglist[i][0] for i in range(len(self.maglist))]
@@ -83,8 +88,12 @@ class Deploy():
         self.mag.rads = [self.maxs[i] - self.mins[i] for i in range(3)]
         self.mag.aves = [self.maxs[i] + self.mins[i] for i in range(3)]
 
-def main(motor, nicrom, dist_ses, mag):
-    deploy_phase = Deploy(motor, nicrom, dist_ses, mag)
+def main():
+    motor = class_motor.Motor()
+    nicrom = class_nicrom.Nicrom()
+    dist_sens = class_distance.Distance()
+    mag = class_geomag.GeoMagnetic()
+    deploy_phase = Deploy(motor, nicrom, dist_sens, mag)
     deploy_phase.run()
 
 if __name__=="__main__":
