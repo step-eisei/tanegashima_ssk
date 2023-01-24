@@ -20,6 +20,7 @@ class Distance:
             print("try")
             if sensor == 0:
                 #データ取得
+                print("if")
                 for j in range(5):
                     GPIO.setup(self.TRIG,GPIO.OUT)
                     GPIO.setup(self.ECHO,GPIO.IN)
@@ -35,6 +36,7 @@ class Distance:
                     timepassed = signalon - signaloff
                     distance = timepassed * 17000
                     distance_data.append(distance)
+                    print("for")
 
                 #外れ値を除外   
                 ave = np.mean(distance_data)
