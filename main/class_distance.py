@@ -22,33 +22,26 @@ class Distance:
                 #データ取得
                 cycle=1
                 while(cycle<6):
-                    try:
                         GPIO.setup(self.TRIG,GPIO.OUT)
                         GPIO.setup(self.ECHO,GPIO.IN)
                         GPIO.output(self.TRIG, GPIO.LOW)
                         time.sleep(0.3)
-                        print("point1")
                         GPIO.output(self.TRIG, True)
-                        print("point2")
                         time.sleep(0.00001)
                         GPIO.output(self.TRIG, False)
-                        print("point3")
+                        debugtime = time.time()
                         while GPIO.input(self.ECHO) == 0:
-                            print("point4")
                             signaloff = time.time()
-                        print("point5")
+                            if(signaloff-debugtime>1):
+                                GPIO.output(self.TRIG, False)
+                                print("overflow")
                         while GPIO.input(self.ECHO) == 1:
-                            print("point6")
                             signalon = time.time()
-                        print("point7")
                         timepassed = signalon - signaloff
                         distance = timepassed * 17000
                         distance_data.append(distance)
                         print(f"data no.{cycle}")
                         cycle+=1
-                    except:
-                        GPIO.output(self.TRIG, False)
-                        print("overflow")
                         
 
                 #外れ値を除外   
