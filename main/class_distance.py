@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 import time
 import RPi.GPIO as GPIO
-
+import numpy as np
 
 class Distance:
     
-    def __init__(self,TRIG,ECHO):
+    def __init__(self,TRIG=17,ECHO=27):
             self.TRIG = TRIG
             self.ECHO = ECHO
             pass
