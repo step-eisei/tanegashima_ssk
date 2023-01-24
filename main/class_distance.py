@@ -35,6 +35,7 @@ class Distance:
                     timepassed = signalon - signaloff
                     distance = timepassed * 17000
                     distance_data.append(distance)
+                    print(f"data no.{j}")
 
                 #外れ値を除外   
                 ave = np.mean(distance_data)
