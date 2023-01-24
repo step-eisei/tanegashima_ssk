@@ -40,10 +40,12 @@ class Distance:
                 ave = np.mean(distance_data)
                 max = 0
                 num = 0
+                print("before")
                 for i in range(len(distance_data)):
                     if((ave-distance_data[i])**2 > max):
                         num = i
                         max = (ave-distance_data[i])**2
+                print("after")
                 distance_data = np.delete(distance_data, num)
                 print(distance_data)
                 self.distance = np.mean(distance_data)
