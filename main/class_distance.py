@@ -17,7 +17,7 @@ class Distance:
            
             GPIO.setwarnings(False)
             GPIO.setmode(GPIO.BCM)
-            
+            print("try")
             if sensor == 0:
                 #データ取得
                 for j in range(5):
@@ -57,9 +57,12 @@ class Distance:
 
 
 def main():
+    print("main")
     while(True):
         distance = Distance(17,27)
+        print("1")
         distance.reading()
+        print("2")
         print(distance.distance)
         time.sleep(1)
     pass
