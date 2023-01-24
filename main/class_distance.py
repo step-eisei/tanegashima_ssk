@@ -32,8 +32,10 @@ class Distance:
                     print("for")
                     while GPIO.input(self.ECHO) == 0:
                         signaloff = time.time()
+                    print("off")
                     while GPIO.input(self.ECHO) == 1:
                         signalon = time.time()
+                    print("on")
                     timepassed = signalon - signaloff
                     distance = timepassed * 17000
                     distance_data.append(distance)
