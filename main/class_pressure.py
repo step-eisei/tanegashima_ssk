@@ -116,22 +116,11 @@ class Pressure:
 
 def main():
     result_pressure=Pressure() #classからできたインスタンス
-    for i in range(5): 
+    for i in range(10): 
         print("一回だけinit")
         result_pressure.read() #Pressureクラスのread()呼出⇒pressureが計算される
         print(result_pressure.pressure) 
-        time.sleep(2)
-        
-    for i in range(10):
-        print("切り替え")
-        print(i)
-        time.sleep(1)
-        
-    for i in range(5):
-        print("毎回init")
-        result_pressure.read() #Pressureクラスのread()呼出⇒pressureが計算される
-        print(result_pressure.pressure) 
-        time.sleep(2)
+        time.sleep(1.5)
 
 if __name__ == "__main__":
     main()
