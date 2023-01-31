@@ -6,12 +6,12 @@ import csv
 import sys
 import math
 
-def percentpick(listdata, p):
-    n = int(len(listdata) *p/100)
-    listdata = sorted(listdata) # 昇順
-    min = listdata[n-1]
-    max = listdata[len(listdata)-n]
-    return max, min
+# def percentpick(listdata, p):
+#     n = int(len(listdata) *p/100)
+#     listdata = sorted(listdata) # 昇順
+#     min = listdata[n-1]
+#     max = listdata[len(listdata)-n]
+#     return max, min
 
 class GeoMagnetic:
     
@@ -39,26 +39,24 @@ class GeoMagnetic:
         self.y = (self.y - self.aves[1]) / self.rads[1]
         self.z = (self.z - self.aves[2]) / self.rads[2]
     
-    """
-    def addlist(self):#キャリブレーション用にデータをためる
-        self.maglist.append(self.sensor.magnetic)
+#     def addlist(self):#キャリブレーション用にデータをためる
+#         self.maglist.append(self.sensor.magnetic)
     
-    def calibrate(self):
-        magxs = [self.maglist[i][0] for i in range(len(self.maglist))]
-        magys = [self.maglist[i][1] for i in range(len(self.maglist))]
-        magzs = [self.maglist[i][2] for i in range(len(self.maglist))]
+#     def calibrate(self):
+#         magxs = [self.maglist[i][0] for i in range(len(self.maglist))]
+#         magys = [self.maglist[i][1] for i in range(len(self.maglist))]
+#         magzs = [self.maglist[i][2] for i in range(len(self.maglist))]
 
-        # 最大値，最小値の算出
-        p = 5 # 上位何%をpickするか
-        Xmax, Xmin = percentpick(magxs)
-        Ymax, Ymin = percentpick(magys)
-        Zmax, Zmin = percentpick(magzs)
+#         # 最大値，最小値の算出
+#         p = 5 # 上位何%をpickするか
+#         Xmax, Xmin = percentpick(magxs)
+#         Ymax, Ymin = percentpick(magys)
+#         Zmax, Zmin = percentpick(magzs)
 
-        self.maxs = [Xmax, Ymax, Zmax]
-        self.mins = [Xmin, Ymin, Zmin]
+#         self.maxs = [Xmax, Ymax, Zmax]
+#         self.mins = [Xmin, Ymin, Zmin]
 
-        self.calibrated = True
-    """
+#         self.calibrated = True
 
 def main():
     mag = GeoMagnetic()
