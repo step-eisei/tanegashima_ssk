@@ -3,14 +3,14 @@ import time
 
 class Land:
     
-    def __init__(self, sky=0.1, land=0.01): #地上気圧測定
+    def __init__(self,get_pressure,sky=0.1, land=0.01): #地上気圧測定
         self.sky=sky
         self.land=land
         self.i=0
+        self.get_pressure=get_pressure
         while self.i<=10:
-            get_pressure=class_pressure.Pressure()
-            get_pressure.read()
-            sum_pressure = sum_pressure + get_pressure.pressure
+            self.get_pressure.read()
+            sum_pressure = sum_pressure + self.get_pressure.pressure
             self.i=self.i+1
         self.land=sum_pressure/10
         self.i=0
@@ -18,9 +18,8 @@ class Land:
     def sky_pressure(self):
         self.i=0
         while self.i<=10:
-            get_pressure=class_pressure.Pressure()
-            get_pressure.read() #毎回pressure更新
-            if self.land - get_pressure.pressure > self.sky: #閾値暫定
+            self.get_pressure.read() #毎回pressure更新
+            if self.land - self.get_pressure.pressure > self.sky: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
             else: self.i=0 #やり直し
@@ -31,9 +30,8 @@ class Land:
     def land_pressure(self):
         self.i=0
         while self.i<=10:
-            get_pressure=class_pressure.Pressure()
-            get_pressure.read() #毎回pressure更新
-            if get_pressure.pressure - self.land < self.land: #閾値暫定
+            self.get_pressure.read() #毎回pressure更新
+            if self.get_pressure.pressure - self.land < self.land: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
             else: self.i=0 #やり直し
@@ -42,12 +40,11 @@ class Land:
 
     def run(self):
         self.sky_pressure()
-        time.sleep(3)
         self.land_pressure()
 
 def main(sky=0.1, land=0.01): #上空判定，地上判定の閾値
-    land_check=Land(sky, land) #land更新
-    time.sleep(5)
+    get_pressure=class_pressure.Pressure()
+    land_check=Land(get_pressure,sky, land) #land更新
     land_check.run()
 
 
