@@ -57,7 +57,15 @@ class Phase_camera:
                                 pass
                             else:
                                 # forward n sec.
-                                --
+                                forward_time = n
+                                # set duty
+                                duty = 60
+                                print("forward for" + str(forward_time)+ "seconds")
+                                for i in range(10):
+                                    duty_new = int(duty/10*(i+1))
+                                    motor.changeduty(duty_new, duty_new)
+                                    time.sleep(forward_time/10)
+                                
                                 bool_takephoto = False
                                 bool_redcone = False
                         else: pass
