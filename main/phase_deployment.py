@@ -51,6 +51,7 @@ class Deploy():
                     opend == False
 
                 self.rotate(-10)
+        self.nicrom.end()
         #両方Trueでループ終了
 
         ang0=0.0 #初期化
