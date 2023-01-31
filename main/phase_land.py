@@ -14,7 +14,7 @@ class Land:
             sum_pressure = sum_pressure + self.get_pressure.pressure
             self.i=self.i+1
             time.sleep(0.5)
-        self.land_pressure=sum_pressure/10
+        self.land_pressure=sum_pressure
         print(self.land_pressure)
         self.i=0
 
