@@ -3,10 +3,10 @@ import time
 
 class Motor():
     def __init__(self, pwm=50, AIN1=18, AIN2=23, BIN1=13, BIN2=24):
-        self.AIN1 = AIN1
-        self.AIN2 = AIN2
-        self.BIN1 = BIN1
-        self.BIN2 = BIN2
+        self.rightIN1 = AIN1
+        self.rightIN2 = AIN2
+        self.leftIN1 = BIN1
+        self.leftIN2 = BIN2
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
         GPIO.setup(AIN1, GPIO.OUT)
@@ -14,47 +14,47 @@ class Motor():
         GPIO.setup(BIN1, GPIO.OUT)
         GPIO.setup(BIN2, GPIO.OUT)
         self.pwms = {}
-        self.pwms["AIN1"] = GPIO.PWM(self.AIN1, pwm) # pin, Hz
-        self.pwms["AIN2"] = GPIO.PWM(self.AIN2, pwm) # pin, Hz
-        self.pwms["BIN1"] = GPIO.PWM(self.BIN1, pwm) # pin, Hz
-        self.pwms["BIN2"] = GPIO.PWM(self.BIN2, pwm) # pin, Hz
+        self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
+        self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
+        self.pwms["leftIN1"] = GPIO.PWM(self.leftIN1, pwm) # pin, Hz
+        self.pwms["leftIN2"] = GPIO.PWM(self.leftIN2, pwm) # pin, Hz
         
-        self.pwms["AIN1"].start(0)
-        self.pwms["AIN2"].start(0)
-        self.pwms["BIN1"].start(0)
-        self.pwms["BIN2"].start(0)
+        self.pwms["rightIN1"].start(0)
+        self.pwms["rightIN2"].start(0)
+        self.pwms["leftIN1"].start(0)
+        self.pwms["leftIN2"].start(0)
     
     def changeduty(self, duty_R, duty_L):
         if duty_R > 0:
-            self.pwms["AIN1"].ChangeDutyCycle(abs(duty_R))
-            self.pwms["AIN2"].ChangeDutyCycle(0)
+            self.pwms["rightIN1"].ChangeDutyCycle(abs(duty_R))
+            self.pwms["rightIN2"].ChangeDutyCycle(0)
         elif duty_R < 0:
-            self.pwms["AIN1"].ChangeDutyCycle(0)
-            self.pwms["AIN2"].ChangeDutyCycle(abs(duty_R))
+            self.pwms["rightIN1"].ChangeDutyCycle(0)
+            self.pwms["rightIN2"].ChangeDutyCycle(abs(duty_R))
         else:
-            self.pwms["AIN1"].ChangeDutyCycle(0)
-            self.pwms["AIN2"].ChangeDutyCycle(0)
+            self.pwms["rightIN1"].ChangeDutyCycle(0)
+            self.pwms["rightIN2"].ChangeDutyCycle(0)
 
         if duty_L > 0:
-            self.pwms["BIN1"].ChangeDutyCycle(abs(duty_L))
-            self.pwms["BIN2"].ChangeDutyCycle(0)
+            self.pwms["leftIN1"].ChangeDutyCycle(abs(duty_L))
+            self.pwms["leftIN2"].ChangeDutyCycle(0)
         elif duty_L < 0:
-            self.pwms["BIN1"].ChangeDutyCycle(0)
-            self.pwms["BIN2"].ChangeDutyCycle(abs(duty_L))
+            self.pwms["leftIN1"].ChangeDutyCycle(0)
+            self.pwms["leftIN2"].ChangeDutyCycle(abs(duty_L))
         else:
-            self.pwms["BIN1"].ChangeDutyCycle(0)
-            self.pwms["BIN2"].ChangeDutyCycle(0)
+            self.pwms["leftIN1"].ChangeDutyCycle(0)
+            self.pwms["leftIN2"].ChangeDutyCycle(0)
             
 
     def end(self):
-        self.pwms["AIN1"].stop()
-        self.pwms["AIN2"].stop()
-        self.pwms["BIN1"].stop()
-        self.pwms["BIN2"].stop()
-        GPIO.output(self.AIN1, False)
-        GPIO.output(self.AIN2, False)
-        GPIO.output(self.BIN1, False)
-        GPIO.output(self.BIN2, False)
+        self.pwms["rightIN1"].stop()
+        self.pwms["rightIN2"].stop()
+        self.pwms["leftIN1"].stop()
+        self.pwms["leftIN2"].stop()
+        GPIO.output(self.rightIN1, False)
+        GPIO.output(self.rightIN2, False)
+        GPIO.output(self.leftIN1, False)
+        GPIO.output(self.leftIN2, False)
         GPIO.cleanup()
 
 
