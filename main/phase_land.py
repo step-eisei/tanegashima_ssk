@@ -42,10 +42,12 @@ class Land:
 
     def run(self):
         self.sky_pressure()
+        time.sleep(3)
         self.land_pressure()
 
 def main(sky=0.1, land=0.01): #上空判定，地上判定の閾値
     land_check=Land(sky, land) #land更新
+    time.sleep(5)
     land_check.run()
 
 
