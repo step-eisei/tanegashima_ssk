@@ -29,7 +29,7 @@ class Land:
             else: 
                 self.i=0 #やり直し
                 print("yet")
-            time.sleep(0.1)
+            time.sleep(0.5)
         print("sky")
         self.i=0
 
@@ -44,7 +44,7 @@ class Land:
             else: 
                 self.i=0 #やり直し
                 print("yet")
-            time.sleep(0.1)
+            time.sleep(0.5)
         print("land")
 
     def run(self):
