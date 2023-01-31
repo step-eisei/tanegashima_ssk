@@ -8,10 +8,23 @@ class Gps:
     def __init__(self):
         self.gps = micropyGPS.MicropyGPS(9, 'dd') # MicroGPSオブジェクトを生成する。
                                                   # 引数はタイムゾーンの時差と出力フォーマット
-        gpsthread = threading.Thread(target=self.rungps, args=()) # 上の関数を実行するスレッドを生成
-        gpsthread.daemon = True
-        gpsthread.start() # スレッドを起動
+        #gpsthread = threading.Thread(target=self.rungps, args=()) # 上の関数を実行するスレッドを生成
+        #gpsthread.daemon = True
+        #gpsthread.start() # スレッドを起動
+        self.ser = serial.Serial('/dev/serial0', 9600, timeout=10)
+        self.ser.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
 
+    def getgps(self):
+        sentences = self.ser.read_all().decode("utf-8")
+        for s in sentences:
+            if s[0] != '$':
+                continue
+            for x in s:
+                self.gps.update(x)
+        self.gps_latitude = self.gps.latitude[0]
+        self.gps_longitude = self.gps.longitude[0]
+    
+    """サブスレッド用
     def rungps(self): # GPSモジュールを読み、GPSオブジェクトを更新する
         self.s = serial.Serial('/dev/serial0', 9600, timeout=10)
         self.s.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
@@ -36,13 +49,16 @@ class Gps:
         #print('')
         #print(gps_latitude)
         #print(gps_longitude)
-
+    """
+            
 def main():
     gps = Gps()
     while True:
-        if gps.gps.clean_sentences > 20: # ちゃんとしたデータがある程度たまったら出力する
-            gps.getgps()
-            print(f"lati:{gps.gps_latitude}, longi:{gps.gps_longitude}")
+        #if gps.gps.clean_sentences > 20: # ちゃんとしたデータがある程度たまったら出力する
+        start = time.time()
+        gps.getgps()
+        end = time.time()
+        print(f"lati:{gps.gps_latitude}, longi:{gps.gps_longitude}, processTime:{end-start}")
         time.sleep(3.0)
 
 if __name__ == "__main__":
