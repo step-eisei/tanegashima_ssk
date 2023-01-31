@@ -10,6 +10,7 @@ class Land:
         self.get_pressure=get_pressure
         while self.i<=10:
             self.get_pressure.read()
+            sum_pressure=0.0
             sum_pressure = sum_pressure + self.get_pressure.pressure
             self.i=self.i+1
         self.land=sum_pressure/10
