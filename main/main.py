@@ -44,13 +44,13 @@ def main():
         while True:
             gps_phase.run()
             return_camera = camera.run()
-            if(return_camera = 0):
+            if(return_camera == 0):
                 return_distance = distance_phase.run()
-                if(return_distance = 0): goal = True
-                elif(return_distance = -1): print("goto gps phase from distance.")
-                elif(return_distance = -2): print("goto camera phase.")
+                if(return_distance == 0): goal = True
+                elif(return_distance == -1): print("goto gps phase from distance.")
+                elif(return_distance == -2): print("goto camera phase.")
                 else: print("distance return error.")
-            elif(return_camera = -1): print("goto gps phase from camera.")
+            elif(return_camera == -1): print("goto gps phase from camera.")
             else: print("camera return error.")
             if(goal): break
         print("goal judge.")
