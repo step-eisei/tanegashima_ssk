@@ -2,17 +2,17 @@ import RPi.GPIO as GPIO
 import time
 
 class Motor():
-    def __init__(self, pwm=50, AIN1=18, AIN2=23, BIN1=13, BIN2=24):
-        self.rightIN1 = AIN1
-        self.rightIN2 = AIN2
-        self.leftIN1 = BIN1
-        self.leftIN2 = BIN2
+    def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24):
+        self.rightIN1 = rightIN1
+        self.rightIN2 = rightIN2
+        self.leftIN1 = leftIN1
+        self.leftIN2 = leftIN2
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
-        GPIO.setup(AIN1, GPIO.OUT)
-        GPIO.setup(AIN2, GPIO.OUT)
-        GPIO.setup(BIN1, GPIO.OUT)
-        GPIO.setup(BIN2, GPIO.OUT)
+        GPIO.setup(rightIN1, GPIO.OUT)
+        GPIO.setup(rightIN2, GPIO.OUT)
+        GPIO.setup(leftIN1, GPIO.OUT)
+        GPIO.setup(leftIN2, GPIO.OUT)
         self.pwms = {}
         self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
         self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
