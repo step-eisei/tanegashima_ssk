@@ -22,10 +22,13 @@ class Land:
         self.i=0
         while self.i<=10:
             self.get_pressure.read() #毎回pressure更新
+            print(self.get_pressure.pressure)
             if self.land_pressure-self.get_pressure.pressure > self.sky: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
-            else: self.i=0 #やり直し
+            else: 
+                self.i=0 #やり直し
+                print("yet")
             time.sleep(0.1)
         print("sky")
         self.i=0
@@ -34,10 +37,13 @@ class Land:
         self.i=0
         while self.i<=10:
             self.get_pressure.read() #毎回pressure更新
+            print(self.get_pressure.pressure)
             if self.land_pressure-self.get_pressure.pressure < self.land: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
-            else: self.i=0 #やり直し
+            else: 
+                self.i=0 #やり直し
+                print("yet")
             time.sleep(0.1)
         print("land")
 
