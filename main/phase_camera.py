@@ -29,7 +29,7 @@ class Phase_camera:
         pass
     
     def run(self):
-         i = 0
+        i = 0
         bool_mag = True
         bool_takephoto = True
         bool_redcone = True
