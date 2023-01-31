@@ -8,14 +8,14 @@ class Land:
         self.land=land
         self.i=0
         self.get_pressure=get_pressure
+        sum_pressure=0.0
         while self.i<=10:
             self.get_pressure.read()
-            sum_pressure=0.0
             sum_pressure = sum_pressure + self.get_pressure.pressure
             self.i=self.i+1
             time.sleep(0.5)
-        self.land_pressure=sum_pressure
-        print(self.land_pressure)
+        self.start_pressure=sum_pressure
+        print(self.start_pressure)
         self.i=0
 
     def sky_pressure(self):
@@ -23,7 +23,7 @@ class Land:
         while self.i<=10:
             self.get_pressure.read() #毎回pressure更新
             print(self.get_pressure.pressure)
-            if self.land_pressure-self.get_pressure.pressure > self.sky: #閾値暫定
+            if self.start_pressure-self.get_pressure.pressure > self.sky: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
             else: 
@@ -38,7 +38,7 @@ class Land:
         while self.i<=10:
             self.get_pressure.read() #毎回pressure更新
             print(self.get_pressure.pressure)
-            if self.land_pressure-self.get_pressure.pressure < self.land: #閾値暫定
+            if self.start_pressure-self.get_pressure.pressure < self.land: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
             else: 
