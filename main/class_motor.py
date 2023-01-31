@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+# right = A, left = B
 
 class Motor():
     def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24):
