@@ -22,31 +22,70 @@ class Deploy():
     def run(self):
         opend = False #距離センサでカプセルが取れたか確認
         moved = False #その後その場で回転して動けているか
+        #最初は閉まってるかつ止まってる
 
-        while not(opend) or not(moved):
+        #-------展開検知---------
+        while not(opend) or not(moved): #開くかつ動くまで
             self.dist_sens.reading()
             distance = self.dist_sens.distance
-            if distance >= 100: flag1 = True
+            if distance >= 100: opend = True
+            #カメラによる展開
 
             if opend == False:
                 self.nicrom.heat(t=10)
+                #開いてない⇒再加熱
 
             if opend == True:
                 self.mag.get()
                 ang0 = self.mag.theta_absolute
+                #初期値
 
                 self.rotate(10)
                 self.mag.get()
                 ang1 = self.mag.theta_absolute
+                #移動後の位置取得
 
-                if (ang1 - ang0) >= 5:
+                if (ang1 - ang0) >= 5: #動けているか判定
                     moved == True
                 else:
                     opend == False
 
                 self.rotate(-10)
+        #両方Trueでループ終了
+
+        ang0=0.0 #初期化
+        ang1=0.0
+
+        #-------前進,旋回によるスタック検知---------
+        while True:
+            duty=60
+
+            #前進
+            for i in range (10): 
+                duty_new = int(duty/10*(i+1))
+                self.motor.changeduty(duty_new, duty_new)
+                time.sleep(0.1)
+            
+            time.sleep(2)
+
+            #旋回
+            self.mag.get()
+            ang0 = self.mag.theta_absolute
+            #初期値
+
+            self.rotate(10)
+            self.mag.get()
+            ang1 = self.mag.theta_absolute
+
+            if (ang1-ang0)<=5: #動けてなかったら
+                print("stack")
+                return
+            else:
+                self.rotate(-10)
+                break
         
         self.calibrate()
+        print("deployment phase finish")
     
     def rotate(self, angle):
         if angle > 0:
