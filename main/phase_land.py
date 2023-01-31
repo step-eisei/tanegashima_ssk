@@ -14,6 +14,7 @@ class Land:
             sum_pressure = sum_pressure + self.get_pressure.pressure
             self.i=self.i+1
         self.land=sum_pressure/10
+        print(self.land)
         self.i=0
 
     def sky_pressure(self):
@@ -46,6 +47,7 @@ class Land:
 def main(sky=0.1, land=0.01): #上空判定，地上判定の閾値
     get_pressure=class_pressure.Pressure()
     land_check=Land(get_pressure,sky, land) #land更新
+    print("start")
     land_check.run()
 
 
