@@ -72,7 +72,7 @@ class Phase_camera:
                             forward_time = n
                             # set duty
                             duty = 60
-                            print("forward start for" + str(forward_time)+ "seconds")
+                            print("forward for" + str(forward_time)+ "seconds")
                             for i in range(10):
                                 duty_new = int(duty/10*(i+1))
                                 motor.changeduty(duty_new, duty_new)
