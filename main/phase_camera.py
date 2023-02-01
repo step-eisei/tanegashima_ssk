@@ -9,7 +9,7 @@ import phase_deployment
 import time
 
 class Phase_camera:
-    def __init__(self, yolo, geomag, gps, motor):
+    def __init__(self, yolo=class_yolo, geomag=class_geomag, gps=class_gps, motor=class_motor):
         pass
     
     # calculate angle from photo
