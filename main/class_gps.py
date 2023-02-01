@@ -21,8 +21,8 @@ class Gps:
                 continue
             for x in s:
                 self.gps.update(x)
-        self.gps_latitude = self.gps.latitude[0]
-        self.gps_longitude = self.gps.longitude[0]
+        self.latitude = self.gps.latitude[0]
+        self.longitude = self.gps.longitude[0]
     
     """サブスレッド用
     def rungps(self): # GPSモジュールを読み、GPSオブジェクトを更新する
@@ -58,7 +58,7 @@ def main():
         start = time.time()
         gps.getgps()
         end = time.time()
-        print(f"lati:{gps.gps_latitude}, longi:{gps.gps_longitude}, processTime:{end-start}")
+        print(f"lati:{gps.latitude}, longi:{gps.longitude}, processTime:{end-start}")
         time.sleep(3.0)
 
 if __name__ == "__main__":
