@@ -13,7 +13,7 @@ def percentpick(listdata, p):
     return max, min
 
 class Deploy():
-    def __init__(self, motor, nicrom, dist_sens, mag):
+    def __init__(self, motor=class_motor.Motor(), nicrom=class_nicrom.Nicrom(), dist_sens=class_distance.Distance(), mag=class_geomag.GeoMagnetic()):
         self.motor = motor
         self.nicrom = nicrom
         self.dist_sens = dist_sens
@@ -129,11 +129,7 @@ class Deploy():
         self.mag.aves = [self.maxs[i] + self.mins[i] for i in range(3)]
 
 def main():
-    motor = class_motor.Motor()
-    nicrom = class_nicrom.Nicrom()
-    dist_sens = class_distance.Distance()
-    mag = class_geomag.GeoMagnetic()
-    deploy_phase = Deploy(motor, nicrom, dist_sens, mag)
+    deploy_phase = Deploy()
     deploy_phase.run()
 
 if __name__=="__main__":
