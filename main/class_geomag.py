@@ -28,8 +28,9 @@ class GeoMagnetic:
     
     def get(self):
         self.x, self.y, self.z = self.sensor.magnetic
-        if self.calibrated: self.normalize()
         self.theta_absolute = math.atan2(self.y, self.x)*180/math.pi
+        if self.calibrated: self.normalize()
+        self.theta_relative = math.atan2(self.y, self.x)*180/math.pi
     
     def normalize(self):
         #rads = [self.maxs[i] - self.mins[i] for i in range(3)]
