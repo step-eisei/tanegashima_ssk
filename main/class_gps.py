@@ -60,7 +60,7 @@ def main():
         print(f"lati:{gps.latitude}, longi:{gps.longitude}, processTime:{end-start}")
         h = gps.gps.timestamp[0] if gps.gps.timestamp[0] < 24 else gps.gps.timestamp[0] - 24
         print('%2d:%02d:%04.1f' % (h, gps.gps.timestamp[1], gps.gps.timestamp[2]))
-        time.sleep(3.0)
+        time.sleep(30.0)
 
 if __name__ == "__main__":
     main()
