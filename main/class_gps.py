@@ -15,13 +15,14 @@ class Gps:
         self.ser.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
 
     def getgps(self):
-        s = self.ser.read_all()[-1].decode("utf-8")
+        s = self.ser.read_all().decode("utf-8")
+        print(s)
         #for s in sentences:
-        if s[0] != '$':
-            pass
-        else: 
-            for x in s:
-                self.gps.update(x)
+        #if s[0] != '$':
+         #   pass
+        #else: 
+        for x in s:
+            self.gps.update(x)
         self.latitude = self.gps.latitude[0]
         self.longitude = self.gps.longitude[0]
         h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
