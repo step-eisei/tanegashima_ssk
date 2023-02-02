@@ -15,17 +15,17 @@ class Gps:
         self.ser.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
 
     def getgps(self):
-        sentences = self.ser.readlines().decode("utf-8")
-        for s in sentences:
-            h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
-            print('%2d:%02d:%04.1f' % (h, self.gps.timestamp[1], self.gps.timestamp[2]))
-            if s[0] != '$':
-                pass
-            else: 
-                for x in s:
-                    self.gps.update(x)
+        s = self.ser.readlines().decode("utf-8")
+        #for s in sentences:
+        if s[0] != '$':
+            pass
+        else: 
+            for x in s:
+                self.gps.update(x)
         self.latitude = self.gps.latitude[0]
         self.longitude = self.gps.longitude[0]
+        h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
+        print('%2d:%02d:%04.1f' % (h, self.gps.timestamp[1], self.gps.timestamp[2]))
     
     """サブスレッド用
     def rungps(self): # GPSモジュールを読み、GPSオブジェクトを更新する
