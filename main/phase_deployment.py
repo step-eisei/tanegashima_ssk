@@ -57,37 +57,12 @@ class Deploy():
         ang0=0.0 #初期化
         ang1=0.0
 
-        #-------前進,旋回によるスタック検知---------
-        while True:
-            duty=60
-
-            #前進
-            for i in range (10): 
-                duty_new = int(duty/10*(i+1))
-                self.motor.changeduty(duty_new, duty_new)
-                time.sleep(0.1)
-            
-            time.sleep(2)
-
-            #旋回
-            self.mag.get()
-            ang0 = self.mag.theta_absolute
-            #初期値
-
-            self.rotate(10)
-            self.mag.get()
-            ang1 = self.mag.theta_absolute
-
-            if (ang1-ang0)<=5: #動けてなかったら
-                print("stack")
-                return
-            else:
-                self.rotate(-10)
-                break
+        self.motor.stack()
         
         self.calibrate()
         print("deployment phase finish")
     
+    """
     def rotate(self, angle):
         if angle > 0:
             duty = 20
@@ -98,7 +73,7 @@ class Deploy():
         self.motor.changeduty(duty, -duty)
         time.sleep(t)
         self.motor.changeduty(0,0)
-    
+    """
     def calibrate(self):
         duty = 20
         t = duty/765

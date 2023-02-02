@@ -63,9 +63,12 @@ class Motor():
             else: print("Error. Define time_all or tick_dutymax.")
         else: print("Error. time_sleep is not defined.")
     
-    def rotate(self, angle=0, duty_R=1, duty_L=None, time_sleep=0.3, tolerance_percent=10):
+    def rotate(self, angle=0, duty_R=10, duty_L=None, time_sleep=0.3, tolerance_percent=10):
         if(angle!=0):
             if(duty_L==None): duty_L = -duty_R
+            if(angle < 0):
+                duty_R = -duty_R
+                duty_L = -duty_L
             self.geomag.get()
             theta_relative = self.geomag.theta_relative
             for i in range(5):
@@ -86,7 +89,35 @@ class Motor():
                         break
             print("loop limit.")
         else: print("Error. angle is not defined.")
+    
+    def stack(self):
+         #-------前進,旋回によるスタック検知---------
+        while True:
+            duty=60
 
+            #前進
+            for i in range (10): 
+                duty_new = int(duty/10*(i+1))
+                self.motor.changeduty(duty_new, duty_new)
+                time.sleep(0.1)
+            
+            time.sleep(2)
+
+            #旋回
+            self.mag.get()
+            ang0 = self.mag.theta_absolute
+            #初期値
+
+            self.rotate(20)
+            self.mag.get()
+            ang1 = self.mag.theta_absolute
+
+            if (ang1-ang0)<=10: #動けてなかったら
+                print("stack")
+            else:
+                self.rotate(-20)
+                break
+    
     def end(self):
         self.pwms["rightIN1"].stop()
         self.pwms["rightIN2"].stop()
