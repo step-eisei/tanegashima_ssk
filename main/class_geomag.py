@@ -16,13 +16,12 @@ import math
 class GeoMagnetic:
     
     def __init__(self, calibrated=False, rads=[1.0, 1.0, 1.0], aves=[0.0, 0.0, 0.0]):
+        self.theta=-1
         self.theta_absolute=-1
-        self.theta_relative=-1
         self.i2c = board.I2C()  # uses board.SCL and board.SDA
         self.sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
 
         self.x, self.y, self.z = [0.0, 0.0, 0.0]
-
         #self.maglist = []
         self.calibrated = calibrated
         self.rads = rads
@@ -30,10 +29,10 @@ class GeoMagnetic:
     
     def get(self):
         self.x, self.y, self.z = self.sensor.magnetic
-        self.theta_absolute = math.atan2(self.y, self.x)*180/math.pi
+        self.theta = math.atan2(self.y, self.x)*180/math.pi
         if self.calibrated:
             self.normalize()
-            self.theta_relative = math.atan2(self.y, self.x)*180/math.pi
+            self.theta_absolute = math.atan2(self.y, self.x)*180/math.pi
     
     def normalize(self):
         #rads = [self.maxs[i] - self.mins[i] for i in range(3)]
