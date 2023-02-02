@@ -15,7 +15,7 @@ class Gps:
         self.ser.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
 
     def getgps(self):
-        s = self.ser.readlines()[-1].decode("utf-8")
+        s = self.ser.read_all().decode("utf-8")
         #for s in sentences:
         if s[0] != '$':
             pass
