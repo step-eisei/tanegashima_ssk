@@ -62,31 +62,34 @@ class Motor():
                     time.sleep(time_sleep)
             else: print("Error. Define time_all or tick_dutymax.")
         else: print("Error. time_sleep is not defined.")
-    
-    def rotate(self, angle=0, duty_R=10, duty_L=None, time_sleep=0.3, tolerance_percent=10):
+
+    def angle_difference(self, from_angle, to_angle):
+        angle = to_angle-from_angle
+        if(angle<-180): return angle+360
+        elif(angle>180): return angle-360
+
+    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.01):
         if(angle!=0):
             if(duty_L==None): duty_L = -duty_R
-            if(angle < 0):
-                duty_R = -duty_R
-                duty_L = -duty_L
             self.geomag.get()
-            theta_relative = self.geomag.theta_relative
-            for i in range(5):
-                if(time_sleep>0):
-                    self.changeduty(duty_R, duty_L)
-                    time.sleep(time_sleep)
-                else:
-                    self.changeduty(-duty_R, -duty_L)
-                    time.sleep(-time_sleep)
+            theta_past = self.geomag.theta_relative
+            for i in range(3):
+                if(angle>0): self.changeduty(duty_R, duty_L)
+                else: self.changeduty(-duty_R, -duty_L)
+                time.sleep(abs(time_sleep_constant*angle))
                 self.changeduty(0, 0)
-                self.geomag.get()
-                change_angle = abs(self.geomag.theta_relative-theta_relative)
-                if(change_angle > angle*(100-tolerance_percent)/100 and change_angle < angle*(100+tolerance_percent)/100): break
-                else:
-                    time_sleep = (angle-change_angle)/angle*time_sleep
-                    if(time_sleep<0.1 and -0.1<time_sleep):
-                        print("limit of accuracy.")
-                        break
+                for j in range(2):
+                    self.geomag.get()
+                    theta_now = self.geomag.theta_relative
+                    change_angle = self.angle_difference(theta_past, theta_now)
+                    if(change_angle > angle-threshold_angle and change_angle < angle+threshold_angle): break
+                    else: time_sleep_constant = time_sleep_constant*angle/change_angle
+                    if(abs(time_sleep_constant*angle)<0.02):
+                        if(angle>0): self.changeduty(-duty_R, -duty_L)
+                        else: self.changeduty(duty_R, duty_L)
+                        time.sleep(0.02)
+                        self.changeduty(0, 0)
+                    else: break
             print("loop limit.")
         else: print("Error. angle is not defined.")
     
