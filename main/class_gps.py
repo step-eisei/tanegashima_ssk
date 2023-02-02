@@ -16,7 +16,7 @@ class Gps:
 
     def getgps(self):
         s = self.ser.read_all().decode("utf-8")
-        for x in s:
+        for x in reversed(s):
             self.gps.update(x)
         self.latitude = self.gps.latitude[0]
         self.longitude = self.gps.longitude[0]
