@@ -1,13 +1,15 @@
 import class_pressure
+import subthread
 import time
 
 class Land:
     
-    def __init__(self,get_pressure=class_pressure.Pressure(),sky=0.1, land=0.2): #地上気圧測定
+    def __init__(self,get_pressure=class_pressure.Pressure(),subthread=subthread.Subthread(),sky=0.1, land=0.2): #地上気圧測定
         self.sky=sky
         self.land=land
         self.i=0
         self.get_pressure=get_pressure
+        self.subthread=subthread
         sum_pressure=0.0
         while self.i<10:
             self.get_pressure.read()
@@ -41,13 +43,14 @@ class Land:
             if self.start_pressure-self.get_pressure.pressure < self.land: #閾値暫定
                 print(self.i)
                 self.i=self.i+1
-            else: 
+            else:
                 self.i=0 #やり直し
                 print("yet")
             time.sleep(0.5)
         print("land")
 
     def run(self):
+        self.subthread.phase=0
         self.sky_pressure()
         self.land_pressure()
 
