@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 import time
+import random
+import math
 import class_geomag
 # right = A, left = B
 
@@ -56,7 +58,7 @@ class Motor():
                     self.changeduty(duty_R*(i+1)/loop_duty, duty_L*(i+1)/loop_duty)
                     time.sleep(time_sleep)
             elif(tick_dutymax!=0):
-                loop_duty = int(max(abs(duty_R), abs(duty_L))/tick_dutymax)
+                loop_duty = math.ceil(max(abs(duty_R), abs(duty_L))/tick_dutymax)
                 for i in range(loop_duty):
                     self.changeduty(duty_R*(i+1)/loop_duty, duty_L*(i+1)/loop_duty)
                     time.sleep(time_sleep)
@@ -93,33 +95,23 @@ class Motor():
             print("loop limit.")
         else: print("Error. angle is not defined.")
     
-    def stack(self):
-         #-------前進,旋回によるスタック検知---------
+    def stack(self, duty_R=50, duty_L=50):
         while True:
-            duty=60
-
-            #前進
-            for i in range (10): 
-                duty_new = int(duty/10*(i+1))
-                self.motor.changeduty(duty_new, duty_new)
-                time.sleep(0.1)
-            
-            time.sleep(2)
-
-            #旋回
-            self.mag.get()
-            ang0 = self.mag.theta_absolute
-            #初期値
-
-            self.rotate(20)
-            self.mag.get()
-            ang1 = self.mag.theta_absolute
-
-            if (ang1-ang0)<=10: #動けてなかったら
-                print("stack")
-            else:
-                self.rotate(-20)
-                break
+            self.rotate(90, threshold_angle=20)
+            for i in range(random.randint(1, 3)):
+                self.forward(duty_R=random.randint(int(duty_R/2), duty_R), duty_L=random.randint(int(duty_L/2), duty_L), time_sleep=0.05, tick_dutymax=5)
+                time.sleep(1)
+                self.changeduty(0, 0)
+                time.sleep(0.5)
+            self.magnet.get()
+            theta_past = self.magnet.theta_relative
+            self.rotate(90, threshold_angle=90)
+            self.magnet.get()
+            theta_now = self.magnet.theta_absolute
+            if (self.angle_difference(theta_past, theta_now)<30): print("stack")
+            else: break
+            duty_R=-duty_R
+            duty_L=-duty_L
     
     def end(self):
         self.pwms["rightIN1"].stop()
