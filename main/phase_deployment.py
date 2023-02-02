@@ -128,6 +128,8 @@ class Deploy():
         self.mag.rads = [self.maxs[i] - self.mins[i] for i in range(3)]
         self.mag.aves = [self.maxs[i] + self.mins[i] for i in range(3)]
 
+        self.mag.calibrated = True
+
 def main():
     deploy_phase = Deploy()
     deploy_phase.run()
