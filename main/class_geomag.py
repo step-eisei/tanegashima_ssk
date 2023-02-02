@@ -16,6 +16,8 @@ import math
 class GeoMagnetic:
     
     def __init__(self, calibrated=False, rads=[1.0, 1.0, 1.0], aves=[0.0, 0.0, 0.0]):
+        self.theta_absolute=-1
+        self.theta_relative=-1
         self.i2c = board.I2C()  # uses board.SCL and board.SDA
         self.sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
 
