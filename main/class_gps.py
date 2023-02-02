@@ -6,6 +6,8 @@ import time
 
 class Gps:
     def __init__(self):
+        self.latitude = -1
+        self.longitude = -1
         self.gps = micropyGPS.MicropyGPS(9, 'dd') # MicroGPSオブジェクトを生成する。
                                                   # 引数はタイムゾーンの時差と出力フォーマット
         gpsthread = threading.Thread(target=self.rungps, args=()) # 上の関数を実行するスレッドを生成
@@ -22,21 +24,21 @@ class Gps:
                 continue
             for x in sentence: # 読んだ文字列を解析してGPSオブジェクトにデーターを追加、更新する
                 self.gps.update(x)
+            self.latitude = self.gps.latitude[0]
+            self.longitude = self.gps.longitude[0]
 
-    def getgps(self):
-        h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
-        #print('%2d:%02d:%04.1f' % (h, gps.timestamp[1], gps.timestamp[2]))
-        #print('緯度経度: %2.8f, %2.8f' % (gps.latitude[0], gps.longitude[0]))
-        self.latitude = self.gps.latitude[0]
-        self.longitude = self.gps.longitude[0]
-        #print('海抜: %f' % gps.altitude)
-        #print(gps.satellites_used)
-        #print('衛星番号: (仰角, 方位角, SN比)')
-        #for k, v in gps.satellite_data.items():
-        #    print('%d: %s' % (k, v))
-        #print('')
-        #print(gps_latitude)
-        #print(gps_longitude)
+    # def getgps(self):
+    #     h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
+    #     print('%2d:%02d:%04.1f' % (h, gps.timestamp[1], gps.timestamp[2]))
+    #     print('緯度経度: %2.8f, %2.8f' % (gps.latitude[0], gps.longitude[0]))
+    #     print('海抜: %f' % gps.altitude)
+    #     print(gps.satellites_used)
+    #     print('衛星番号: (仰角, 方位角, SN比)')
+    #     for k, v in gps.satellite_data.items():
+    #        print('%d: %s' % (k, v))
+    #     print('')
+    #     print(gps_latitude)
+    #     print(gps_longitude)
 
     """
     def getgps(self):
@@ -52,7 +54,7 @@ def main():
     while True:
         if gps.gps.clean_sentences > 20: # ちゃんとしたデータがある程度たまったら出力する
             start = time.time()
-            gps.getgps()
+            # gps.getgps()
             end = time.time()
             print(f"lati:{gps.latitude}, longi:{gps.longitude}, processTime:{end-start}")
             h = gps.gps.timestamp[0] if gps.gps.timestamp[0] < 24 else gps.gps.timestamp[0] - 24
