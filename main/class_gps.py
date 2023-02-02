@@ -22,7 +22,6 @@ class Gps:
         else: 
             for x in s:
                 self.gps.update(x)
-                print("updated")
         self.latitude = self.gps.latitude[0]
         self.longitude = self.gps.longitude[0]
     
