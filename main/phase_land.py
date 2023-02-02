@@ -3,7 +3,7 @@ import time
 
 class Land:
     
-    def __init__(self,get_pressure,sky=0.1, land=0.2): #地上気圧測定
+    def __init__(self,get_pressure=class_pressure.Pressure(),sky=0.1, land=0.2): #地上気圧測定
         self.sky=sky
         self.land=land
         self.i=0
@@ -52,8 +52,7 @@ class Land:
         self.land_pressure()
 
 def main(sky=0.1, land=0.01): #上空判定，地上判定の閾値
-    get_pressure=class_pressure.Pressure()
-    land_check=Land(get_pressure,sky, land) #land更新
+    land_check=Land(sky=sky, land=land) #land更新
     print("start")
     land_check.run()
 
