@@ -11,12 +11,12 @@ class Gps:
         #gpsthread = threading.Thread(target=self.rungps, args=()) # 上の関数を実行するスレッドを生成
         #gpsthread.daemon = True
         #gpsthread.start() # スレッドを起動
-        self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+        self.ser = serial.Serial('/dev/serial0', 9600)
         self.ser.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
 
     def getgps(self):
         s = self.ser.read_all().decode("utf-8")
-        print(s[-5:])
+        print(s)
         for x in s:
             self.gps.update(x)
         self.latitude = self.gps.latitude[0]
@@ -60,7 +60,7 @@ def main():
         print(f"lati:{gps.latitude}, longi:{gps.longitude}, processTime:{end-start}")
         h = gps.gps.timestamp[0] if gps.gps.timestamp[0] < 24 else gps.gps.timestamp[0] - 24
         print('%2d:%02d:%04.1f' % (h, gps.gps.timestamp[1], gps.gps.timestamp[2]))
-        time.sleep(30.0)
+        time.sleep(3.0)
 
 if __name__ == "__main__":
     main()
