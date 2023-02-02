@@ -15,8 +15,9 @@ class Gps:
         self.ser.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
 
     def getgps(self):
-        s = self.ser.read_all().decode("utf-8")
-        for x in reversed(s):
+        s = self.ser.read_all().decode("utf-8").split("\n")
+        print(s[-5:])
+        for x in s[-2]:
             self.gps.update(x)
         self.latitude = self.gps.latitude[0]
         self.longitude = self.gps.longitude[0]
