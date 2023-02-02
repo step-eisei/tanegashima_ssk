@@ -57,8 +57,8 @@ def main():
         gps.getgps()
         end = time.time()
         print(f"lati:{gps.latitude}, longi:{gps.longitude}, processTime:{end-start}")
-        h = gps.timestamp[0] if gps.timestamp[0] < 24 else gps.timestamp[0] - 24
-        print('%2d:%02d:%04.1f' % (h, gps.timestamp[1], gps.timestamp[2]))
+        h = gps.gps.timestamp[0] if gps.gps.timestamp[0] < 24 else gps.gps.timestamp[0] - 24
+        print('%2d:%02d:%04.1f' % (h, gps.gps.timestamp[1], gps.gps.timestamp[2]))
         time.sleep(3.0)
 
 if __name__ == "__main__":
