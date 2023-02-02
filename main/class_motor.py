@@ -1,13 +1,15 @@
 import RPi.GPIO as GPIO
 import time
+import class_geomag
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24):
+    def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24, geomag=class_geomag.Geomagnetic()):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
         self.leftIN2 = leftIN2
+        self.geomag = geomag
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
         GPIO.setup(rightIN1, GPIO.OUT)
@@ -46,6 +48,44 @@ class Motor():
             self.pwms["leftIN1"].ChangeDutyCycle(0)
             self.pwms["leftIN2"].ChangeDutyCycle(0)
             
+    def forward(self, duty_R, duty_L, time_sleep=0, time_all=0, tick_dutymax=0):
+        if(time_sleep!=0):
+            if(time_all!=0):
+                loop_duty = int(time_all/time_sleep)
+                for i in range(loop_duty):
+                    self.changeduty(duty_R*(i+1)/loop_duty, duty_L*(i+1)/loop_duty)
+                    time.sleep(time_sleep)
+            elif(tick_dutymax!=0):
+                loop_duty = int(max(abs(duty_R), abs(duty_L))/tick_dutymax)
+                for i in range(loop_duty):
+                    self.changeduty(duty_R*(i+1)/loop_duty, duty_L*(i+1)/loop_duty)
+                    time.sleep(time_sleep)
+            else: print("Error. Define time_all or tick_dutymax.")
+        else: print("Error. time_sleep is not defined.")
+    
+    def rotate(self, angle=0, duty_R=1, duty_L=None, time_sleep=0.3, tolerance_percent=10):
+        if(angle!=0):
+            if(duty_L==None): duty_L = -duty_R
+            self.geomag.get()
+            theta_relative = self.geomag.theta_relative
+            for i in range(5):
+                if(time_sleep>0):
+                    self.changeduty(duty_R, duty_L)
+                    time.sleep(time_sleep)
+                else:
+                    self.changeduty(-duty_R, -duty_L)
+                    time.sleep(-time_sleep)
+                self.changeduty(0, 0)
+                self.geomag.get()
+                change_angle = abs(self.geomag.theta_relative-theta_relative)
+                if(change_angle > angle*(100-tolerance_percent)/100 and change_angle < angle*(100+tolerance_percent)/100): break
+                else:
+                    time_sleep = (angle-change_angle)/angle*time_sleep
+                    if(time_sleep<0.1 and -0.1<time_sleep):
+                        print("limit of accuracy.")
+                        break
+            print("loop limit.")
+        else: print("Error. angle is not defined.")
 
     def end(self):
         self.pwms["rightIN1"].stop()
