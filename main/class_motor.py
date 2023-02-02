@@ -6,7 +6,7 @@ import class_geomag
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24, geomag=class_geomag.Geomagnetic()):
+    def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24, geomag=class_geomag.GeoMagnetic()):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
@@ -74,7 +74,7 @@ class Motor():
         if(angle!=0):
             if(duty_L==None): duty_L = -duty_R
             self.geomag.get()
-            theta_past = self.geomag.theta_relative
+            theta_past = self.geomag.theta_absolute
             for i in range(3):
                 if(angle>0): self.changeduty(duty_R, duty_L)
                 else: self.changeduty(-duty_R, -duty_L)
@@ -82,7 +82,7 @@ class Motor():
                 self.changeduty(0, 0)
                 for j in range(2):
                     self.geomag.get()
-                    theta_now = self.geomag.theta_relative
+                    theta_now = self.geomag.theta_absolute
                     change_angle = self.angle_difference(theta_past, theta_now)
                     if(change_angle > angle-threshold_angle and change_angle < angle+threshold_angle): break
                     else: time_sleep_constant = time_sleep_constant*angle/change_angle
@@ -103,11 +103,11 @@ class Motor():
                 time.sleep(1)
                 self.changeduty(0, 0)
                 time.sleep(0.5)
-            self.magnet.get()
-            theta_past = self.magnet.theta_relative
+            self.geomag.get()
+            theta_past = self.geomag.theta_absolute
             self.rotate(90, threshold_angle=90)
-            self.magnet.get()
-            theta_now = self.magnet.theta_absolute
+            self.geomag.get()
+            theta_now = self.geomag.theta_absolute
             if (self.angle_difference(theta_past, theta_now)<30): print("stack")
             else: break
             duty_R=-duty_R
