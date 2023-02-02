@@ -16,17 +16,11 @@ class Gps:
 
     def getgps(self):
         s = self.ser.read_all().decode("utf-8")
-        print(s)
-        #for s in sentences:
-        #if s[0] != '$':
-         #   pass
-        #else: 
         for x in s:
             self.gps.update(x)
         self.latitude = self.gps.latitude[0]
         self.longitude = self.gps.longitude[0]
-        h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
-        print('%2d:%02d:%04.1f' % (h, self.gps.timestamp[1], self.gps.timestamp[2]))
+        
     
     """サブスレッド用
     def rungps(self): # GPSモジュールを読み、GPSオブジェクトを更新する
@@ -63,6 +57,8 @@ def main():
         gps.getgps()
         end = time.time()
         print(f"lati:{gps.latitude}, longi:{gps.longitude}, processTime:{end-start}")
+        h = gps.timestamp[0] if gps.timestamp[0] < 24 else gps.timestamp[0] - 24
+        print('%2d:%02d:%04.1f' % (h, gps.timestamp[1], gps.timestamp[2]))
         time.sleep(3.0)
 
 if __name__ == "__main__":
