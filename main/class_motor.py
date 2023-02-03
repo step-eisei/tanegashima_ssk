@@ -85,14 +85,16 @@ class Motor():
                     self.geomag.get()
                     theta_now = self.geomag.theta_absolute
                     change_angle = self.angle_difference(theta_past, theta_now)
-                    print(theta_past, theta_now)
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
+                    elif(change_angle=0): self.stack()
                     else: time_sleep_constant = time_sleep_constant*angle/change_angle
                     if(abs(time_sleep_constant*angle)<0.02):
                         if(angle>0): self.changeduty(-duty_R, -duty_L)
                         else: self.changeduty(duty_R, duty_L)
                         time.sleep(0.02)
                         self.changeduty(0, 0)
+                    elif(abs(time_sleep_constant*angle)>3):
+                        time_sleep_constant = 3/angle"
                     else: break
             print("loop limit.")
         else: print("Error. angle is not defined.")
