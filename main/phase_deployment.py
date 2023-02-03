@@ -1,4 +1,5 @@
-
+import datetime
+import csv
 import time
 import class_motor
 import class_nicrom
@@ -81,7 +82,15 @@ class Deploy():
             self.mag.get()
             self.mag_list.append((self.mag.x, self.mag.y, self.mag.z))
             time.sleep(0.05)
-        
+        # csv save
+        DIFF_JST_FROM_UTC = 9
+        jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
+        self.recordname = 'mag/mag_' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
+        with open(self.recordname, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["magx", "magy", "magz"])
+            writer.writerows(self.mag_list)
+
         magxs = [self.mag_list[i][0] for i in range(len(self.mag_list))]
         magys = [self.mag_list[i][1] for i in range(len(self.mag_list))]
         magzs = [self.mag_list[i][2] for i in range(len(self.mag_list))]
