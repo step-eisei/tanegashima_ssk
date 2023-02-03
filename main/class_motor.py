@@ -167,6 +167,7 @@ def main():
         time.sleep(t)
         print("reverse fin.")
         
+        motor.rotate(angle=90)
         # モータ初期化
         motor.end()
         print("finish")

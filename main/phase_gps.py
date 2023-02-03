@@ -54,6 +54,7 @@ class Gps_phase():
                         duty_R_max = int(duty_R_max*distance/moved)
                         duty_L_max = int(duty_L_max*distance/moved)
 #課題
+                    #角度
                     self.motor.changeduty(30-theta_relative/6, 30+theta_relative/6)#モーターのDuty比を変更
                 time.sleep(1)#1秒走る
                 first = False
