@@ -69,6 +69,7 @@ class Motor():
         angle = to_angle-from_angle
         if(angle<-180): return angle+360
         elif(angle>180): return angle-360
+        return angle
 
     def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.01):
         if(angle!=0):
