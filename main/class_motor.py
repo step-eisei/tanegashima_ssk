@@ -94,7 +94,7 @@ class Motor():
                         time.sleep(0.02)
                         self.changeduty(0, 0)
                     elif(abs(time_sleep_constant*angle)>3):
-                        time_sleep_constant = 3/angle"
+                        time_sleep_constant = 3/angle
                     else: break
             print("loop limit.")
         else: print("Error. angle is not defined.")
