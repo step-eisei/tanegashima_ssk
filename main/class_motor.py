@@ -85,7 +85,6 @@ class Motor():
                     self.geomag.get()
                     theta_now = self.geomag.theta_absolute
                     change_angle = self.angle_difference(theta_past, theta_now)
-                    print(theta_past, theta_now)
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
                     else: time_sleep_constant = time_sleep_constant*angle/change_angle
                     if(abs(time_sleep_constant*angle)<0.02):
