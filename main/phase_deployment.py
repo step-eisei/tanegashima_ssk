@@ -4,22 +4,20 @@ import class_motor
 import class_nicrom
 import class_distance
 import class_geomag
+import subthread
 
-def percentpick(listdata, p):
-    n = int(len(listdata) *p/100)
-    listdata = sorted(listdata) # 昇順
-    min = listdata[n-1]
-    max = listdata[len(listdata)-n]
-    return max, min
+
 
 class Deploy():
-    def __init__(self, motor=class_motor.Motor(), nicrom=class_nicrom.Nicrom(), dist_sens=class_distance.Distance(), mag=class_geomag.GeoMagnetic()):
+    def __init__(self, motor=class_motor.Motor(), nicrom=class_nicrom.Nicrom(), dist_sens=class_distance.Distance(), mag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
         self.motor = motor
         self.nicrom = nicrom
         self.dist_sens = dist_sens
         self.mag = mag
+        self.subthread = subthread
     
-    def run(self):
+    def run(self, time_heat=10, duty=60, duty_calibrate=5, percent=5):
+        self.subthread.phase = 1
         opend = False #距離センサでカプセルが取れたか確認
         moved = False #その後その場で回転して動けているか
         #最初は閉まってるかつ止まってる
@@ -32,7 +30,7 @@ class Deploy():
             #カメラによる展開
 
             if opend == False:
-                self.nicrom.heat(t=10)
+                self.nicrom.heat(t=time_heat)
                 #開いてない⇒再加熱
 
             if opend == True:
@@ -40,62 +38,58 @@ class Deploy():
                 ang0 = self.mag.theta_absolute
                 #初期値
 
-                self.rotate(10)
+                self.motor.rotate(30, threshold_angle=30)
                 self.mag.get()
                 ang1 = self.mag.theta_absolute
                 #移動後の位置取得
 
-                if (ang1 - ang0) >= 5: #動けているか判定
+                if (ang1 - ang0) >= 10: #動けているか判定
                     moved == True
                 else:
                     opend == False
 
-                self.rotate(-10)
+                self.motor.rotate(-30, threshold_angle=30)
         self.nicrom.end()
         #両方Trueでループ終了
 
         ang0=0.0 #初期化
         ang1=0.0
 
-        self.motor.stack()
-        
-        self.calibrate()
+        #-------前進,旋回によるスタック検知---------
+
+        #前進
+        self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
+        time.sleep(2)
+        self.motor.changeduty(0, 0)
+        # この時点で地磁気データが使えないので，スタック検知が難しいのが課題
+        self.calibrate(duty_calibrate, p=percent)
         print("deployment phase finish")
-    
-    """
-    def rotate(self, angle):
-        if angle > 0:
-            duty = 20
-        else:
-            duty = -20
-        t = abs(duty) / 765 * angle
 
-        self.motor.changeduty(duty, -duty)
-        time.sleep(t)
-        self.motor.changeduty(0,0)
-    """
-    def calibrate(self):
+    def percentpick(self, listdata, p):
+        n = int(len(listdata) *p/100)
+        listdata = sorted(listdata) # 昇順
+        min = listdata[n-1]
+        max = listdata[len(listdata)-n]
+        return max, min
+
+    def calibrate(self, duty=5, p=5):
         duty = 20
-        t = duty/765
-        mag_list = []
+        self.mag_list = []
 
         self.motor.changeduty(duty, -duty)
-        total = 0      
-        while total < t * 365:
+        for i in range(300):
             self.mag.get()
-            mag_list.append((self.mag.x, self.mag.y, self.mag.z))
-            time.sleep(t)
-            total += t
+            self.mag_list.append((self.mag.x, self.mag.y, self.mag.z))
+            time.sleep(0.05)
         
-        magxs = [self.maglist[i][0] for i in range(len(self.maglist))]
-        magys = [self.maglist[i][1] for i in range(len(self.maglist))]
-        magzs = [self.maglist[i][2] for i in range(len(self.maglist))]
+        magxs = [self.mag_list[i][0] for i in range(len(self.mag_list))]
+        magys = [self.mag_list[i][1] for i in range(len(self.mag_list))]
+        magzs = [self.mag_list[i][2] for i in range(len(self.mag_list))]
 
         # 最大値，最小値の算出
-        p = 5 # 上位何%をpickするか
-        Xmax, Xmin = percentpick(magxs)
-        Ymax, Ymin = percentpick(magys)
-        Zmax, Zmin = percentpick(magzs)
+        Xmax, Xmin = self.percentpick(magxs, p)
+        Ymax, Ymin = self.percentpick(magys, p)
+        Zmax, Zmin = self.percentpick(magzs, p)
 
         self.maxs = [Xmax, Ymax, Zmax]
         self.mins = [Xmin, Ymin, Zmin]
