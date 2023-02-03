@@ -6,10 +6,17 @@ import class_gps
 import class_motor
 import class_distance
 import phase_deployment
+import subthread
 import time
 
 class Phase_camera:
-    def __init__(self, yolo=class_yolo.Yolo(), geomag=class_geomag.Geomagnetic(), gps=class_gps.Gps(), motor=class_motor.Motor()):
+    def __init__(self, yolo=class_yolo.Yolo(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), motor=class_motor.Motor(), distance=class_distance.Distance(), subthread=subthread.Subthread()):
+        self.yolo = yolo
+        self.geomag = geomag
+        self.gps = gps
+        self.motor = motor
+        self.distance = distance
+        self.subthread = subthread
         pass
     
     # calculate angle from photo
@@ -29,13 +36,14 @@ class Phase_camera:
         pass
     
     def run(self):
+        self.subthread.phase = 3
         i = 0
         bool_mag = True
         bool_takephoto = True
         bool_redcone = True
         while(bool_mag):
             # get geomag
-            geomag.get()
+            self.geomag.get()
             while(bool_takephoto):
                 # take a photo
                 --

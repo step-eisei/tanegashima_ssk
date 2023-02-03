@@ -2,15 +2,18 @@
 import class_distance
 import class_motor
 import class_geomag
+import subthread
 
 class Distance_phase:
     
-    def __init__(self, distance=class_distance.Distance(17, 27), motor=class_motor.Motor(pwm=200, 18, 23, 13, 24), geomag=class_geomag.Geomagnetic()):
+    def __init__(self, distance=class_distance.Distance(17, 27), motor=class_motor.Motor(pwm=200, 18, 23, 13, 24), geomag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
         self.distance = distance
         self.motor = motor
         self.geomag = geomag
+        self.subthread = subthread
     
     def run(self):
+        self.subthread.phase = 4
         self.motor.duty = 10 # 低
         # goal角度取得
         i = 0

@@ -20,6 +20,7 @@ class Gps_phase():
         self.x, self.y = self.calc_xy(self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi)
 
     def run(self, duty_R_max=50, duty_L_max=50):
+        self.subthread.phase = 2
         first = True
         duty_R = duty_R_max
         duty_L = duty_L_max

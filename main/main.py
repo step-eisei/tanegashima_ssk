@@ -24,18 +24,18 @@ def main():
     # class define
     pressure = class_pressure.Pressure()
     nicrom = class_nicrom.Nicrom(pin=20)
-    motor = class_motor.Motor(pwm=200, 18, 23, 13, 24)
+    geomag = class_geomag.GeoMagnetic(calibrated=False)
+    motor = class_motor.Motor(pwm=200, 18, 23, 13, 24, geomag=geomag)
     distance = class_distance.Distance(17, 27)
     gps = class_gps.Gps()
-    geomag = class_geomag.GeoMagnetic(calibrated=False)
     yolo = class_yolo()
     # phase define
-    land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure)
-    deployment = phase_deployment.Deploy(motor, nicrom, distance, geomag)
-    gps_phase = phase_gps.Gps_phase(motor, gps, geomag)
-    camera = phase_camera.Phase_camera(yolo, geomag, gps, motor)
-    distance_phase = phase_distance.Distance_phase(distance, motor, geomag)
     subthrea = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance)
+    land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure, subthread=subthrea)
+    deployment = phase_deployment.Deploy(motor, nicrom, distance, geomag, subthrea)
+    gps_phase = phase_gps.Gps_phase(motor, gps, geomag, subthrea)
+    camera = phase_camera.Phase_camera(yolo, geomag, gps, motor, distance, subthrea)
+    distance_phase = phase_distance.Distance_phase(distance, motor, geomag, subthrea)
     # main code
     try:
         goal = False

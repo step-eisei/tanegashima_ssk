@@ -7,8 +7,6 @@ import class_distance
 import class_geomag
 import subthread
 
-
-
 class Deploy():
     def __init__(self, motor=class_motor.Motor(), nicrom=class_nicrom.Nicrom(), dist_sens=class_distance.Distance(), mag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
         self.motor = motor
