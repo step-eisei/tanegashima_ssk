@@ -27,15 +27,15 @@ def main():
     motor = class_motor.Motor(pwm=200, 18, 23, 13, 24)
     distance = class_distance.Distance(17, 27)
     gps = class_gps.Gps()
-    geomag = class_geomag.Geomagnetic(calibrated=False)
+    geomag = class_geomag.GeoMagnetic(calibrated=False)
     yolo = class_yolo()
     # phase define
     land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure)
     deployment = phase_deployment.Deploy(motor, nicrom, distance, geomag)
     gps_phase = phase_gps.Gps_phase(motor, gps, geomag)
-    camera = phase_camera.Camera(yolo, geomag, gps, motor)
-    distance_phase = phase_distance(distance, motor, geomag)
-    subthread = subthread.Subthread()
+    camera = phase_camera.Phase_camera(yolo, geomag, gps, motor)
+    distance_phase = phase_distance.Distance_phase(distance, motor, geomag)
+    subthrea = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance)
     # main code
     try:
         goal = False
@@ -47,8 +47,7 @@ def main():
             if(return_camera == 0):
                 return_distance = distance_phase.run()
                 if(return_distance == 0): goal = True
-                elif(return_distance == -1): print("goto gps phase from distance.")
-                elif(return_distance == -2): print("goto camera phase.")
+                elif(return_distance == -1): print("goto camera phase.")
                 else: print("distance return error.")
             elif(return_camera == -1): print("goto gps phase from camera.")
             else: print("camera return error.")
