@@ -52,7 +52,9 @@ class Land:
     def run(self):
         self.subthread.phase=0
         self.sky_pressure()
+        self.subthread.record(comment="sky")
         self.land_pressure()
+        self.subthread.record(comment="land")
 
 def main(sky=0.1, land=0.01): #上空判定，地上判定の閾値
     land_check=Land(sky=sky, land=land) #land更新

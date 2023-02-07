@@ -6,12 +6,14 @@ import class_geomag
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=50, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24, geomag=class_geomag.GeoMagnetic()):
+    def __init__(self, pwm=100, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24, geomag=class_geomag.GeoMagnetic()):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
         self.leftIN2 = leftIN2
         self.geomag = geomag
+        self.duty_R_now = -1
+        self.duty_L_now = -1
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
         GPIO.setup(rightIN1, GPIO.OUT)
@@ -49,18 +51,20 @@ class Motor():
         else:
             self.pwms["leftIN1"].ChangeDutyCycle(0)
             self.pwms["leftIN2"].ChangeDutyCycle(0)
+        self.duty_R_now = duty_R
+        self.duty_L_now = duty_L
             
     def forward(self, duty_R, duty_L, time_sleep=0, time_all=0, tick_dutymax=0):
         if(time_sleep!=0):
             if(time_all!=0):
                 loop_duty = int(time_all/time_sleep)
                 for i in range(loop_duty):
-                    self.changeduty(duty_R*(i+1)/loop_duty, duty_L*(i+1)/loop_duty)
+                    self.changeduty((duty_R-self.duty_R_now)*(i+1)/loop_duty+self.duty_R_now, (duty_L-self.duty_L_now)*(i+1)/loop_duty+self.duty_L_now)
                     time.sleep(time_sleep)
             elif(tick_dutymax!=0):
-                loop_duty = math.ceil(max(abs(duty_R), abs(duty_L))/tick_dutymax)
+                loop_duty = math.ceil(max(abs(duty_R-self.duty_R_now), abs(duty_L-self.duty_L_now))/tick_dutymax)
                 for i in range(loop_duty):
-                    self.changeduty(duty_R*(i+1)/loop_duty, duty_L*(i+1)/loop_duty)
+                    self.changeduty((duty_R-self.duty_R_now)*(i+1)/loop_duty+self.duty_R_now, (duty_L-self.duty_L_now)*(i+1)/loop_duty+self.duty_L_now)
                     time.sleep(time_sleep)
             else: print("Error. Define time_all or tick_dutymax.")
         else: print("Error. time_sleep is not defined.")

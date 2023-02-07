@@ -31,13 +31,12 @@ class Deploy():
             if opend == False:
                 self.nicrom.heat(t=time_heat)
                 #開いてない⇒再加熱
-
-            if opend == True:
+            else:
                 self.mag.get()
                 ang0 = self.mag.theta_absolute
                 #初期値
 
-                self.motor.rotate(30, threshold_angle=30)
+                self.motor.rotate(45, threshold_angle=45)
                 self.mag.get()
                 ang1 = self.mag.theta_absolute
                 #移動後の位置取得
@@ -46,9 +45,8 @@ class Deploy():
                     moved == True
                 else:
                     opend == False
-
-                self.motor.rotate(-30, threshold_angle=30)
         self.nicrom.end()
+        self.subthread.record(comment="open")
         #両方Trueでループ終了
 
         ang0=0.0 #初期化
@@ -62,6 +60,7 @@ class Deploy():
         self.motor.changeduty(0, 0)
         # この時点で地磁気データが使えないので，スタック検知が難しいのが課題
         self.calibrate(duty_calibrate, p=percent)
+        self.subthread.record(comment="deployment")
         print("deployment phase finish")
 
     def percentpick(self, listdata, p):

@@ -12,7 +12,7 @@ from utils.general import check_img_size, non_max_suppression, \
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, time_synchronized, TracedModel
 
-class ConeDetect:
+class CornDetect:
     def __init__(self, source='inference/images', weights='weights/yolov7.pt', conf_thres=0.75, iou_thres=0.45,
            img_size=640, trace=True, project='runs/detect', name='exp',
            device='cpu', augment=False, agnostic_nms=False, classes=None,
@@ -119,6 +119,10 @@ class ConeDetect:
         image = self.take_photo()
         return self.estimate(image)
 
-test = ConeDetect()
-for i in range(5):
-    test.image_process()
+def main():
+    test = CornDetect()
+    for i in range(5):
+        test.image_process()
+
+if __name__ == "__main__":
+    main()

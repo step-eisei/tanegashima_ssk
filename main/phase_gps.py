@@ -9,68 +9,80 @@ import subthread
 
 class Gps_phase():
     def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
-        # goal座標取得プログラムより取得
-        self.goal_lati = -1
+        self.goal_lati = -1# goal座標取得プログラムより取得
         self.goal_longi = -1
         self.duty_constant=0.5
         self.motor = motor
         self.gps = gps
         self.mag = mag
         self.subthread = subthread
-        self.x, self.y = self.calc_xy(self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi)
+        self.renew_data()
 
-    def run(self, duty_R_max=50, duty_L_max=50):
+    def run(self, duty_max=50):
         self.subthread.phase = 2
         first = True
-        duty_R = duty_R_max
-        duty_L = duty_L_max
+        duty_R = duty_max
+        duty_L = duty_max
         while True:
-            lati = self.gps.latitude
-            longi = self.gps.longitude
             x0, y0 = (self.x, self.y)#前回位置
-            theta_relative0 = theta_relative
-            self.x, self.y = self.calc_xy(lati, longi, self.goal_lati, self.goal_longi)#ゴールを中心とした現在位置
-            distance = math.sqrt(self.x**2+self.y**2)
-            if(distance<3): return 0
-
+            if(not first): theta_past = theta_now
+            self.renew_data()
+            if(self.distance<3): # goto camera phase
+                self.subthread.record(comment="gps")
+                return 0
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
-            if not(first) and moved <= 0.03:
+            theta_now = self.theta_relative
+            if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
+            elif moved <= 0.03:
+                # 動けていない場合
                 self.motor.changeduty(0, 0)
-                self.mag.get()
-                theta_past = self.mag.theta_absolute
+                self.renew_data(gps=False)
+                theta_past = self.theta_relative
                 self.motor.rotate(90, threshold_angle=90)
-                self.mag.get()
-                theta_now = self.mag.theta_absolute
+                self.renew_data(gps=False)
+                theta_now = self.theta_relative
                 if (self.motor.angle_difference(theta_past, theta_now)<30): self.motor.stack() #動いてなければスタック処理
                 first = True
+                self.subthread.record(comment="notmove")
             else:
-                self.mag.get()
-                theta_absolute = self.mag.theta_absolute#地磁気から得た角度
-                theta_relative = self.angle(self.x, self.y, theta_absolute) #ゴールと比べた時の角度
-                if(first):
-                    self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
+                if(self.distance < moved): duty_max = int(duty_max*self.distance/moved)
+                #角度変化に応じたduty比調整
+                theta_delta = theta_past - theta_now
+                if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
+                    if(theta_delta+20<theta_now): duty_L-=1
+                    elif(theta_delta+20>theta_now): duty_R-=1
                 else:
-                    if(distance < moved):
-                        duty_R_max = int(duty_R_max*distance/moved)
-                        duty_L_max = int(duty_L_max*distance/moved)
-#課題
-                    #角度
-                    self.motor.changeduty(30-theta_relative/6, 30+theta_relative/6)#モーターのDuty比を変更
-                time.sleep(1)#1秒走る
-                first = False
-    
-    # ゴール角度，機体の角度から機体の回転角度を求める関数
-    def angle(self, x_now, y_now, theta_absolute):
+                    if(theta_delta<theta_now): duty_L-=1
+                    else: duty_R-=1
+                duty_difference = duty_max-max(duty_R, duty_L)
+                duty_R += duty_difference
+                duty_L += duty_difference
+                #モーターのDuty比を変更
+                self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
+                self.subthread.record(comment="dutychange")
+            time.sleep(1)#1秒走る
+            first = False
+
+    # gps, magを取得して更新するメソッド
+    def renew_data(self, gps=True, mag=True):
+        if(gps):
+            self.calc_xy()
+            self.distance = math.sqrt(self.x**2+self.y**2)
+        if(mag):
+            self.mag.get()
+            self.angle()
+
+    # ゴール角度，機体の角度から機体の回転角度を求めるメソッド
+    def angle(self):
         # ゴール角度算出
-        theta_gps = math.atan2(y_now, x_now) * 180/math.pi
+        theta_gps = math.atan2(self.y, self.x) * 180/math.pi
         # 機体正面を0として，左を正，右を負とした変数(-180~180)を作成
-        theta_relative = theta_gps + theta_absolute + 90
-        if(theta_relative > 180): theta_relative -= 360
-        if(theta_relative < -180): theta_relative += 360
-        return theta_relative
+        self.theta_relative = theta_gps + self.mag.theta_absolute + 90
+        if(self.theta_relative > 180): self.theta_relative -= 360
+        if(self.theta_relative < -180): self.theta_relative += 360
 
     # gpsからゴール基準で自己位置を求める関数(国土地理院より)
-    def calc_xy(self, gps_latitude, gps_longitude, goal_latitude, goal_longitude):
+    def calc_xy(self):
         
         """ 緯度経度を平面直角座標に変換する
         - input:
@@ -81,10 +93,10 @@ class Gps_phase():
             y: 変換後の平面直角座標[m]
         """
         # 緯度経度・平面直角座標系原点をラジアンに直す
-        phi_rad = np.deg2rad(gps_latitude)
-        lambda_rad = np.deg2rad(gps_longitude)
-        phi0_rad = np.deg2rad(goal_latitude)
-        lambda0_rad = np.deg2rad(goal_longitude)
+        phi_rad = np.deg2rad(self.gps.latitude)
+        lambda_rad = np.deg2rad(self.gps.longitude)
+        phi0_rad = np.deg2rad(self.goal_lati)
+        lambda0_rad = np.deg2rad(self.goal_longi)
 
         # 補助関数
         def A_array(n):
@@ -142,7 +154,8 @@ class Gps_phase():
                                                         np.sinh(2*eta2*np.arange(1,6)))))) # [m]
         
         # return
-        return (Y, X) # [m]，(x_now, y_now)で，軸が反転している．
+        self.x = Y
+        self.y = X # [m]，(x_now, y_now)で，軸が反転している．
 
 def main():
     gps_phase = Gps_phase()

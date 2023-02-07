@@ -30,7 +30,7 @@ def main():
     gps = class_gps.Gps()
     yolo = class_yolo()
     # phase define
-    subthrea = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance)
+    subthrea = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance, motor=motor)
     land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure, subthread=subthrea)
     deployment = phase_deployment.Deploy(motor, nicrom, distance, geomag, subthrea)
     gps_phase = phase_gps.Gps_phase(motor, gps, geomag, subthrea)
@@ -42,7 +42,7 @@ def main():
         land.run()
         deployment.run()
         while True:
-            gps_phase.run()
+            gps_phase.run(50)
             return_camera = camera.run()
             if(return_camera == 0):
                 return_distance = distance_phase.run()
