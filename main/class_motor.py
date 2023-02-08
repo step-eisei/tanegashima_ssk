@@ -16,10 +16,10 @@ class Motor():
         self.duty_L_now = -1
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
-        GPIO.setup(rightIN1, GPIO.OUT)
-        GPIO.setup(rightIN2, GPIO.OUT)
-        GPIO.setup(leftIN1, GPIO.OUT)
-        GPIO.setup(leftIN2, GPIO.OUT)
+        GPIO.setup(self.rightIN1, GPIO.OUT)
+        GPIO.setup(self.rightIN2, GPIO.OUT)
+        GPIO.setup(self.leftIN1, GPIO.OUT)
+        GPIO.setup(self.leftIN2, GPIO.OUT)
         self.pwms = {}
         self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
         self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
