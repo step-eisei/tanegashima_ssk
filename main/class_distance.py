@@ -6,7 +6,7 @@ import numpy as np
 
 class Distance:
     
-    def __init__(self,TRIG=17,ECHO=27):
+    def __init__(self,TRIG=9,ECHO=11):
         self.TRIG = TRIG
         self.ECHO = ECHO
         pass
@@ -68,7 +68,7 @@ class Distance:
 def main():
     try:
         while(True):
-            distance = Distance(17,27)
+            distance = Distance()
             distance.reading()
             print(distance.distance)
             time.sleep(1)

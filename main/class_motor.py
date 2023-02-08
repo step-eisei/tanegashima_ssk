@@ -6,7 +6,7 @@ import class_geomag
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=18, rightIN2=23, leftIN1=13, leftIN2=24, geomag=class_geomag.GeoMagnetic()):
+    def __init__(self, pwm=100, rightIN1=5, rightIN2=6, leftIN1=19, leftIN2=26, geomag=class_geomag.GeoMagnetic()):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
