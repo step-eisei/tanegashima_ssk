@@ -70,22 +70,24 @@ def main():
     while t <= 5:
         t += duration
         time.sleep(duration)
-        
-    t = 0
-    while t <= 60:
-        #mag.addlist()
-        maglist.append(mag.get())
-        print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
-        print('')
-        
-        t += duration
-        time.sleep(duration)
     
-    #mag.calibrate
-        
-    with open('lsm303.csv', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(maglist)
+    try:
+        t = 0
+        while t <= 60:
+            #mag.addlist()
+            maglist.append(mag.get())
+            print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
+            print('')
+            t += duration
+            time.sleep(duration)
+        with open('lsm303.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerows(maglist)
+
+    except KeyboardInterrupt:
+        with open('lsm303.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerows(maglist)
 
 if __name__ == "__main__":
     main()
