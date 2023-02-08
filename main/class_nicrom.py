@@ -18,7 +18,7 @@ class Nicrom():
         GPIO.cleanup()
 
 def main():
-    nicrom = Nicrom(pin=22)
+    nicrom = Nicrom()
 
     try:
         print("start")
