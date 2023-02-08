@@ -75,7 +75,8 @@ def main():
         t = 0
         while t <= 60:
             #mag.addlist()
-            maglist.append(mag.get())
+            mag.get()
+            maglist.append([mag.x, mag.y, mag.z])
             print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
             print('')
             t += duration
