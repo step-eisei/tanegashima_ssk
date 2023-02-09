@@ -36,9 +36,6 @@ class CornDetect:
         self.nosave = nosave
         self.save_img = save_img
 
-        # Camera
-        self.camera = cv2.VideoCapture(0)
-
         # Initialize
         self.device = select_device(device)
 
@@ -54,10 +51,12 @@ class CornDetect:
         self.colors = [[random.randint(0, 255) for _ in range(3)] for _ in self.names]
 
     def take_photo(self):
-        success, image = self.camera.read()
+		camera = cv2.VideoCapture(0)
+        success, image = camera.read()
         if not success:
             print("Failed 0n0")
             return -1
+        camera.release()
         return image
 
     def preprocess_image(self, image):
