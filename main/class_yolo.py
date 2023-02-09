@@ -51,7 +51,7 @@ class CornDetect:
         self.colors = [[random.randint(0, 255) for _ in range(3)] for _ in self.names]
 
     def take_photo(self):
-		camera = cv2.VideoCapture(0)
+        camera = cv2.VideoCapture(0)
         success, image = camera.read()
         if not success:
             print("Failed 0n0")
