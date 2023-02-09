@@ -185,4 +185,5 @@ def main():
         print("Interrupted")
 
 if __name__ == "__main__":
+    print("main")
     main()
