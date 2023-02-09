@@ -135,7 +135,7 @@ class Motor():
 
 def main():
     t = 3
-    duty = 60
+    duty = 30
     try:
         print("setup")
         motor = Motor()
