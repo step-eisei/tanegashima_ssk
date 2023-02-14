@@ -146,6 +146,7 @@ def main():
         
         print("stop")
         motor.forward(int(duty/2), int(duty/2), 0.05, tick_dutymax=5)
+        time.sleep(t)
         motor.changeduty(0, 0)
         time.sleep(t)
         
