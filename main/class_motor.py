@@ -135,47 +135,29 @@ class Motor():
 
 def main():
     t = 3
-    duty = 60
+    duty = 30
     try:
         print("setup")
         motor = Motor()
 
         print("forward start")
-        for i in range(10):
-            duty_new = int(duty/10*(i+1))
-            motor.changeduty(duty_new, duty_new)
-            time.sleep(0.1)
+        motor.forward(30, 30, 0.05, tick_dutymax=5)
         time.sleep(t)
         
         print("stop")
-        """
-        for i in range(10):
-            duty_new = int(duty*(1-(i+1)/10))
-            motor.changeduty(duty_new, duty_new)
-            time.sleep(0.1)
-        """
         motor.changeduty(0, 0)
         time.sleep(t)
         
         print("forward fin.\nreverse start")
-        for i in range(10):
-            duty_new = int(-duty/10*(i+1))
-            motor.changeduty(duty_new, duty_new)
-            time.sleep(0.1)
+        motor.forward(-30, -30, 0.05, tick_dutymax=5)
         time.sleep(t)
         
         print("stop")
-        """
-        for i in range(10):
-            duty_new = int(-duty*(1-(i+1)/10))
-            motor.changeduty(duty_new, duty_new)
-            time.sleep(0.1)
-        """
         motor.changeduty(0, 0)
         time.sleep(t)
         print("reverse fin.")
         
-        motor.rotate(angle=90)
+        # motor.rotate(angle=90)
         # モータ初期化
         motor.end()
         print("finish")
