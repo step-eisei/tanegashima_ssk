@@ -141,7 +141,7 @@ def main():
         motor = Motor()
 
         print("forward start")
-        motor.forward(30, 30, 0.05, tick_dutymax=5)
+        motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(t)
         
         print("stop")
@@ -149,7 +149,7 @@ def main():
         time.sleep(t)
         
         print("forward fin.\nreverse start")
-        motor.forward(-30, -30, 0.05, tick_dutymax=5)
+        motor.forward(-duty, -duty, 0.05, tick_dutymax=5)
         time.sleep(t)
         
         print("stop")
