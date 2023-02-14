@@ -144,11 +144,10 @@ def main():
         motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(t)
         
-        print("duty20")
-        motor.forward(20, 20, 0.05, tick_dutymax=5)
-        time.sleep(t)
         print("duty10")
         motor.forward(10, 10, 0.05, tick_dutymax=5)
+        print("duty5")
+        motor.forward(5, 5, 0.05, tick_dutymax=5)
         time.sleep(t)
         print("stop")
         motor.changeduty(0, 0)
