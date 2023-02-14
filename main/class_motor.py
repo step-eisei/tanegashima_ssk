@@ -144,8 +144,6 @@ def main():
         motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(t)
         
-        print("duty10")
-        motor.forward(10, 10, 0.05, tick_dutymax=5)
         print("duty5")
         motor.forward(5, 5, 0.05, tick_dutymax=5)
         time.sleep(t)
@@ -153,14 +151,14 @@ def main():
         motor.changeduty(0, 0)
         time.sleep(t)
         
-        print("forward fin.\nreverse start")
-        motor.forward(-duty, -duty, 0.05, tick_dutymax=5)
-        time.sleep(t)
+        # print("forward fin.\nreverse start")
+        # motor.forward(-duty, -duty, 0.05, tick_dutymax=5)
+        # time.sleep(t)
         
-        print("stop")
-        motor.changeduty(0, 0)
-        time.sleep(t)
-        print("reverse fin.")
+        # print("stop")
+        # motor.changeduty(0, 0)
+        # time.sleep(t)
+        # print("reverse fin.")
         
         # motor.rotate(angle=90)
         # モータ初期化
