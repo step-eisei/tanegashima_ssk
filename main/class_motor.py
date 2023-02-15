@@ -53,15 +53,26 @@ class Motor():
             self.pwms["leftIN2"].ChangeDutyCycle(0)
         self.duty_R_now = duty_R
         self.duty_L_now = duty_L
-            
+
+    def currentblock(self, duty_R, duty_L):
+        # prevent Overcurrent
+        if(duty_R != 0 and self.duty_R_now == 0): duty_R = 1
+        else: duty_R = self.duty_R_now
+        if(duty_L != 0 and self.duty_L_now == 0): duty_L = 1
+        else: duty_L = self.duty_L_now
+        self.changeduty(duty_R, duty_L)
+        time.sleep(1)
+
     def forward(self, duty_R, duty_L, time_sleep=0, time_all=0, tick_dutymax=0):
         if(time_sleep!=0):
             if(time_all!=0):
+                self.currentblock(duty_R, duty_L)
                 loop_duty = int(time_all/time_sleep)
                 for i in range(loop_duty):
                     self.changeduty((duty_R-self.duty_R_now)*(i+1)/loop_duty+self.duty_R_now, (duty_L-self.duty_L_now)*(i+1)/loop_duty+self.duty_L_now)
                     time.sleep(time_sleep)
             elif(tick_dutymax!=0):
+                self.currentblock(duty_R, duty_L)
                 loop_duty = math.ceil(max(abs(duty_R-self.duty_R_now), abs(duty_L-self.duty_L_now))/tick_dutymax)
                 for i in range(loop_duty):
                     self.changeduty((duty_R-self.duty_R_now)*(i+1)/loop_duty+self.duty_R_now, (duty_L-self.duty_L_now)*(i+1)/loop_duty+self.duty_L_now)
