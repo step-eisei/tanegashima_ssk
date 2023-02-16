@@ -8,9 +8,10 @@ import class_distance
 import phase_deployment
 import subthread
 import time
+import math
 
 class Phase_camera:
-    def __init__(self, yolo=class_yolo.Yolo(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), motor=class_motor.Motor(), distance=class_distance.Distance(), subthread=subthread.Subthread()):
+    def __init__(self, yolo=class_yolo.CornDetect(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), motor=class_motor.Motor(), distance=class_distance.Distance(), subthread=subthread.Subthread()):
         self.yolo = yolo
         self.geomag = geomag
         self.gps = gps
@@ -20,20 +21,39 @@ class Phase_camera:
         pass
     
     # calculate angle from photo
-    def calc_angle(self):
-        pass
+    def calc_angle(self, c1, c2):
+        image_size = [1920, 1080]
+
+        x1, x2 = c1[0], c2[0]
+        cone_width = (x1-x2) / image_size[0]   #コーンの横幅が画像の幅を占める割合
+        z_const = 1                            #コーンまでの距離を推定するのに調整する定数
+        z_dist = z_const * (1 / cone_width) - 1#コーンの幅からコーンまでの距離を推定
+
+        x_med = (x1 + x2) / 2
+        x_dist = x_med - image_size[0] / 2   #中央からx方向にどれくらい離れてるか
+
+        angle = math.atan2(z_dist, x_dist)
+
+        return angle
     
     # check red cone in photo
     def check_cone(self):
-        pass
+        c1, c2 = self.yolo.estimate
+
+        if c1 == [-1, -1] and c2 == [-1, -1]:
+            return False
+        else:
+            return True
     
     # rotate body
-    def rotate(self):
-        pass
+    #def rotate(self, ang):
+    #    self.motor.rotate(angle=ang)
     
     # check distance between body and red cone
     def check_distance(self):
-        pass
+        self.distance.reading
+
+        return self.distance.distance
     
     def run(self):
         self.subthread.phase = 3
@@ -80,7 +100,7 @@ class Phase_camera:
                     else:
                         if(i<12):
                             #rotate 30 deg.
-                            deployment.rotate(30)
+                            self.motor.rotate(30)
                             i += 1
                             bool_redcone = False
                         else:
