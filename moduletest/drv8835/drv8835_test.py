@@ -6,8 +6,8 @@
 import RPi.GPIO as GPIO
 import time
 
-IN1 = 24
-IN2 = 23
+IN1 = 5
+IN2 = 6
 
 t = 3 # [s]
 pwm = 50 # Hz
