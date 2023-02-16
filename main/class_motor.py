@@ -56,9 +56,9 @@ class Motor():
 
     def currentblock(self, duty_R, duty_L):
         # prevent Overcurrent
-        if(duty_R != 0 and self.duty_R_now == 0): duty_R = 1
+        if(duty_R != 0 and self.duty_R_now == 0): duty_R = 5
         else: duty_R = self.duty_R_now
-        if(duty_L != 0 and self.duty_L_now == 0): duty_L = 1
+        if(duty_L != 0 and self.duty_L_now == 0): duty_L = 5
         else: duty_L = self.duty_L_now
         self.changeduty(duty_R, duty_L)
         time.sleep(1)
