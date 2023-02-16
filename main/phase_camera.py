@@ -76,6 +76,7 @@ class Phase_camera:
             c1, c2 = self.yolo.image_process()
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
+                i = 0
                 if self.check_distance <= 1:  # distance of red cone is 1m
                     # goto phase_distance
                     return 0
@@ -85,6 +86,7 @@ class Phase_camera:
 
             else:  # red cone not in the center of image
                 if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
+                    i = 0
                     self.motor.rotate(self.calc_angle(c1, c2))
                 
                 else:  # red cone not in image
