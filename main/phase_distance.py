@@ -26,7 +26,7 @@ class Distance_phase:
                     return 0
                 else: 
                     self.motor.changeduty(b, b)
-                    self.motor.forward()#距離に応じて前進
+                    self.motor.forward(10,10)#距離に応じて前進
                     self.geomag.get()
             else:
                 if(i <= 34):
