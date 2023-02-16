@@ -27,16 +27,22 @@ class Phase_camera:
     # calculate angle from photo
     def calc_angle(self, c1, c2):
         if c1 == [-1, -1]:
-            return 360
+            return 180
         x1, x2 = c1[0], c2[0]
+
+        x_med = (x1 + x2) / 2
+        x_dist = 2 * (x_med - self.image_size[0] / 2) / self.image_size[0]   #-1~1 中央からx方向にどれくらい離れてるか -1~1
+
+        """
         cone_width = (x1-x2) / self.image_size[0] #コーンの横幅が画像の幅を占める割合
         z_const = 1                               #コーンまでの距離を推定するのに調整する定数
         z_dist = z_const * (1 / cone_width) - 1   #コーンの幅からコーンまでの距離を推定
 
-        x_med = (x1 + x2) / 2
-        x_dist = (x_med - self.image_size[0] / 2) / self.image_size[0]   #中央からx方向にどれくらい離れてるか
+        angle = math.degrees(math.atan2(x_dist, z_dist))
+        """
 
-        angle = math.degreees(math.atan2(x_dist, z_dist))
+        c = 3 #調整用の定数
+        angle = math.degrees(math.atan(c * x_dist))
 
         return angle
     
