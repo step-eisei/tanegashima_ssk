@@ -13,6 +13,7 @@ class Phase_camera:
         self.yolo = yolo
         self.motor = motor
         self.distance = distance
+        self.motor.geomag.calibrated = True
         #self.subthread = subthread
 
         # const
