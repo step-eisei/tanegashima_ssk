@@ -3,16 +3,16 @@ sys.path.append("/home/pi/tanegashima_ssk/main/yolo/")
 from yolo import class_yolo
 import class_motor
 import class_distance
-import subthread
+#import subthread
 import time
 import math
 
 class Phase_camera:
-    def __init__(self, yolo=class_yolo.Yolo(), motor=class_motor.Motor(), distance=class_distance.Distance(), subthread=subthread.Subthread()):
+    def __init__(self, yolo=class_yolo.Yolo(), motor=class_motor.Motor(), distance=class_distance.Distance()): #, subthread=subthread.Subthread()):
         self.yolo = yolo
         self.motor = motor
         self.distance = distance
-        self.subthread = subthread
+        #self.subthread = subthread
 
         # const
         self.forward_time = 5
@@ -68,7 +68,7 @@ class Phase_camera:
         self.motor.changeduty(0,0)
 
     def run(self):
-        self.subthread.phase = 3
+        #self.subthread.phase = 3
         i = 0
 
         while True:
