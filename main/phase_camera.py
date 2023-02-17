@@ -8,7 +8,7 @@ import time
 import math
 
 class Phase_camera:
-    def __init__(self, yolo=class_yolo.Yolo(), motor=class_motor.Motor(), distance=class_distance.Distance()): #, subthread=subthread.Subthread()):
+    def __init__(self, yolo=class_yolo.CornDetect(), motor=class_motor.Motor(), distance=class_distance.Distance()): #, subthread=subthread.Subthread()):
         self.yolo = yolo
         self.motor = motor
         self.distance = distance
