@@ -73,12 +73,16 @@ class Phase_camera:
 
         while True:
             # take a photo and image-processing
+            print("take photo")
             c1, c2 = self.yolo.image_process()
+            print(c1, c2)
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
+                print("cone is in the centre")
                 i = 0
                 if self.check_distance <= 1:  # distance of red cone is 1m
                     # goto phase_distance
+                    print("goto phase_distance")
                     return 0
                             
                 else:
@@ -86,16 +90,20 @@ class Phase_camera:
 
             else:  # red cone not in the center of image
                 if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
+                    print("cone is detected")
                     i = 0
                     self.motor.rotate(self.calc_angle(c1, c2))
                 
                 else:  # red cone not in image
+                    print("cone is NOT in the image")
                     if i < 12: 
                         i += 1
                         self.motor.rotate(30)
                     
                     else:  # back to phase_GPS
                         self.forward_for_n(self.forward_time)
+
+                        print("back to phase_gps")
                         return -1
     
     
