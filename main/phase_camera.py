@@ -108,8 +108,8 @@ class Phase_camera:
     
     
 def main():
-    Phase_camera = Phase_camera()
-    Phase_camera.run()
+    phase_camera = Phase_camera()
+    phase_camera.run()
     
 if __name__ == "__main__":
     main()
