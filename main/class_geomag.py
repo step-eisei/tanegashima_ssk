@@ -61,9 +61,9 @@ class GeoMagnetic:
 
         # 最大値，最小値の算出
         p = 5 # 上位何%をpickするか
-        Xmax, Xmin = percentpick(magxs)
-        Ymax, Ymin = percentpick(magys)
-        Zmax, Zmin = percentpick(magzs)
+        Xmax, Xmin = percentpick(magxs, 5)
+        Ymax, Ymin = percentpick(magys, 5)
+        Zmax, Zmin = percentpick(magzs, 5)
 
         self.maxs = [Xmax, Ymax, Zmax]
         self.mins = [Xmin, Ymin, Zmin]
