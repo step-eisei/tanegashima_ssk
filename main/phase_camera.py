@@ -104,7 +104,7 @@ class Phase_camera:
                         self.forward_for_n(self.forward_time)
 
                         print("back to phase_gps")
-                        return -1
+                        #return -1
     
     
 def main():
