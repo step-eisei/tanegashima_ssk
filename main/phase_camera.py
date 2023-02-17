@@ -45,7 +45,7 @@ class Phase_camera:
     
     # check distance between body and red cone
     def check_distance(self):
-        self.distance.reading
+        self.distance.reading()
 
         return self.distance.distance
  
