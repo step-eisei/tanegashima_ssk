@@ -29,7 +29,7 @@ class Phase_camera:
 
         x_med = (x1 + x2) / 2
         x_dist = 2 * (x_med - self.image_size[0] / 2) / self.image_size[0]   #-1~1 中央からx方向にどれくらい離れてるか -1~1
-
+        print(f"x_dist:{x_dist}")
         """
         cone_width = (x1-x2) / self.image_size[0] #コーンの横幅が画像の幅を占める割合
         z_const = 1                               #コーンまでの距離を推定するのに調整する定数
@@ -38,7 +38,7 @@ class Phase_camera:
         angle = math.degrees(math.atan2(x_dist, z_dist))
         """
 
-        c = 3 #調整用の定数
+        c = 1 #調整用の定数
         angle = math.degrees(math.atan(c * x_dist))
 
         return angle
@@ -92,7 +92,8 @@ class Phase_camera:
                 if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
                     print("cone is detected")
                     i = 0
-                    self.motor.rotate(self.calc_angle(c1, c2))
+                    angle = self.calc_angle(c1, c2)
+                    self.motor.rotate()
                 
                 else:  # red cone not in image
                     print("cone is NOT in the image")
