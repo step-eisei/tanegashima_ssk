@@ -35,8 +35,8 @@ class GeoMagnetic:
             self.theta_absolute = math.atan2(-self.z, -self.x)*180/math.pi
     
     def normalize(self):
-        #rads = [self.maxs[i] - self.mins[i] for i in range(3)]
-        #aves = [self.maxs[i] + self.mins[i] for i in range(3)]
+        self.rads = [self.maxs[i] - self.mins[i] for i in range(3)]
+        self.aves = [self.maxs[i] + self.mins[i] for i in range(3)]
         
         self.x = (self.x - self.aves[0]) / self.rads[0]
         self.y = (self.y - self.aves[1]) / self.rads[1]
