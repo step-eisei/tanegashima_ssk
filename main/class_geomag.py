@@ -29,10 +29,10 @@ class GeoMagnetic:
     
     def get(self):
         self.x, self.y, self.z = self.sensor.magnetic
-        self.theta = math.atan2(-self.z, -self.x)*180/math.pi
+        self.theta = math.atan2(-self.z, self.x)*180/math.pi
         if self.calibrated:
             self.normalize()
-            self.theta_absolute = math.atan2(-self.z, -self.x)*180/math.pi
+            self.theta_absolute = math.atan2(-self.z, self.x)*180/math.pi
     
     def normalize(self):
         self.rads = [(self.maxs[i] - self.mins[i])/2 for i in range(3)]
@@ -51,7 +51,7 @@ class GeoMagnetic:
         while t <= 60:
             self.get()
             self.addlist()
-            print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(self.x, self.y, self.z))
+            print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(self.x, self.y, self.z) + f"t:{t}")
             print('')
             t += duration
             time.sleep(duration)
