@@ -9,7 +9,7 @@ import time
 import math
 
 class Phase_camera:
-    def __init__(self, yolo=class_yolo.CornDetect(), motor=class_motor.Motor(), distance=class_distance.Distance()): #, subthread=subthread.Subthread()):
+    def __init__(self, yolo=class_yolo.CornDetect(), motor=class_motor.Motor(geomag = class_geomag.GeoMagnetic(rads=[51.8/2, 7.81/2, 57.6/2], aves=[-168.3/2, -0.363/2, -236.22/2])), distance=class_distance.Distance()): #, subthread=subthread.Subthread()):
         self.yolo = yolo
         self.motor = motor
         self.distance = distance
@@ -110,9 +110,7 @@ class Phase_camera:
     
     
 def main():
-    geomag = class_geomag.GeoMagnetic(rads=[51.8/2, 7.81/2, 57.6/2], aves=[-168.3/2, -0.363/2, -236.22/2])
-    motor = class_motor.Motor(geomag=geomag)
-    phase_camera = Phase_camera(motor=motor)
+    phase_camera = Phase_camera()
     phase_camera.run()
     
 if __name__ == "__main__":
