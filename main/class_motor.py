@@ -96,6 +96,8 @@ class Motor():
                 else: self.changeduty(-duty_R, -duty_L)
                 time.sleep(abs(time_sleep_constant*angle))
                 self.changeduty(0, 0)
+                print("stop")
+                time.sleep(10)
                 for j in range(2):
                     self.geomag.get()
                     theta_now = self.geomag.theta_absolute
