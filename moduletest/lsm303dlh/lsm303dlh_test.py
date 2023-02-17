@@ -49,7 +49,12 @@ try:
         Xmax, Xmin = percentpick(magx)
         Ymax, Ymin = percentpick(magy)
         Zmax, Zmin = percentpick(magz)
-       
+        maxs = [Xmax, Ymax, Zmax]
+        mins = [Xmin, Ymin, Zmin]
+        rads = [maxs[i] - mins[i] for i in range(3)]
+        aves = [maxs[i] + mins[i] for i in range(3)]
+        print(f"rads:{rads}")
+        print(f"aves:{aves}")
         with open('mag.csv', 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([Xmax, Xmin, Ymax, Ymin, Zmax, Zmin])
