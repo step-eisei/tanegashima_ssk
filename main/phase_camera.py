@@ -1,9 +1,7 @@
-import class_yolo
-import class_geomag
-import class_gps
+import yolo.class_yolo
+from yolo import *
 import class_motor
 import class_distance
-import phase_deployment
 import subthread
 import time
 import math
@@ -18,7 +16,7 @@ class Phase_camera:
         # const
         self.forward_time = 5
         self.angle_thres = 10
-        self.image_size = [720, 480]
+        self.image_size = [640, 480]
         pass
     
   
@@ -65,7 +63,7 @@ class Phase_camera:
             duty_new = int(duty/10*(10-i-1))
             self.motor.changeduty(duty_new, duty_new)
             time.sleep(forward_time/10/2)
-            
+
         self.motor.changeduty(0,0)
 
     def run(self):
