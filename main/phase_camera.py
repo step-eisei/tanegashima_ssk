@@ -54,7 +54,7 @@ class Phase_camera:
         # forward n sec.
         forward_time = n
         # set duty
-        duty = 60
+        duty = 30
         print("forward for" + str(forward_time)+ "seconds")
         for i in range(10):
             duty_new = int(duty/10*(i+1))
