@@ -25,7 +25,7 @@ def main():
     pressure = class_pressure.Pressure()
     nicrom = class_nicrom.Nicrom(pin=21)
     geomag = class_geomag.GeoMagnetic(calibrated=False)
-    motor = class_motor.Motor(200, 5, 6, 19, 26, geomag=geomag)
+    motor = class_motor.Motor(200, 6, 5, 13, 16, geomag=geomag)
     distance = class_distance.Distance(9, 11)
     gps = class_gps.Gps()
     yolo = class_yolo()
