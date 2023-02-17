@@ -40,7 +40,7 @@ class Phase_camera:
 
         c = 1 #調整用の定数
         angle = math.degrees(math.atan(c * x_dist))
-
+        print(f"angle:{angle}")
         return angle
     
     # check distance between body and red cone
@@ -80,7 +80,7 @@ class Phase_camera:
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
                 print("cone is in the centre")
                 i = 0
-                if self.check_distance <= 1:  # distance of red cone is 1m
+                if self.check_distance() <= 1:  # distance of red cone is 1m
                     # goto phase_distance
                     print("goto phase_distance")
                     return 0
