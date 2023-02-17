@@ -93,7 +93,7 @@ class Phase_camera:
                     print("cone is detected")
                     i = 0
                     angle = self.calc_angle(c1, c2)
-                    self.motor.rotate()
+                    self.motor.rotate(angle)
                 
                 else:  # red cone not in image
                     print("cone is NOT in the image")
