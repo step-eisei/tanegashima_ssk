@@ -100,8 +100,8 @@ class Deploy():
         self.maxs = [Xmax, Ymax, Zmax]
         self.mins = [Xmin, Ymin, Zmin]
 
-        self.mag.rads = [self.maxs[i] - self.mins[i] for i in range(3)]
-        self.mag.aves = [self.maxs[i] + self.mins[i] for i in range(3)]
+        self.mag.rads = [(self.maxs[i] - self.mins[i])/2 for i in range(3)]
+        self.mag.aves = [(self.maxs[i] + self.mins[i])/2 for i in range(3)]
 
         self.mag.calibrated = True
 
