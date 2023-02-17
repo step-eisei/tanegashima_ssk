@@ -3,6 +3,7 @@ sys.path.append("/home/pi/tanegashima_ssk/main/yolo/")
 from yolo import class_yolo
 import class_motor
 import class_distance
+import class_geomag
 #import subthread
 import time
 import math
@@ -18,8 +19,6 @@ class Phase_camera:
         self.forward_time = 5
         self.angle_thres = 10
         self.image_size = [640, 480]
-        pass
-    
   
     # calculate angle from photo
     def calc_angle(self, c1, c2):
@@ -80,7 +79,9 @@ class Phase_camera:
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
                 print("cone is in the centre")
                 i = 0
-                if self.check_distance() <= 1:  # distance of red cone is 1m
+                dist = self.check_distance()
+                print(f"dist:{dist}")
+                if dist <= 1:  # distance of red cone is 1m
                     # goto phase_distance
                     print("goto phase_distance")
                     return 0
@@ -109,7 +110,9 @@ class Phase_camera:
     
     
 def main():
-    phase_camera = Phase_camera()
+    geomag = class_geomag.GeoMagnetic(rads=[51.8/2, 7.81/2, 57.6/2], aves=[-168.3/2, -0.363/2, -236.22/2])
+    motor = class_motor.Motor(geomag=geomag)
+    phase_camera = Phase_camera(motor=motor)
     phase_camera.run()
     
 if __name__ == "__main__":
