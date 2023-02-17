@@ -9,10 +9,8 @@ import time
 import math
 
 class Phase_camera:
-    def __init__(self, yolo=class_yolo.Yolo(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), motor=class_motor.Motor(), distance=class_distance.Distance(), subthread=subthread.Subthread()):
+    def __init__(self, yolo=class_yolo.Yolo(), motor=class_motor.Motor(), distance=class_distance.Distance(), subthread=subthread.Subthread()):
         self.yolo = yolo
-        self.geomag = geomag
-        self.gps = gps
         self.motor = motor
         self.distance = distance
         self.subthread = subthread
@@ -20,7 +18,7 @@ class Phase_camera:
         # const
         self.forward_time = 5
         self.angle_thres = 10
-        self.image_size = [1920, 1080]
+        self.image_size = [720, 480]
         pass
     
   
@@ -62,7 +60,13 @@ class Phase_camera:
         for i in range(10):
             duty_new = int(duty/10*(i+1))
             self.motor.changeduty(duty_new, duty_new)
-            time.sleep(forward_time/10)
+            time.sleep(forward_time/10/2)
+        for i in range(10):
+            duty_new = int(duty/10*(10-i-1))
+            self.motor.changeduty(duty_new, duty_new)
+            time.sleep(forward_time/10/2)
+            
+        self.motor.changeduty(0,0)
 
     def run(self):
         self.subthread.phase = 3
@@ -97,12 +101,7 @@ class Phase_camera:
     
     
 def main():
-    yolo = class_yolo
-    geomag = class_geomag
-    gps = class_gps
-    motor = class_motor
-    deployment = phase_deployment
-    Phase_camera = Phase_camera(yolo, geomag, gps, motor)
+    Phase_camera = Phase_camera()
     Phase_camera.run()
     
 if __name__ == "__main__":
