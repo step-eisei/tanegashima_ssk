@@ -86,19 +86,19 @@ class Motor():
         elif(angle>180): return angle-360
         return angle
 
-    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.01):
+    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.001):
         if(angle!=0):
             if(duty_L==None): duty_L = -duty_R
             self.geomag.get()
             theta_past = self.geomag.theta_absolute
             print(f"theta_past:{theta_past}")
-            for i in range(3):
+            for i in range(10):
                 if(angle>0): self.changeduty(duty_R, duty_L)
                 else: self.changeduty(-duty_R, -duty_L)
                 time.sleep(abs(time_sleep_constant*angle))
                 self.changeduty(0, 0)
                 print("stop")
-                time.sleep(1)
+                time.sleep(5)
                 for j in range(2):
                     self.geomag.get()
                     theta_now = self.geomag.theta_absolute
