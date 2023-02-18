@@ -15,7 +15,7 @@ p = 5
 mag_list = []
 
 t = 0
-duration = 0.5
+duration = 1
 
 motor.changeduty(duty, -duty)
 while t <= 60:
