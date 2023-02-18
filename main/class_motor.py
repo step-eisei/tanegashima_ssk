@@ -94,8 +94,12 @@ class Motor():
             theta_past = self.geomag.theta_absolute
             print(f"theta_past:{theta_past}")
             for i in range(10):
-                if(angle>0): self.changeduty(duty_R, duty_L)
-                else: self.changeduty(-duty_R, -duty_L)
+                if(angle>0):
+                    print(duty_R, duty_L)
+                    self.changeduty(duty_R, duty_L)
+                else:
+                    print(-duty_R, -duty_L)
+                    self.changeduty(-duty_R, -duty_L)
                 time.sleep(abs(time_sleep_constant*angle))
                 self.changeduty(0, 0)
                 print("stop")
@@ -105,10 +109,12 @@ class Motor():
                     theta_now = self.geomag.theta_absolute
                     print(f"theta_now:{theta_now}")
                     change_angle = self.angle_difference(theta_past, theta_now)
+                    print(f"change_angle:{change_angle}, threshold:{threshold_angle}")
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
                     elif(change_angle==0): self.stack()
                     else: time_sleep_constant = time_sleep_constant*angle/change_angle
                     if(abs(time_sleep_constant*angle)<0.02):
+                        print("angle is very low. return")
                         if(angle>0): self.changeduty(-duty_R, -duty_L)
                         else: self.changeduty(duty_R, duty_L)
                         time.sleep(0.02)
