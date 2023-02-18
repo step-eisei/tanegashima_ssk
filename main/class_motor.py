@@ -6,12 +6,13 @@ import class_geomag
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic()):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
         self.leftIN2 = leftIN2
         self.geomag = geomag
+        self.geomag.calibrated = True
         self.duty_R_now = -1
         self.duty_L_now = -1
         
