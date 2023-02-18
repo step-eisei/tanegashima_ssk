@@ -15,7 +15,7 @@ p = 5
 mag_list = []
 
 t = 0
-duration = 0.05
+duration = 0.5
 
 motor.changeduty(duty, -duty)
 while t <= 60:
@@ -25,7 +25,7 @@ while t <= 60:
     print('')
     time.sleep(duration)
     t+=duration
-    
+
 motor.changeduty(0,0)
 motor.end()
 
