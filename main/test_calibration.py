@@ -19,10 +19,13 @@ duration = 1
 
 motor.changeduty(duty, -duty)
 while t <= 60:
-    motor.geomag.get()
-    mag_list.append((motor.geomag.x, motor.geomag.y, motor.geomag.z))
-    print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(motor.geomag.x, motor.geomag.y, motor.geomag.z) + f"t:{t}")
-    print('')
+    try:
+        motor.geomag.get()
+        mag_list.append((motor.geomag.x, motor.geomag.y, motor.geomag.z))
+        print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(motor.geomag.x, motor.geomag.y, motor.geomag.z) + f"t:{t}")
+        print('')
+    except:
+         print("error") 
     time.sleep(duration)
     t+=duration
 
