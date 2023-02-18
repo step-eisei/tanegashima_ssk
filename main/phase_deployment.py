@@ -70,8 +70,7 @@ class Deploy():
         max = listdata[len(listdata)-n]
         return max, min
 
-    def calibrate(self, duty=5, p=5):
-        duty = 20
+    def calibrate(self, duty=10, p=5):
         self.mag_list = []
 
         self.motor.changeduty(duty, -duty)
