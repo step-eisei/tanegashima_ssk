@@ -49,24 +49,14 @@ class Phase_camera:
 
         return self.distance.distance
  
-    
-    def forward_for_n(self, n): 
-        # forward n sec.
-        forward_time = n
-        # set duty
-        duty = 30
-        print("forward for" + str(forward_time)+ "seconds")
-        for i in range(10):
-            duty_new = int(duty/10*(i+1))
-            self.motor.changeduty(duty_new, duty_new)
-            time.sleep(forward_time/10/2)
-        for i in range(10):
-            duty_new = int(duty/10*(10-i-1))
-            self.motor.changeduty(duty_new, duty_new)
-            time.sleep(forward_time/10/2)
 
+    def forward(self): 
+        self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
+        time.sleep(self.forward_time)
+        self.motor.forward(5, 5, 0.05, tick_dutymax=5)
         self.motor.changeduty(0,0)
-
+    
+    
     def run(self):
         #self.subthread.phase = 3
         i = 0
@@ -88,7 +78,7 @@ class Phase_camera:
                     return 0
                             
                 else:
-                    self.forward_for_n(self.forward_time)
+                    self.forward()
 
             else:  # red cone not in the center of image
                 if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
@@ -104,7 +94,7 @@ class Phase_camera:
                         self.motor.rotate(30)
                     
                     else:  # back to phase_GPS
-                        self.forward_for_n(self.forward_time)
+                        self.forward()
 
                         print("back to phase_gps")
                         #return -1
