@@ -65,6 +65,7 @@ class Phase_camera:
             # take a photo and image-processing
             print("take photo")
             c1, c2 = self.yolo.image_process()
+            self.yolo.show_for_test()
             print(c1, c2)
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
