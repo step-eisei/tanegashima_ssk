@@ -15,10 +15,10 @@ p = 5
 mag_list = []
 
 t = 0
-duration = 1
+duration = 0.5
 
 motor.changeduty(duty, -duty)
-while t <= 60:
+while t <= 30:
     try:
         motor.geomag.get()
         mag_list.append((motor.geomag.x, motor.geomag.y, motor.geomag.z))
