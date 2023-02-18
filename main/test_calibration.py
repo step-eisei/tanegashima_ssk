@@ -25,6 +25,9 @@ while t <= 60:
     print('')
     time.sleep(duration)
     t+=duration
+    
+motor.changeduty(0,0)
+motor.end()
 
 magxs = [mag_list[i][0] for i in range(len(mag_list))]
 magys = [mag_list[i][1] for i in range(len(mag_list))]
