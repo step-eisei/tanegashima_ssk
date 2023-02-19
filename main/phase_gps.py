@@ -64,10 +64,10 @@ class Gps_phase():
                 print(f"theta_delta: {theta_delta}")
                 duty_delta = 1
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
-                    if(theta_delta+20<theta_now): duty_L-=duty_delta
-                    elif(theta_delta+20>theta_now): duty_R-=duty_delta
+                    if(theta_delta+20>theta_now): duty_L-=duty_delta
+                    elif(theta_delta+20<theta_now): duty_R-=duty_delta
                 else:
-                    if(theta_delta<theta_now): duty_L-=duty_delta
+                    if(theta_delta>theta_now): duty_L-=duty_delta
                     else: duty_R-=duty_delta
                 print("")
                 print(f"duty_max :{duty_max}")
