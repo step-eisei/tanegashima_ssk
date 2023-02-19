@@ -22,17 +22,24 @@ class Motor():
         GPIO.setup(self.rightIN2, GPIO.OUT)
         GPIO.setup(self.leftIN1, GPIO.OUT)
         GPIO.setup(self.leftIN2, GPIO.OUT)
-        self.pwms = {}
-        self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
-        self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
-        self.pwms["leftIN1"] = GPIO.PWM(self.leftIN1, pwm) # pin, Hz
-        self.pwms["leftIN2"] = GPIO.PWM(self.leftIN2, pwm) # pin, Hz
-        
-        self.pwms["rightIN1"].start(0)
-        self.pwms["rightIN2"].start(0)
-        self.pwms["leftIN1"].start(0)
-        self.pwms["leftIN2"].start(0)
-    
+        try:
+            self.pwms = {}
+            self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
+            self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
+            self.pwms["leftIN1"] = GPIO.PWM(self.leftIN1, pwm) # pin, Hz
+            self.pwms["leftIN2"] = GPIO.PWM(self.leftIN2, pwm) # pin, Hz
+
+            self.pwms["rightIN1"].start(0)
+            self.pwms["rightIN2"].start(0)
+            self.pwms["leftIN1"].start(0)
+            self.pwms["leftIN2"].start(0)
+        except:
+            print("define Motor class many times")
+            self.pwms["rightIN1"].start(0)
+            self.pwms["rightIN2"].start(0)
+            self.pwms["leftIN1"].start(0)
+            self.pwms["leftIN2"].start(0)
+
     def changeduty(self, duty_R, duty_L):
         if duty_R > 0:
             self.pwms["rightIN1"].ChangeDutyCycle(abs(duty_R))
