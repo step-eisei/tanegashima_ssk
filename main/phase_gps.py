@@ -64,8 +64,8 @@ class Gps_phase():
                 print(f"theta_delta: {theta_delta}")
                 duty_delta = 1
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
-                    if(theta_delta+20>theta_now): duty_L-=duty_delta
-                    elif(theta_delta+20<theta_now): duty_R-=duty_delta
+                    if(theta_delta+40>theta_now): duty_L-=duty_delta
+                    elif(theta_delta+40<theta_now): duty_R-=duty_delta
                 else:
                     if(theta_delta>theta_now): duty_L-=duty_delta
                     else: duty_R-=duty_delta
@@ -80,7 +80,7 @@ class Gps_phase():
                 print("")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
                 # self.subthread.record(comment="dutychange")
-            time.sleep(2)#2秒走る
+            time.sleep(1)#1秒走る
             first = False
 
     # gps, magを取得して更新するメソッド
