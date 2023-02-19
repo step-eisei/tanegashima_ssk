@@ -9,7 +9,7 @@ import subthread
 import csv
 
 class Gps_phase():
-    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[27.499999999999993, 14.954545454545453, 32.755102040816325],aves=[-103.04545454545453, 22.227272727272727, -48.06122448979592])):#, subthread=subthread.Subthread()):
+    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[27.499999999999993, 14.954545454545453, 32.755102040816325],aves=[-103.04545454545453, 22.227272727272727, -48.06122448979592]), subthread=subthread.Subthread()):
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
@@ -19,7 +19,7 @@ class Gps_phase():
         self.motor = motor
         self.gps = gps
         self.mag = mag
-        # self.subthread = subthread
+        self.subthread = subthread
         self.renew_data()
 
     def run(self, duty_max=30):
