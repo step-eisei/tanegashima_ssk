@@ -71,33 +71,39 @@ class GeoMagnetic:
         self.calibrated = True
 
 def main():
-    mag = GeoMagnetic()
+    mag = GeoMagnetic(calibrated=True, rads=[1.45, 1.06, 1.32],aves=[-1.16, -1, 3.15])
 
-    t = 0
-    duration = 0.5
-    maglist = []
-    while t <= 5:
-        t += duration
-        time.sleep(duration)
-    
-    try:
-        t = 0
-        while t <= 60:
-            mag.addlist()
+    while True:
+        try:
             mag.get()
-            maglist.append([mag.x, mag.y, mag.z])
-            print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
-            print('')
-            t += duration
-            time.sleep(duration)
-        with open('lsm303.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerows(maglist)
+            print(mag.theta_absolute)
+        except KeyboardInterrupt:
+            break
+    # t = 0
+    # duration = 0.5
+    # maglist = []
+    # while t <= 5:
+    #     t += duration
+    #     time.sleep(duration)
+    
+    # try:
+    #     t = 0
+    #     while t <= 60:
+    #         mag.addlist()
+    #         mag.get()
+    #         maglist.append([mag.x, mag.y, mag.z])
+    #         print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
+    #         print('')
+    #         t += duration
+    #         time.sleep(duration)
+    #     with open('lsm303.csv', 'w') as f:
+    #         writer = csv.writer(f)
+    #         writer.writerows(maglist)
 
-    except KeyboardInterrupt:
-        with open('lsm303.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerows(maglist)
+    # except KeyboardInterrupt:
+    #     with open('lsm303.csv', 'w') as f:
+    #         writer = csv.writer(f)
+    #         writer.writerows(maglist)
 
 if __name__ == "__main__":
     main()
