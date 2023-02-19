@@ -194,6 +194,7 @@ def main():
         gps_phase.run()
     except KeyboardInterrupt:
         gps_phase.motor.end()
+        print("terminated.")
 
 if __name__=="__main__":
     main()
