@@ -77,7 +77,7 @@ class Gps_phase():
                         duty_R-=duty_delta
                         mode = 1
                 else:
-                    if(theta_delta>theta_now):
+                    if(theta_delta<theta_now):
                         if(mode==1): duty_R = duty_L
                         duty_L-=duty_delta
                         mode = 2
