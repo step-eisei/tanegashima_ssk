@@ -87,6 +87,7 @@ def main():
         try:
             mag.get()
             print(mag.theta_absolute)
+            time.sleep(1)
         except KeyboardInterrupt:
             break
     # t = 0
