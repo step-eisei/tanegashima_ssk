@@ -107,12 +107,13 @@ class Gps_phase():
         if(gps):
             self.calc_xy()
             self.distance = math.sqrt(self.x**2+self.y**2)
+        print("")
+        print("renew data")
+        print(f"now position  :{self.x, self.y}")
+        print(f"distance      :{self.distance}")
         if(mag):
             self.mag.get()
             self.angle()
-        print("")
-        print("renew data")
-        print(f"distance      :{self.distance}")
         print(f"theta_absolute:{self.mag.theta_absolute}")
         print(f"theta_relative:{self.theta_relative}")
         print("")
@@ -122,6 +123,7 @@ class Gps_phase():
     def angle(self):
         # ゴール角度算出
         theta_gps = math.atan2(self.y, self.x) * 180/math.pi
+        print(f"theta_goal    :{theta_gps}")
         # 機体正面を0として，左を正，右を負とした変数(-180~180)を作成
         self.theta_relative = theta_gps + self.mag.theta_absolute + 90
         if(self.theta_relative > 180): self.theta_relative -= 360
