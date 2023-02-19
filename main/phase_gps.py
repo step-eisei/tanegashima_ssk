@@ -70,11 +70,11 @@ class Gps_phase():
                 if(abs(self.theta_relative)<150):   duty_delta = 2
                 else:                               duty_delta = 5
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
-                    if(abs(theta_delta)+40<abs(theta_now)):
+                    if(theta_delta+25>theta_now):
                         if(mode==1): duty_R = duty_L
                         duty_L-=duty_delta
                         mode = 2
-                    elif(abs(theta_delta)+40>abs(theta_now)):
+                    elif(theta_delta+25<theta_now):
                         if(mode==2): duty_L = duty_R
                         duty_R-=duty_delta
                         mode = 1
