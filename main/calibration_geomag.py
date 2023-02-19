@@ -2,6 +2,7 @@ from class_motor import Motor
 import time
 import datetime
 import csv
+import class_geomag
 
 def percentpick(listdata, p):
         n = int(len(listdata) *p/100)
@@ -62,3 +63,19 @@ motor.geomag.calibrated = True
 
 print(f"rads:{motor.geomag.rads}")
 print(f"aves:{motor.geomag.aves}")
+
+if(1):
+    mag = class_geomag.GeoMagnetic(True, motor.geomag.rads, motor.geomag.aves)
+    maglist = []
+    while True:
+        try:
+            mag.get()
+            maglist.append([mag.x, mag.y, mag.z])
+            print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
+            print(mag.theta_absolute)
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            break
+    with open('lsm303.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(maglist)
