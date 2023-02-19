@@ -5,6 +5,7 @@ class Pressure:
 
     def __init__(self):  #初期設定
 
+        self.pressure = -1
         self.t_fine = 0.0
         self.bus_number  = 1
         self.i2c_address = 0x76
@@ -29,7 +30,6 @@ class Pressure:
         self.writeReg(0xF4,ctrl_meas_reg)
         self.writeReg(0xF5,config_reg)
         self.get_calib_param()
-        self.read()
         
     def writeReg(self,reg_address, data):
         self.bus = SMBus(self.bus_number)

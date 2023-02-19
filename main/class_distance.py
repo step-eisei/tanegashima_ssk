@@ -9,6 +9,7 @@ class Distance:
     def __init__(self,TRIG=9,ECHO=11):
         self.TRIG = TRIG
         self.ECHO = ECHO
+        self.distance = -1
         pass
 
     def reading(self):
