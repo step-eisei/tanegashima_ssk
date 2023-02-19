@@ -23,7 +23,7 @@ class Gps_phase():
         # self.subthread = subthrea
         self.renew_data()
 
-    def run(self, duty_max=20):
+    def run(self, duty_max=25):
         # self.subthread.phase = 2
         first = True
         duty_R = duty_max
@@ -64,7 +64,7 @@ class Gps_phase():
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta: {theta_delta}")
                 if(abs(self.theta_relative)<30):    duty_delta = 1
-                elif(abs(self.theta_relative)<90):  duty_delta = 2
+                elif(abs(self.theta_relative)<150):  duty_delta = 2
                 else:                               duty_delta = 3
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(theta_delta+40>theta_now):
