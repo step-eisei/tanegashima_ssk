@@ -27,9 +27,8 @@ class Gps_phase():
         first = True
         duty_R = duty_max
         duty_L = duty_max
-        x0, y0 = [-1, -1]
         while True:
-            if(not first): x0, y0 = (self.x, self.y)#前回位置
+            x0, y0 = (self.x, self.y)#前回位置
             print(f"before position :{x0, y0}")
             if(not first): theta_past = theta_now
             self.renew_data()
@@ -77,7 +76,7 @@ class Gps_phase():
                 print("")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
                 # self.subthread.record(comment="dutychange")
-            time.sleep(5)#5秒走る
+            time.sleep(2)#2秒走る
             first = False
 
     # gps, magを取得して更新するメソッド
@@ -109,6 +108,10 @@ class Gps_phase():
             x: 変換後の平面直角座標[m]
             y: 変換後の平面直角座標[m]
         """
+        print("")
+        print(f"now :{self.gps.latitude, self.gps.longitude}")
+        print(f"goal:{self.goal_lati, self.goal_longi}")
+        print("")
         # 緯度経度・平面直角座標系原点をラジアンに直す
         phi_rad = np.deg2rad(self.gps.latitude)
         lambda_rad = np.deg2rad(self.gps.longitude)
