@@ -36,6 +36,7 @@ class Gps_phase():
             while True:
                 self.renew_data()
                 if(self.distance<50): break
+            if(self.distance<7): duty_max = 15
             if(self.distance<3): # goto camera phase
                 self.motor.end()
                 print("distance < 3")
