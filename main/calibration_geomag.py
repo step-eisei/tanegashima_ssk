@@ -75,6 +75,8 @@ if(1):
             print(mag.theta_absolute)
             time.sleep(0.1)
         except KeyboardInterrupt:
+            print(f"rads:{motor.geomag.rads}")
+            print(f"aves:{motor.geomag.aves}")
             break
     with open('lsm303.csv', 'w') as f:
         writer = csv.writer(f)
