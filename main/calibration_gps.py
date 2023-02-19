@@ -57,6 +57,7 @@ i = 1
 while True:
     #ちゃんとしたデータがある程度たまってから出力
     if my_gps.clean_sentences > 20:
+        if(gps_latitude==my_gps.latitude[0] and gps_longitude==my_gps.longitude[0]): print("same data")
         gps_latitude = my_gps.latitude[0]
         gps_longitude = my_gps.longitude[0]
         sum_latitude += gps_latitude
@@ -75,6 +76,7 @@ while True:
 #平均値を算出しgoal.pyに書き込み
 goal_la = sum_latitude / n
 goal_lo = sum_longitude / n
+print(f"goal:{goal_la, goal_lo}")
 
 with open('goal.csv',mode='w',newline='') as f:
     writer = csv.writer(f)
