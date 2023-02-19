@@ -5,7 +5,7 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-# import subthread
+import subthread
 import csv
 
 class Gps_phase():
@@ -23,7 +23,7 @@ class Gps_phase():
         self.renew_data()
 
     def run(self, duty_max=30):
-        # self.subthread.phase = 2
+        self.subthread.phase = 2
         first = True
         duty_R = duty_max
         duty_L = duty_max
@@ -36,7 +36,7 @@ class Gps_phase():
                 if(self.distance<50): break
             if(self.distance<3): # goto camera phase
                 print("distance < 3")
-                # self.subthread.record(comment="gps")
+                self.subthread.record(comment="gps")
                 return 0
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             print(f"moved: {moved}")
@@ -60,12 +60,13 @@ class Gps_phase():
                 #角度変化に応じたduty比調整
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta: {theta_delta}")
+                duty_delta = 2
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
-                    if(theta_delta+20<theta_now): duty_L-=1
-                    elif(theta_delta+20>theta_now): duty_R-=1
+                    if(theta_delta+20<theta_now): duty_L-=duty_delta
+                    elif(theta_delta+20>theta_now): duty_R-=duty_delta
                 else:
-                    if(theta_delta<theta_now): duty_L-=1
-                    else: duty_R-=1
+                    if(theta_delta<theta_now): duty_L-=duty_delta
+                    else: duty_R-=duty_delta
                 print("")
                 print(f"duty_max :{duty_max}")
                 print(f"duty :{duty_R, duty_L}")
@@ -76,7 +77,7 @@ class Gps_phase():
                 print(f"renew duty: {duty_R, duty_L}")
                 print("")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
-                # self.subthread.record(comment="dutychange")
+                self.subthread.record(comment="dutychange")
             time.sleep(2)#2秒走る
             first = False
 
