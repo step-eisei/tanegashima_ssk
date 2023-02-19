@@ -29,6 +29,7 @@ class Pressure:
         self.writeReg(0xF4,ctrl_meas_reg)
         self.writeReg(0xF5,config_reg)
         self.get_calib_param()
+        self.read()
         
     def writeReg(self,reg_address, data):
         self.bus = SMBus(self.bus_number)
