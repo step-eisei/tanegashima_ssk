@@ -42,9 +42,9 @@ class Gps_phase():
                 # self.subthread.record(comment="gps")
                 return 0
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
-            print(f"moved: {moved}")
+            print(f"moved      :{moved}")
             theta_now = self.theta_relative
-            print(f"theta: {theta_now}")
+            print(f"theta_now  :{theta_now}")
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
             # elif moved <= 0.03:
             #     print("stacking?")
@@ -62,7 +62,7 @@ class Gps_phase():
                 if(self.distance < moved): duty_max = int(duty_max*self.distance/moved)
                 #角度変化に応じたduty比調整
                 theta_delta = theta_past - theta_now
-                print(f"theta_delta: {theta_delta}")
+                print(f"theta_delta:{theta_delta}")
                 if(abs(self.theta_relative)<30):    duty_delta = 1
                 elif(abs(self.theta_relative)<90):  duty_delta = 2
                 elif(abs(self.theta_relative)<150): duty_delta = 3
