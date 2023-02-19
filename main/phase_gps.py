@@ -36,6 +36,7 @@ class Gps_phase():
                 self.renew_data()
                 if(self.distance<50): break
             if(self.distance<3): # goto camera phase
+                self.motor.end()
                 print("distance < 3")
                 self.subthread.record(comment="gps")
                 return 0
@@ -188,8 +189,11 @@ class Gps_phase():
         self.y = X # [m]，(x_now, y_now)で，軸が反転している．
 
 def main():
-    gps_phase = Gps_phase()
-    gps_phase.run()
+    try:
+        gps_phase = Gps_phase()
+        gps_phase.run()
+    except KeyboardInterrupt:
+        gps_phase.motor.end()
 
 if __name__=="__main__":
     main()
