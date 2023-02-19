@@ -83,16 +83,21 @@ def main():
     # mag = GeoMagnetic()
     mag = GeoMagnetic(calibrated=True, rads=[1.45, 1.06, 1.32],aves=[-1.16, -1, 3.15])
 
+    maglist = []
     while True:
         try:
             mag.get()
+            maglist.append([mag.x, mag.y, mag.z])
+            print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
             print(mag.theta_absolute)
             time.sleep(1)
         except KeyboardInterrupt:
             break
+    with open('lsm303.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(maglist)
     # t = 0
     # duration = 0.5
-    # maglist = []
     # while t <= 5:
     #     t += duration
     #     time.sleep(duration)
