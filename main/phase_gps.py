@@ -28,6 +28,7 @@ class Gps_phase():
         first = True
         duty_R = duty_max
         duty_L = duty_max
+        mode = 0
         while True:
             x0, y0 = (self.x, self.y)#前回位置
             print(f"before position :{x0, y0}")
@@ -63,7 +64,6 @@ class Gps_phase():
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta: {theta_delta}")
                 duty_delta = 1
-                mode = 0
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(theta_delta+40>theta_now):
                         if(mode==1): duty_R = duty_L
@@ -83,8 +83,11 @@ class Gps_phase():
                         duty_R-=duty_delta
                         mode = 1
                 print("")
-                print(f"duty_max :{duty_max}")
-                print(f"duty :{duty_R, duty_L}")
+                if(mode==0):print("mode      :straight")
+                elif(mode==1):print("mode      :right turn")
+                else:print("mode      :left turn")
+                print(f"duty_max  :{duty_max}")
+                print(f"duty      :{duty_R, duty_L}")
                 duty_difference = duty_max-max(duty_R, duty_L)
                 duty_R += duty_difference
                 duty_L += duty_difference
