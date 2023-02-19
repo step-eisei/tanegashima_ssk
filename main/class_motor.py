@@ -58,11 +58,17 @@ class Motor():
 
     def currentblock(self, duty_R, duty_L):
         # prevent Overcurrent
-        if(duty_R != 0 and self.duty_R_now == 0): duty_R = 5
+        if(duty_R != 0 and self.duty_R_now == 0):
+            if(duty_R>=10): duty_R = 10
+            else: pass
         else: duty_R = self.duty_R_now
-        if(duty_L != 0 and self.duty_L_now == 0): duty_L = 5
+        if(duty_L != 0 and self.duty_L_now == 0):
+            if(duty_L>=10): duty_L = 10
+            else: pass
         else: duty_L = self.duty_L_now
-        self.changeduty(duty_R, duty_L)
+        for i in range(10):
+            self.changeduty(self.duty_R_now+(duty_R-self.duty_R_now)*(i+1)/10, self.duty_L_now+(duty_L-self.duty_L_now)*(i+1)/10)
+            time.sleep(0.05)
         time.sleep(1)
 
     def forward(self, duty_R, duty_L, time_sleep=0, time_all=0, tick_dutymax=0):

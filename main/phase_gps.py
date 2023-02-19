@@ -5,11 +5,11 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-import subthread
+# import subthread
 import csv
 
 class Gps_phase():
-    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
+    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic()):#, subthread=subthread.Subthread()):
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
@@ -19,25 +19,31 @@ class Gps_phase():
         self.motor = motor
         self.gps = gps
         self.mag = mag
-        self.subthread = subthread
+        # self.subthread = subthread
         self.renew_data()
 
-    def run(self, duty_max=50):
-        self.subthread.phase = 2
+    def run(self, duty_max=30):
+        # self.subthread.phase = 2
         first = True
         duty_R = duty_max
         duty_L = duty_max
         while True:
             x0, y0 = (self.x, self.y)#前回位置
+            print(f"before position :{x0, y0}")
             if(not first): theta_past = theta_now
             self.renew_data()
+            print(f"distance :{self.distance}")
             if(self.distance<3): # goto camera phase
-                self.subthread.record(comment="gps")
+                print("distance < 3")
+                # self.subthread.record(comment="gps")
                 return 0
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
+            print(f"moved: {moved}")
             theta_now = self.theta_relative
+            print(f"theta: {theta_now}")
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
             elif moved <= 0.03:
+                print("stacking?")
                 # 動けていない場合
                 self.motor.changeduty(0, 0)
                 self.renew_data(gps=False)
@@ -47,11 +53,12 @@ class Gps_phase():
                 theta_now = self.theta_relative
                 if (self.motor.angle_difference(theta_past, theta_now)<30): self.motor.stack() #動いてなければスタック処理
                 first = True
-                self.subthread.record(comment="notmove")
+                # self.subthread.record(comment="notmove")
             else:
                 if(self.distance < moved): duty_max = int(duty_max*self.distance/moved)
                 #角度変化に応じたduty比調整
                 theta_delta = theta_past - theta_now
+                print(f"theta_delta: {theta_delta}")
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(theta_delta+20<theta_now): duty_L-=1
                     elif(theta_delta+20>theta_now): duty_R-=1
@@ -62,8 +69,9 @@ class Gps_phase():
                 duty_R += duty_difference
                 duty_L += duty_difference
                 #モーターのDuty比を変更
+                print(f"renew duty: {duty_R, duty_L}")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
-                self.subthread.record(comment="dutychange")
+                # self.subthread.record(comment="dutychange")
             time.sleep(1)#1秒走る
             first = False
 
