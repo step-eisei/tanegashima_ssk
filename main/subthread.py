@@ -34,7 +34,7 @@ class Subthread:
             with open(self.recordname, "a", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow([comment, time_now-self.time_start, self.phaselist[self.phase], self.pressure.pressure, self.gps.latitude, self.gps.longitude, self.motor.duty_R_now, self.motor.duty_L_now, self.geomag.theta_absolute, "corn", self.distance.distance])
-            print("recorded.")
+            print("regularly record.")
             if(loop): time.sleep(10)
             else: break
     

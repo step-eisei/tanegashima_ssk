@@ -5,12 +5,12 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-import subthread
+# import subthread
 import csv
 
 class Gps_phase():
-    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[27.499999999999993, 14.954545454545453, 32.755102040816325],aves=[-103.04545454545453, 22.227272727272727, -48.06122448979592]), subthrea=None):
-        if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
+    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[27.499999999999993, 14.954545454545453, 32.755102040816325],aves=[-103.04545454545453, 22.227272727272727, -48.06122448979592])):#, subthrea=None):
+        # if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
@@ -20,11 +20,11 @@ class Gps_phase():
         self.motor = motor
         self.gps = gps
         self.mag = mag
-        self.subthread = subthrea
+        # self.subthread = subthrea
         self.renew_data()
 
     def run(self, duty_max=30):
-        self.subthread.phase = 2
+        # self.subthread.phase = 2
         first = True
         duty_R = duty_max
         duty_L = duty_max
@@ -38,7 +38,7 @@ class Gps_phase():
             if(self.distance<3): # goto camera phase
                 self.motor.end()
                 print("distance < 3")
-                self.subthread.record(comment="gps")
+                # self.subthread.record(comment="gps")
                 return 0
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             print(f"moved: {moved}")
@@ -79,7 +79,7 @@ class Gps_phase():
                 print(f"renew duty: {duty_R, duty_L}")
                 print("")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
-                self.subthread.record(comment="dutychange")
+                # self.subthread.record(comment="dutychange")
             time.sleep(2)#2秒走る
             first = False
 
