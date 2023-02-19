@@ -81,3 +81,7 @@ if(1):
     with open('lsm303.csv', 'w') as f:
         writer = csv.writer(f)
         writer.writerows(maglist)
+    with open('calibration_lsm303.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(["x, y, z"])
+        writer.writerows([motor.geomag.rads, motor.geomag.aves])

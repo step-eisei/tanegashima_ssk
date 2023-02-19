@@ -5,12 +5,12 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-# import subthread
+import subthread
 import csv
 
 class Gps_phase():
-    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[26.318181818181813, 20.227272727272727, 32.5],aves=[-107.5909090909091, 23.045454545454547, -49.030612244897966])):#, subthrea=None):
-        # if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
+    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthrea=None):
+        if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
@@ -26,8 +26,7 @@ class Gps_phase():
     def run(self, duty_max=25):
         # self.subthread.phase = 2
         first = True
-        duty_R = duty_max
-        duty_L = duty_max
+        duty_R = duty_L = duty_max
         while True:
             x0, y0 = (self.x, self.y)#前回位置
             if(not first): theta_previous = self.theta_relative
@@ -186,7 +185,12 @@ class Gps_phase():
 
 def main():
     try:
-        gps_phase = Gps_phase()
+        with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
+            reader = csv.reader(f)
+            line = [row for row in reader]
+            rads = [float(line[1][i]) for i in range(3)]
+            aves = [float(line[2][i]) for i in range(3)]
+        gps_phase = Gps_phase(mag=class_geomag.GeoMagnetic(True, rads, aves))
         gps_phase.run()
     except KeyboardInterrupt:
         gps_phase.motor.end()
