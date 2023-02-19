@@ -23,7 +23,7 @@ class Gps_phase():
         # self.subthread = subthrea
         self.renew_data()
 
-    def run(self, duty_max=30):
+    def run(self, duty_max=20):
         # self.subthread.phase = 2
         first = True
         duty_R = duty_max
@@ -62,7 +62,7 @@ class Gps_phase():
                 #角度変化に応じたduty比調整
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta: {theta_delta}")
-                duty_delta = 2
+                duty_delta = 1
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(theta_delta+20<theta_now): duty_L-=duty_delta
                     elif(theta_delta+20>theta_now): duty_R-=duty_delta
