@@ -80,7 +80,7 @@ class Gps_phase():
                 print("")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
                 # self.subthread.record(comment="dutychange")
-            time.sleep(1)#1秒走る
+            time.sleep(0.5)#0.5s秒走る
             first = False
 
     # gps, magを取得して更新するメソッド
