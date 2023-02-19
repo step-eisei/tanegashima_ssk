@@ -20,7 +20,7 @@ class Gps_phase():
         self.motor = motor
         self.gps = gps
         self.mag = mag
-        self.subthread = subthread
+        self.subthread = subthrea
         self.renew_data()
 
     def run(self, duty_max=30):
