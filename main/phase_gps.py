@@ -33,7 +33,6 @@ class Gps_phase():
             if(not first): theta_past = theta_now
             while(self.distance>50):
                 self.renew_data()
-            print(f"distance :{self.distance}")
             if(self.distance<3): # goto camera phase
                 print("distance < 3")
                 # self.subthread.record(comment="gps")
@@ -88,6 +87,13 @@ class Gps_phase():
         if(mag):
             self.mag.get()
             self.angle()
+        print("")
+        print("renew data")
+        print(f"distance      :{self.distance}")
+        print(f"theta_absolute:{self.mag.theta_absolute}")
+        print(f"theta_relative:{self.theta_relative}")
+        print("")
+
 
     # ゴール角度，機体の角度から機体の回転角度を求めるメソッド
     def angle(self):
