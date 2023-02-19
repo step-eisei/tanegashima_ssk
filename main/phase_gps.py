@@ -65,7 +65,7 @@ class Gps_phase():
                 print(f"theta_delta:{theta_delta}")
                 # if(abs(self.theta_relative)<30):    duty_delta = 1
                 # elif(abs(self.theta_relative)<90):  duty_delta = 2
-                if(abs(self.theta_relative)<150): duty_delta = 3
+                if(abs(self.theta_relative)<150): duty_delta = 2
                 else:                               duty_delta = 5
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(abs(theta_delta)+40<abs(theta_now)):
