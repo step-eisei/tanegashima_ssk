@@ -15,6 +15,7 @@ class Motor():
         self.geomag.calibrated = True
         self.duty_R_now = -1
         self.duty_L_now = -1
+        self.time_sleep_constant = 0.001
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
         GPIO.setup(self.rightIN1, GPIO.OUT)
@@ -87,18 +88,24 @@ class Motor():
         elif(angle>180): return angle-360
         return angle
 
-    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.001):
+    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10):
         if(angle!=0):
             if(duty_L==None): duty_L = -duty_R
+            # get object theta
             self.geomag.get()
             theta_past = self.geomag.theta_absolute
-            print(f"theta_past:{theta_past}")
+            theta_object = theta_past - angle
+            theta_object = self.angle_difference(theta_past, angle)
+            print(f"theta_past  :{theta_past}")
+            print(f"theta_object:{theta_object}")
+            
+            # rotate start
             for i in range(10):
                 if(angle>0):
-                    print(duty_R, duty_L)
+                    print(f"duty:{duty_R}, {duty_L}")
                     self.changeduty(duty_R, duty_L)
                 else:
-                    print(-duty_R, -duty_L)
+                    print(f"duty:{-duty_R}, {-duty_L}")
                     self.changeduty(-duty_R, -duty_L)
                 time.sleep(abs(time_sleep_constant*angle))
                 self.changeduty(0, 0)
