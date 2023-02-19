@@ -31,8 +31,9 @@ class Gps_phase():
             x0, y0 = (self.x, self.y)#前回位置
             print(f"before position :{x0, y0}")
             if(not first): theta_past = theta_now
-            while(self.distance>50):
+            while True:
                 self.renew_data()
+                if(self.distance<50): break
             if(self.distance<3): # goto camera phase
                 print("distance < 3")
                 # self.subthread.record(comment="gps")
