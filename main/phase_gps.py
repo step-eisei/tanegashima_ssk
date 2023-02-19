@@ -10,13 +10,11 @@ import csv
 
 class Gps_phase():
     def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
-        with open ('goal.csv', 'r') as f :
+        with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
             self.goal_lati = float(line[ 1 ] [ 0 ])
             self.goal_longi = float(line[ 1 ] [ 1 ])
-        self.goal_lati = -1# goal座標取得プログラムより取得
-        self.goal_longi = -1
         self.duty_constant=0.5
         self.motor = motor
         self.gps = gps
