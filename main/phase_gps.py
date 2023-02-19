@@ -9,7 +9,7 @@ import class_geomag
 import csv
 
 class Gps_phase():
-    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[1.45, 1.06, 1.32],aves=[-1.16, -1, 3.15])):#, subthread=subthread.Subthread()):
+    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(calibrated=True, rads=[27, 15.4, 33.4],aves=[-105.6, 13.4, -43.9])):#, subthread=subthread.Subthread()):
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
