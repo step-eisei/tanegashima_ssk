@@ -24,6 +24,7 @@ class GeoMagnetic:
         self.x, self.y, self.z = [0.0, 0.0, 0.0]
         self.maglist = []
         self.calibrated = calibrated
+        print(self.calibrated)
         self.rads = rads
         self.aves = aves
     
