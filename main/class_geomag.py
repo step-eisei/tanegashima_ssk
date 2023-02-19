@@ -3,7 +3,7 @@ import time
 import board
 import adafruit_lsm303dlh_mag
 import csv
-import sys
+import datetime
 import math
 
 def percentpick(listdata, p):
@@ -56,6 +56,15 @@ class GeoMagnetic:
         magys = [self.maglist[i][1] for i in range(len(self.maglist))]
         magzs = [self.maglist[i][2] for i in range(len(self.maglist))]
 
+        # csv save
+        DIFF_JST_FROM_UTC = 9
+        jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
+        self.recordname = 'mag/mag_' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
+        with open(self.recordname, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["magx", "magy", "magz"])
+            writer.writerows(self.mag_list)
+            
         # 最大値，最小値の算出
         p = 5 # 上位何%をpickするか
         Xmax, Xmin = percentpick(magxs, 5)
@@ -71,6 +80,7 @@ class GeoMagnetic:
         self.calibrated = True
 
 def main():
+    # mag = GeoMagnetic()
     mag = GeoMagnetic(calibrated=True, rads=[1.45, 1.06, 1.32],aves=[-1.16, -1, 3.15])
 
     while True:
