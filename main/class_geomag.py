@@ -28,7 +28,11 @@ class GeoMagnetic:
         self.aves = aves
     
     def get(self):
-        self.x, self.y, self.z = self.sensor.magnetic
+        while True:
+            try:
+                self.x, self.y, self.z = self.sensor.magnetic
+                break
+            except: time.sleep(0.1)
         self.theta = math.atan2(-self.z, self.x)*180/math.pi
         if self.calibrated:
             self.normalize()
