@@ -121,12 +121,12 @@ class Gps_phase():
     # ゴール角度，機体の角度から機体の回転角度を求めるメソッド
     def angle(self):
         # ゴール角度算出
-        theta_gps = math.atan2(self.y, self.x) * 180/math.pi
+        theta_gps = math.atan2(-self.y, -self.x)*180/math.pi - 90
+        if(theta_gps > 180): theta_gps -= 360
+        if(theta_gps < -180): theta_gps += 360
         print(f"theta_goal    :{theta_gps}")
         # 機体正面を0として，左を正，右を負とした変数(-180~180)を作成
-        self.theta_relative = theta_gps + self.mag.theta_absolute + 90
-        if(self.theta_relative > 180): self.theta_relative -= 360
-        if(self.theta_relative < -180): self.theta_relative += 360
+        self.theta_relative = self.motor.angle_difference(self.mag.theta_absolute, theta_gps)
 
     # gpsからゴール基準で自己位置を求める関数(国土地理院より)
     def calc_xy(self):
