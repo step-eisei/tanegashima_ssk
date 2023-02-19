@@ -39,7 +39,7 @@ gpsthread.start()
 
 DIFF_JST_FROM_UTC = 9
 jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
-gps_name = 'calibration_gps/gps_record_' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
+gps_name = 'gps/gps_record_' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
 
 #引数には（保存先のパス，読み書きの指定やバイナリ，テキストの指定はmodeを使う,）
 with open(gps_name,'w',newline='') as f:
