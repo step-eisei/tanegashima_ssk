@@ -27,8 +27,9 @@ class Gps_phase():
         first = True
         duty_R = duty_max
         duty_L = duty_max
+        x0, y0 = [-1, -1]
         while True:
-            x0, y0 = (self.x, self.y)#前回位置
+            if(not first): x0, y0 = (self.x, self.y)#前回位置
             print(f"before position :{x0, y0}")
             if(not first): theta_past = theta_now
             self.renew_data()
@@ -42,18 +43,18 @@ class Gps_phase():
             theta_now = self.theta_relative
             print(f"theta: {theta_now}")
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
-            elif moved <= 0.03:
-                print("stacking?")
-                # 動けていない場合
-                self.motor.changeduty(0, 0)
-                self.renew_data(gps=False)
-                theta_past = self.theta_relative
-                self.motor.rotate(90, threshold_angle=90)
-                self.renew_data(gps=False)
-                theta_now = self.theta_relative
-                if (self.motor.angle_difference(theta_past, theta_now)<30): self.motor.stack() #動いてなければスタック処理
-                first = True
-                # self.subthread.record(comment="notmove")
+            # elif moved <= 0.03:
+            #     print("stacking?")
+            #     # 動けていない場合
+            #     self.motor.changeduty(0, 0)
+            #     self.renew_data(gps=False)
+            #     theta_past = self.theta_relative
+            #     self.motor.rotate(90, threshold_angle=90)
+            #     self.renew_data(gps=False)
+            #     theta_now = self.theta_relative
+            #     if (self.motor.angle_difference(theta_past, theta_now)<30): self.motor.stack() #動いてなければスタック処理
+            #     first = True
+            #     # self.subthread.record(comment="notmove")
             else:
                 if(self.distance < moved): duty_max = int(duty_max*self.distance/moved)
                 #角度変化に応じたduty比調整
