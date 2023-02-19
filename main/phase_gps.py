@@ -36,12 +36,13 @@ class Gps_phase():
             while True:
                 self.renew_data()
                 if(self.distance<50): break
-            if(self.distance<7): duty_max = 15
             if(self.distance<3): # goto camera phase
                 self.motor.end()
                 print("distance < 3")
                 # self.subthread.record(comment="gps")
                 return 0
+            elif(self.distance<10): duty_max = 15
+            elif(self.distance<15): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             print(f"moved      :{moved}")
             theta_now = self.theta_relative
@@ -64,9 +65,9 @@ class Gps_phase():
                 #角度変化に応じたduty比調整
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta:{theta_delta}")
-                # if(abs(self.theta_relative)<30):    duty_delta = 1
+                if(abs(self.theta_relative)<60):    duty_delta = 1
                 # elif(abs(self.theta_relative)<90):  duty_delta = 2
-                if(abs(self.theta_relative)<150): duty_delta = 2
+                if(abs(self.theta_relative)<150):   duty_delta = 2
                 else:                               duty_delta = 5
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(abs(theta_delta)+40<abs(theta_now)):
