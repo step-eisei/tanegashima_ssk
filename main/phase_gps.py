@@ -63,11 +63,10 @@ class Gps_phase():
                 #角度変化に応じたduty比調整
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta: {theta_delta}")
-                duty_delta = 1
-                if(abs(self.theta_relative)>150):
-                    duty_R-=duty_delta*3
-                    mode = 1
-                elif(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
+                if(abs(self.theta_relative)<30):    duty_delta = 1
+                elif(abs(self.theta_relative)<90):  duty_delta = 2
+                else:                               duty_delta = 3
+                if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
                     if(theta_delta+40>theta_now):
                         if(mode==1): duty_R = duty_L
                         duty_L-=duty_delta
