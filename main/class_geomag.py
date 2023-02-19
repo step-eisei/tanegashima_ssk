@@ -32,7 +32,9 @@ class GeoMagnetic:
             try:
                 self.x, self.y, self.z = self.sensor.magnetic
                 break
-            except: time.sleep(0.1)
+            except:
+                print("geomag get error")
+                time.sleep(0.1)
         self.theta = math.atan2(-self.z, self.x)*180/math.pi
         if self.calibrated:
             self.normalize()
@@ -85,7 +87,7 @@ class GeoMagnetic:
 
 def main():
     # mag = GeoMagnetic()
-    mag = GeoMagnetic(calibrated=True, rads=[27.499999999999993, 14.954545454545453, 32.755102040816325],aves=[-103.04545454545453, 22.227272727272727, -48.06122448979592])
+    mag = GeoMagnetic(calibrated=True, rads=[24.409090909090914, 17.5, 23.316326530612244],aves=[-108.86363636363637, 25.772727272727273, -50.05102040816327])
 
     maglist = []
     while True:
