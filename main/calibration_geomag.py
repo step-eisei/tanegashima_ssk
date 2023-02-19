@@ -10,15 +10,15 @@ def percentpick(listdata, p):
 
 motor = Motor()
 
-duty = 10
+duty = 5
 p = 5
-mag_list = []
-
-t = 0
+time_all = 120
 duration = 0.5
 
+t = 0
+mag_list = []
 motor.changeduty(duty, -duty)
-while t <= 30:
+while t <= time_all:
     try:
         motor.geomag.get()
         mag_list.append((motor.geomag.x, motor.geomag.y, motor.geomag.z))
