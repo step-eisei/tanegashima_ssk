@@ -63,12 +63,25 @@ class Gps_phase():
                 theta_delta = theta_past - theta_now
                 print(f"theta_delta: {theta_delta}")
                 duty_delta = 1
+                mode = 0
                 if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
-                    if(theta_delta+40>theta_now): duty_L-=duty_delta
-                    elif(theta_delta+40<theta_now): duty_R-=duty_delta
+                    if(theta_delta+40>theta_now):
+                        if(mode==1): duty_R = duty_L
+                        duty_L-=duty_delta
+                        mode = 2
+                    elif(theta_delta+40<theta_now):
+                        if(mode==2): duty_L = duty_R
+                        duty_R-=duty_delta
+                        mode = 1
                 else:
-                    if(theta_delta>theta_now): duty_L-=duty_delta
-                    else: duty_R-=duty_delta
+                    if(theta_delta>theta_now):
+                        if(mode==1): duty_R = duty_L
+                        duty_L-=duty_delta
+                        mode = 2
+                    else:
+                        if(mode==2): duty_L = duty_R
+                        duty_R-=duty_delta
+                        mode = 1
                 print("")
                 print(f"duty_max :{duty_max}")
                 print(f"duty :{duty_R, duty_L}")
@@ -80,7 +93,7 @@ class Gps_phase():
                 print("")
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
                 # self.subthread.record(comment="dutychange")
-            time.sleep(0.5)#0.5s秒走る
+            time.sleep(1)#1秒走る
             first = False
 
     # gps, magを取得して更新するメソッド
