@@ -28,79 +28,64 @@ class Gps_phase():
         first = True
         duty_R = duty_max
         duty_L = duty_max
-        mode = 0
         while True:
             x0, y0 = (self.x, self.y)#前回位置
-            print(f"before position :{x0, y0}")
-            if(not first): theta_past = theta_now
+            if(not first): theta_previous = self.theta_relative
             while True:
                 self.renew_data()
                 if(self.distance<50): break
             if(self.distance<3): # goto camera phase
+                self.motor.forward(5, 5, 0.05, tick_dutymax=2)
+                self.motor.changeduty(0, 0)
+                time.sleep(1)
                 self.motor.end()
                 print("distance < 3")
                 # self.subthread.record(comment="gps")
                 return 0
-            elif(self.distance<10): duty_max = 15
-            elif(self.distance<15): duty_max = 20
+            elif(self.distance<12): duty_max = 15
+            elif(self.distance<17): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
-            print(f"moved      :{moved}")
-            theta_now = self.theta_relative
-            print(f"theta_now  :{theta_now}")
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
-            # elif moved <= 0.03:
-            #     print("stacking?")
-            #     # 動けていない場合
-            #     self.motor.changeduty(0, 0)
-            #     self.renew_data(gps=False)
-            #     theta_past = self.theta_relative
-            #     self.motor.rotate(90, threshold_angle=90)
-            #     self.renew_data(gps=False)
-            #     theta_now = self.theta_relative
-            #     if (self.motor.angle_difference(theta_past, theta_now)<30): self.motor.stack() #動いてなければスタック処理
-            #     first = True
-            #     # self.subthread.record(comment="notmove")
+            elif moved <= 0.03:
+                print("stacking?")
+                # 動けていない場合
+                self.motor.changeduty(0, 0)
+                self.renew_data(gps=False)
+                theta_previous = self.theta_relative
+                self.motor.rotate(90, threshold_angle=90)
+                self.renew_data(gps=False)
+                if (self.motor.angle_difference(theta_previous, self.theta_relative)<30): self.motor.stack() #動いてなければスタック処理
+                first = True
+                # self.subthread.record(comment="notmove")
             else:
-                if(self.distance < moved): duty_max = int(duty_max*self.distance/moved)
-                #角度変化に応じたduty比調整
-                theta_delta = theta_past - theta_now
-                print(f"theta_delta:{theta_delta}")
+                if(abs(duty_R-duty_L)>5): duty_R=duty_L # due to feedback delay
+                theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)
+                # Proportional control
                 if(abs(self.theta_relative)<60):    duty_delta = 1
-                # elif(abs(self.theta_relative)<90):  duty_delta = 2
-                if(abs(self.theta_relative)<150):   duty_delta = 2
+                elif(abs(self.theta_relative)<150): duty_delta = 2
                 else:                               duty_delta = 5
-                if(abs(theta_delta-theta_now)<abs(theta_delta+theta_now)):
-                    if(theta_delta+25>theta_now):
-                        if(mode==1): duty_R = duty_L
-                        duty_L-=duty_delta
-                        mode = 2
-                    elif(theta_delta+25<theta_now):
-                        if(mode==2): duty_L = duty_R
-                        duty_R-=duty_delta
-                        mode = 1
-                else:
-                    if(theta_delta<theta_now):
-                        if(mode==1): duty_R = duty_L
-                        duty_L-=duty_delta
-                        mode = 2
-                    else:
-                        if(mode==2): duty_L = duty_R
-                        duty_R-=duty_delta
-                        mode = 1
-                print("")
-                if(mode==0):print("mode      :straight")
-                elif(mode==1):print("mode      :right turn")
-                else:print("mode      :left turn")
-                print(f"duty_max  :{duty_max}")
-                print(f"duty      :{duty_R, duty_L}")
+                # Derivative control
+                if(math.floor(abs(self.theta_relative/(2*theta_delta)))<4): duty_delta += math.floor(abs(self.theta_relative/(2*theta_delta)))
+                else:                                                       duty_delta += 3
+                # adjust duty
+                if(self.theta_relative<0):  duty_R -= duty_delta
+                else:                       duty_L -= duty_delta
                 duty_difference = duty_max-max(duty_R, duty_L)
                 duty_R += duty_difference
                 duty_L += duty_difference
-                #モーターのDuty比を変更
-                print(f"renew duty: {duty_R, duty_L}")
-                print("")
-                self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5)
+                self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5) # motor
                 # self.subthread.record(comment="dutychange")
+            print("")
+            print(f"now  GPS            :{self.gps.latitude, self.gps.longitude}")
+            print(f"goal GPS            :{self.goal_lati, self.goal_longi}")
+            print(f"previous position   :{x0, y0}")
+            print(f"now      position   :{self.x, self.y}")
+            print(f"distance, move      :{self.distance, moved}")
+            print(f"theta_absolute      :{self.mag.theta_absolute}")
+            print(f"theta_relative      :{self.theta_relative}")
+            print(f"theta_delta         :{theta_delta}")
+            print(f"duty_max            :{duty_max}")
+            print(f"duty                :{duty_R, duty_L}")
             time.sleep(1)#1秒走る
             first = False
 
@@ -109,17 +94,9 @@ class Gps_phase():
         if(gps):
             self.calc_xy()
             self.distance = math.sqrt(self.x**2+self.y**2)
-        print("")
-        print("renew data")
-        print(f"now position  :{self.x, self.y}")
-        print(f"distance      :{self.distance}")
         if(mag):
             self.mag.get()
             self.angle()
-        print(f"theta_absolute:{self.mag.theta_absolute}")
-        print(f"theta_relative:{self.theta_relative}")
-        print("")
-
 
     # ゴール角度，機体の角度から機体の回転角度を求めるメソッド
     def angle(self):
@@ -127,7 +104,7 @@ class Gps_phase():
         theta_gps = math.atan2(-self.y, -self.x)*180/math.pi - 90
         if(theta_gps > 180): theta_gps -= 360
         if(theta_gps < -180): theta_gps += 360
-        print(f"theta_goal    :{theta_gps}")
+        # print(f"theta_goal    :{theta_gps}")
         # 機体正面を0として，左を正，右を負とした変数(-180~180)を作成
         self.theta_relative = self.motor.angle_difference(self.mag.theta_absolute, theta_gps)
 
@@ -142,10 +119,6 @@ class Gps_phase():
             x: 変換後の平面直角座標[m]
             y: 変換後の平面直角座標[m]
         """
-        print("")
-        print(f"now :{self.gps.latitude, self.gps.longitude}")
-        print(f"goal:{self.goal_lati, self.goal_longi}")
-        print("")
         # 緯度経度・平面直角座標系原点をラジアンに直す
         phi_rad = np.deg2rad(self.gps.latitude)
         lambda_rad = np.deg2rad(self.gps.longitude)
