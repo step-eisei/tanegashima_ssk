@@ -90,7 +90,7 @@ def main():
             maglist.append([mag.x, mag.y, mag.z])
             print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag.x, mag.y, mag.z))
             print(mag.theta_absolute)
-            # time.sleep(1)
+            time.sleep(0.1)
         except KeyboardInterrupt:
             break
     with open('lsm303.csv', 'w') as f:
