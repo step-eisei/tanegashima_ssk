@@ -85,7 +85,7 @@ class GeoMagnetic:
 
 def main():
     # mag = GeoMagnetic()
-    mag = GeoMagnetic(calibrated=True, rads=[27, 15.4, 33.4],aves=[-105.6, 13.4, -43.9])
+    mag = GeoMagnetic(calibrated=True, rads=[27.499999999999993, 14.954545454545453, 32.755102040816325],aves=[-103.04545454545453, 22.227272727272727, -48.06122448979592])
 
     maglist = []
     while True:
