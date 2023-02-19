@@ -10,7 +10,7 @@ def percentpick(listdata, p):
 
 motor = Motor()
 
-duty = 5
+duty = 8
 p = 5
 time_all = 120
 duration = 0.5
