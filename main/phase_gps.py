@@ -63,7 +63,7 @@ class Gps_phase():
                 stack = 0
                 # self.subthread.record(comment="notmove")
             else:
-                if(abs(duty_R-duty_L)>5): duty_R=duty_L # due to feedback delay
+                if(abs(duty_R-duty_L)>3): duty_R=duty_L # due to feedback delay
                 theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)
                 # Proportional control
                 if(abs(self.theta_relative)<60):    duty_delta = 1
