@@ -14,8 +14,8 @@ class Gps_phase():
 #         if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
         DIFF_JST_FROM_UTC = 9
         jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
-        gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
-        with open(gps_name, 'w', newline="") as f:
+        self.gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
+        with open(self.gps_name, 'w', newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["lati, longi, g_lati, g_longi, x, y, distance, move, theta_abs, theta_rela, theta_delta, duty, duty_R, duty_L"])
         
@@ -98,7 +98,7 @@ class Gps_phase():
             print(f"theta_delta         :{theta_delta}")
             print(f"duty_max            :{duty_max}")
             print(f"duty                :{duty_R, duty_L}")
-            with open(gps_name, 'a', newline="") as f:
+            with open(self.gps_name, 'a', newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
             time.sleep(1)#1秒走る
