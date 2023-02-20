@@ -7,13 +7,18 @@ import class_gps
 import class_geomag
 # import subthread
 import csv
+import datetime
 
 class Gps_phase():
     def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthrea=None):
 #         if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
-        with open('phase_gps.csv', 'w') as f:
+        DIFF_JST_FROM_UTC = 9
+        jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
+        gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
+        with open(gps_name, 'w', newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["lati, longi, g_lati, g_longi, x, y, distance, move, theta_abs, theta_rela, theta_delta, duty, duty_R, duty_L"])
+        
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
@@ -93,7 +98,7 @@ class Gps_phase():
             print(f"theta_delta         :{theta_delta}")
             print(f"duty_max            :{duty_max}")
             print(f"duty                :{duty_R, duty_L}")
-            with open('phase_gps.csv', 'a') as f:
+            with open(gps_name, 'a', newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
             time.sleep(1)#1秒走る
