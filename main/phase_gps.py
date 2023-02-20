@@ -27,7 +27,7 @@ class Gps_phase():
         # self.subthread.phase = 2
         first = True
         duty_R = duty_L = duty_max
-        
+        theta_delta = 1000
         while True:
             x0, y0 = (self.x, self.y)#前回位置
             if(not first): theta_previous = self.theta_relative
