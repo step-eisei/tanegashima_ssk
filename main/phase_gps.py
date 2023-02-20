@@ -27,8 +27,10 @@ class Gps_phase():
         # self.subthread.phase = 2
         first = True
         duty_R = duty_L = duty_max
+        loop = 0
         theta_delta = 1000
         while True:
+            loop+=1
             x0, y0 = (self.x, self.y)#前回位置
             if(not first): theta_previous = self.theta_relative
             while True:
@@ -46,7 +48,7 @@ class Gps_phase():
             elif(self.distance<17): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
-            elif moved <= 0.03:
+            elif (loop > 4 and moved <= 0.03):
                 print("stacking?")
                 # 動けていない場合
                 self.motor.changeduty(0, 0)
