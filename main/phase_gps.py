@@ -44,8 +44,8 @@ class Gps_phase():
                 print("distance < 3")
                 # self.subthread.record(comment="gps")
                 return 0
-            elif(self.distance<12): duty_max = 15
-            elif(self.distance<17): duty_max = 20
+            elif(self.distance<7): duty_max = 15
+            elif(self.distance<12): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
             elif (loop > 4 and moved <= 0.03):
@@ -65,9 +65,9 @@ class Gps_phase():
                 # Proportional control
                 if(abs(self.theta_relative)<60):    duty_delta = 1
                 elif(abs(self.theta_relative)<150): duty_delta = 2
-                else:                               duty_delta = 5
+                else:                               duty_delta = 3
                 # Derivative control
-                if(math.floor(abs(self.theta_relative/(2*theta_delta)))<4): duty_delta += math.floor(abs(self.theta_relative/(2*theta_delta)))
+                if(math.floor(abs(self.theta_relative/(3*theta_delta)))<4): duty_delta += math.floor(abs(self.theta_relative/(2*theta_delta)))
                 else:                                                       duty_delta += 3
                 # adjust duty
                 if(self.theta_relative<0):  duty_R -= duty_delta
