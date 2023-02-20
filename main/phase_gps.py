@@ -57,7 +57,7 @@ class Gps_phase():
             if(moved <= 0.03): stack +=1
             else             : stack = 0
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
-            elif (stack > 5):
+            elif (stack > 9):
                 print("stacking?")
                 # 動けていない場合
                 self.motor.changeduty(0, 0)
@@ -77,8 +77,8 @@ class Gps_phase():
                 elif(abs(self.theta_relative)<150): duty_delta = 2
                 else:                               duty_delta = 3
                 # Derivative control
-                if(math.floor(abs(self.theta_relative/(3*theta_delta)))<4): duty_delta += math.floor(abs(self.theta_relative/(2*theta_delta)))
-                else:                                                       duty_delta += 3
+                if(math.floor(abs(self.theta_relative/(3*theta_delta)))<6): duty_delta += math.floor(abs(self.theta_relative/(2*theta_delta)))
+                else:                                                       duty_delta += 5
                 # adjust duty
                 if(self.theta_relative<0):  duty_R -= duty_delta
                 else:                       duty_L -= duty_delta
