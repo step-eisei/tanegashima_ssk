@@ -5,12 +5,12 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-import subthread
+# import subthread
 import csv
 
 class Gps_phase():
     def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthrea=None):
-        if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
+        # if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
