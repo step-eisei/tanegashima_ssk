@@ -126,6 +126,42 @@ class Motor():
             print("loop limit.")
         else: print("Error. angle is not defined.")
     
+    def rotate2(self, angle, duty=10):
+        self.geomag.get()
+        angle_origin = self.geomag.theta_absolute
+        angle_diff = angle
+        angle_target = angle_origin + angle
+        if angle_target > 180:
+            angle_target -= 360
+        elif angle_target < -180:
+            angle_target += 360
+        
+        time_const = 0.1
+        threshold = 3.0
+
+        while True:
+            try:
+                if angle_diff > 0:
+                    self.changeduty(duty_R=duty, duty_L=-duty)
+                else:
+                    self.changeduty(duty_R=-duty, duty_L=duty)
+                
+                sleep_time = time_const * math.abs(angle_diff)
+
+                time.sleep(sleep_time)
+                self.changeduty(0,0)
+                time.sleep(1)
+
+                self.geomag.get()
+                angle_new = self.geomag.theta_absolute
+                angle_diff = self.angle_difference(angle_target, angle_new)
+
+                if -threshold < angle_diff < threshold:
+                    break
+            except:
+                self.changeduty(0,0)
+                print("keyboard interrupt")
+    
     def stack(self, duty_R=50, duty_L=50):
         while True:
             self.rotate(90, threshold_angle=20)
