@@ -139,6 +139,8 @@ class Motor():
         time_const = 0.01
         threshold = 3.0
 
+        print(f"target:{angle_target}")
+
         while True:
             if angle_diff > 0:
                 self.changeduty(duty_R=duty, duty_L=-duty)
@@ -146,7 +148,6 @@ class Motor():
                 self.changeduty(duty_R=-duty, duty_L=duty)
             
             sleep_time = time_const * abs(angle_diff)
-            print(sleep_time)
 
             time.sleep(sleep_time)
             self.changeduty(0,0)
@@ -154,7 +155,9 @@ class Motor():
 
             self.geomag.get()
             angle_new = self.geomag.theta_absolute
-            angle_diff = self.angle_difference(angle_target, angle_new)
+            angle_diff = self.angle_difference(angle_new, angle_target)
+            print(f"now:{angle_new}")
+            print(f"diff:{angle_diff}")
 
             if -threshold < angle_diff < threshold:
                 break
