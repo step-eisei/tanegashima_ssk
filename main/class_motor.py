@@ -137,11 +137,11 @@ class Motor():
             angle_target += 360
         
         time_const = 0.01
-        threshold = 1.0
+        threshold = 3.0
 
         print(f"target:{angle_target}")
 
-        while True:
+        for i in range(20):
             if angle_diff > 0:
                 self.changeduty(duty_R=duty, duty_L=-duty)
             else:
@@ -162,6 +162,7 @@ class Motor():
             if -threshold < angle_diff < threshold:
                 break
         
+        print(f"count:{i}")
         self.changeduty(0,0)
     
     def stack(self, duty_R=50, duty_L=50):
@@ -206,7 +207,7 @@ def main():
         print("setup")
         motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
 
-        motor.rotate2(40)
+        motor.rotate2(-150)
         return 
 
         print("forward start")
