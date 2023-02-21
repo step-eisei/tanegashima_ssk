@@ -7,7 +7,7 @@ import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
@@ -138,26 +138,30 @@ class Motor():
         
         time_const = 0.1
         threshold = 3.0
-        
-        while True:
-            if angle_diff > 0:
-                self.changeduty(duty_R=duty, duty_L=-duty)
-            else:
-                self.changeduty(duty_R=-duty, duty_L=duty)
-            
-            sleep_time = time_const * math.abs(angle_diff)
-            print("sleep time")
 
-            time.sleep(sleep_time)
-            self.changeduty(0,0)
-            time.sleep(1)
+        try:
+            while True:
+                if angle_diff > 0:
+                    self.changeduty(duty_R=duty, duty_L=-duty)
+                else:
+                    self.changeduty(duty_R=-duty, duty_L=duty)
+                
+                sleep_time = time_const * math.abs(angle_diff)
+                print(sleep_time)
 
-            self.geomag.get()
-            angle_new = self.geomag.theta_absolute
-            angle_diff = self.angle_difference(angle_target, angle_new)
+                time.sleep(sleep_time)
+                self.changeduty(0,0)
+                time.sleep(1)
 
-            if -threshold < angle_diff < threshold:
-                break
+                self.geomag.get()
+                angle_new = self.geomag.theta_absolute
+                angle_diff = self.angle_difference(angle_target, angle_new)
+
+                if -threshold < angle_diff < threshold:
+                    break
+        except:
+            self.changeduty(0, 0)
+            print("end")
     
     def stack(self, duty_R=50, duty_L=50):
         while True:
