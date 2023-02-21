@@ -44,6 +44,9 @@ class Gps_phase():
                 self.renew_data()
                 if(self.distance<50): break
             if(self.distance<3): # goto camera phase
+                with open(self.gps_name, 'a', newline="") as f:
+                    writer = csv.writer(f)
+                    writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
                 self.motor.forward(5, 5, 0.05, tick_dutymax=2)
                 self.motor.changeduty(0, 0)
                 time.sleep(1)
