@@ -7,7 +7,7 @@ import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=class_geomag.GeoMagnetic()):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
@@ -114,11 +114,11 @@ class Motor():
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
                     elif(change_angle==0): self.stack()
                     else: time_sleep_constant = time_sleep_constant*angle/change_angle
-                    if(abs(time_sleep_constant*angle)<0.02):
+                    if(abs(time_sleep_constant*angle)<0.05):
                         print("angle is very low. return")
                         if(angle>0): self.changeduty(-duty_R, -duty_L)
                         else: self.changeduty(duty_R, duty_L)
-                        time.sleep(0.02)
+                        time.sleep(0.05)
                         self.changeduty(0, 0)
                     elif(abs(time_sleep_constant*angle)>3):
                         time_sleep_constant = 3/angle
