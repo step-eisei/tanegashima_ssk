@@ -100,16 +100,17 @@ class Motor():
         
         time_const = 0.01
         threshold = 3.0
+        total = 20
 
         print(f"target:{angle_target}")
 
-        for i in range(20):
+        for i in range(total):
             if angle_diff > 0:
                 self.changeduty(duty_R=duty, duty_L=-duty)
             else:
                 self.changeduty(duty_R=-duty, duty_L=duty)
             
-            sleep_time = time_const * min(abs(angle_diff),50)
+            sleep_time = time_const * min(abs(angle_diff),30)
 
             time.sleep(sleep_time)
             self.changeduty(0,0)
