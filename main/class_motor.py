@@ -3,10 +3,11 @@ import time
 import random
 import math
 import class_geomag
+import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=class_geomag.GeoMagnetic()):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
@@ -15,31 +16,23 @@ class Motor():
         self.geomag.calibrated = True
         self.duty_R_now = -1
         self.duty_L_now = -1
-        self.time_sleep_constant = 0.001
         
         GPIO.setmode(GPIO.BCM) # GPIOnを指定するように設定
         GPIO.setup(self.rightIN1, GPIO.OUT)
         GPIO.setup(self.rightIN2, GPIO.OUT)
         GPIO.setup(self.leftIN1, GPIO.OUT)
         GPIO.setup(self.leftIN2, GPIO.OUT)
-        try:
-            self.pwms = {}
-            self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
-            self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
-            self.pwms["leftIN1"] = GPIO.PWM(self.leftIN1, pwm) # pin, Hz
-            self.pwms["leftIN2"] = GPIO.PWM(self.leftIN2, pwm) # pin, Hz
-
-            self.pwms["rightIN1"].start(0)
-            self.pwms["rightIN2"].start(0)
-            self.pwms["leftIN1"].start(0)
-            self.pwms["leftIN2"].start(0)
-        except:
-            print("define Motor class many times")
-            self.pwms["rightIN1"].start(0)
-            self.pwms["rightIN2"].start(0)
-            self.pwms["leftIN1"].start(0)
-            self.pwms["leftIN2"].start(0)
-
+        self.pwms = {}
+        self.pwms["rightIN1"] = GPIO.PWM(self.rightIN1, pwm) # pin, Hz
+        self.pwms["rightIN2"] = GPIO.PWM(self.rightIN2, pwm) # pin, Hz
+        self.pwms["leftIN1"] = GPIO.PWM(self.leftIN1, pwm) # pin, Hz
+        self.pwms["leftIN2"] = GPIO.PWM(self.leftIN2, pwm) # pin, Hz
+        
+        self.pwms["rightIN1"].start(0)
+        self.pwms["rightIN2"].start(0)
+        self.pwms["leftIN1"].start(0)
+        self.pwms["leftIN2"].start(0)
+    
     def changeduty(self, duty_R, duty_L):
         if duty_R > 0:
             self.pwms["rightIN1"].ChangeDutyCycle(abs(duty_R))
@@ -65,17 +58,11 @@ class Motor():
 
     def currentblock(self, duty_R, duty_L):
         # prevent Overcurrent
-        if(duty_R != 0 and self.duty_R_now == 0):
-            if(duty_R>=10): duty_R = 10
-            else: pass
+        if(duty_R != 0 and self.duty_R_now == 0): duty_R = 5
         else: duty_R = self.duty_R_now
-        if(duty_L != 0 and self.duty_L_now == 0):
-            if(duty_L>=10): duty_L = 10
-            else: pass
+        if(duty_L != 0 and self.duty_L_now == 0): duty_L = 5
         else: duty_L = self.duty_L_now
-        for i in range(10):
-            self.changeduty(self.duty_R_now+(duty_R-self.duty_R_now)*(i+1)/10, self.duty_L_now+(duty_L-self.duty_L_now)*(i+1)/10)
-            time.sleep(0.05)
+        self.changeduty(duty_R, duty_L)
         time.sleep(1)
 
     def forward(self, duty_R, duty_L, time_sleep=0, time_all=0, tick_dutymax=0):
@@ -101,26 +88,20 @@ class Motor():
         elif(angle>180): return angle-360
         return angle
 
-    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10):
+    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.001):
         if(angle!=0):
             if(duty_L==None): duty_L = -duty_R
-            # get object theta
             self.geomag.get()
             theta_past = self.geomag.theta_absolute
-            theta_object = theta_past - angle
-            theta_object = self.angle_difference(theta_past, angle)
-            print(f"theta_past  :{theta_past}")
-            print(f"theta_object:{theta_object}")
-            
-            # rotate start
+            print(f"theta_past:{theta_past}")
             for i in range(10):
                 if(angle>0):
-                    print(f"duty:{duty_R}, {duty_L}")
+                    print(duty_R, duty_L)
                     self.changeduty(duty_R, duty_L)
                 else:
-                    print(f"duty:{-duty_R}, {-duty_L}")
+                    print(-duty_R, -duty_L)
                     self.changeduty(-duty_R, -duty_L)
-                time.sleep(abs(self.time_sleep_constant*angle))
+                time.sleep(abs(time_sleep_constant*angle))
                 self.changeduty(0, 0)
                 print("stop")
                 time.sleep(3)
@@ -132,16 +113,15 @@ class Motor():
                     print(f"change_angle:{change_angle}, threshold:{threshold_angle}")
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
                     elif(change_angle==0): self.stack()
-                    else: self.time_sleep_constant = self.time_sleep_constant*angle/change_angle
-                    if(abs(self.time_sleep_constant*angle)<0.05):
+                    else: time_sleep_constant = time_sleep_constant*angle/change_angle
+                    if(abs(time_sleep_constant*angle)<0.02):
                         print("angle is very low. return")
                         if(angle>0): self.changeduty(-duty_R, -duty_L)
                         else: self.changeduty(duty_R, duty_L)
-                        time.sleep(0.05)
+                        time.sleep(0.02)
                         self.changeduty(0, 0)
-                    elif(abs(self.time_sleep_constant*angle)>3):
-                        self.time_sleep_constant = 3/angle
-                        break
+                    elif(abs(time_sleep_constant*angle)>3):
+                        time_sleep_constant = 3/angle
                     else: break
             print("loop limit.")
         else: print("Error. angle is not defined.")
@@ -180,15 +160,20 @@ def main():
     t = 3
     duty = 30
     try:
+        with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
+            reader = csv.reader(f)
+            line = [row for row in reader]
+            rads = [float(line[1][i]) for i in range(3)]
+            aves = [float(line[2][i]) for i in range(3)]
         print("setup")
-        motor = Motor()
+        motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
 
         print("forward start")
         motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(t)
         
-        print("duty=8")
-        motor.forward(8, 8, 0.05, tick_dutymax=5)
+        print("duty5")
+        motor.forward(5, 5, 0.05, tick_dutymax=5)
         time.sleep(t)
         print("stop")
         motor.changeduty(0, 0)
