@@ -5,13 +5,13 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-# import subthread
+import subthread
 import csv
 import datetime
 
 class Gps_phase():
     def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthrea=None):
-#         if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
+        if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor)
         DIFF_JST_FROM_UTC = 9
         jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
         self.gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
@@ -28,7 +28,7 @@ class Gps_phase():
         self.motor = motor
         self.gps = gps
         self.mag = mag
-        # self.subthread = subthrea
+        self.subthread = subthrea
         self.renew_data()
 
     def run(self, duty_max=25):
