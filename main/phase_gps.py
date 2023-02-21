@@ -5,7 +5,7 @@ import math
 import class_motor
 import class_gps
 import class_geomag
-import subthread
+#import subthread
 import csv
 import datetime
 
