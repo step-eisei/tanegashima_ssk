@@ -120,7 +120,7 @@ class Motor():
                 else:
                     print(f"duty:{-duty_R}, {-duty_L}")
                     self.changeduty(-duty_R, -duty_L)
-                time.sleep(abs(time_sleep_constant*angle))
+                time.sleep(abs(self.time_sleep_constant*angle))
                 self.changeduty(0, 0)
                 print("stop")
                 time.sleep(3)
@@ -132,15 +132,15 @@ class Motor():
                     print(f"change_angle:{change_angle}, threshold:{threshold_angle}")
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
                     elif(change_angle==0): self.stack()
-                    else: time_sleep_constant = time_sleep_constant*angle/change_angle
-                    if(abs(time_sleep_constant*angle)<0.02):
+                    else: self.time_sleep_constant = self.time_sleep_constant*angle/change_angle
+                    if(abs(self.time_sleep_constant*angle)<0.05):
                         print("angle is very low. return")
                         if(angle>0): self.changeduty(-duty_R, -duty_L)
                         else: self.changeduty(duty_R, duty_L)
-                        time.sleep(0.02)
+                        time.sleep(0.05)
                         self.changeduty(0, 0)
-                    elif(abs(time_sleep_constant*angle)>3):
-                        time_sleep_constant = 3/angle
+                    elif(abs(self.time_sleep_constant*angle)>3):
+                        self.time_sleep_constant = 3/angle
                         break
                     else: break
             print("loop limit.")
