@@ -139,29 +139,27 @@ class Motor():
         time_const = 0.01
         threshold = 3.0
 
-        try:
-            while True:
-                if angle_diff > 0:
-                    self.changeduty(duty_R=duty, duty_L=-duty)
-                else:
-                    self.changeduty(duty_R=-duty, duty_L=duty)
-                
-                sleep_time = time_const * math.abs(angle_diff)
-                print(sleep_time)
+        while True:
+            if angle_diff > 0:
+                self.changeduty(duty_R=duty, duty_L=-duty)
+            else:
+                self.changeduty(duty_R=-duty, duty_L=duty)
+            
+            sleep_time = time_const * math.abs(angle_diff)
+            print(sleep_time)
 
-                time.sleep(sleep_time)
-                self.changeduty(0,0)
-                time.sleep(1)
+            time.sleep(sleep_time)
+            self.changeduty(0,0)
+            time.sleep(1)
 
-                self.geomag.get()
-                angle_new = self.geomag.theta_absolute
-                angle_diff = self.angle_difference(angle_target, angle_new)
+            self.geomag.get()
+            angle_new = self.geomag.theta_absolute
+            angle_diff = self.angle_difference(angle_target, angle_new)
 
-                if -threshold < angle_diff < threshold:
-                    break
-        except:
-            self.changeduty(0, 0)
-            print("end")
+            if -threshold < angle_diff < threshold:
+                break
+        
+        self.changeduty(0,0)
     
     def stack(self, duty_R=50, duty_L=50):
         while True:
