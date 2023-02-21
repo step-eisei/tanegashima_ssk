@@ -206,6 +206,9 @@ def main():
         print("setup")
         motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
 
+        motor.rotate2(40)
+        return 
+
         print("forward start")
         motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(t)
