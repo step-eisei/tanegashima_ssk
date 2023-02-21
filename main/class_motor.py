@@ -169,7 +169,7 @@ def main():
         print("setup")
         motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
 
-        motor.rotate2(-150)
+        motor.rotate(-150)
         return 
 
         print("forward start")
