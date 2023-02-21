@@ -7,7 +7,7 @@ import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=class_geomag.GeoMagnetic()):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
@@ -114,11 +114,11 @@ class Motor():
                     if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
                     elif(change_angle==0): self.stack()
                     else: time_sleep_constant = time_sleep_constant*angle/change_angle
-                    if(abs(time_sleep_constant*angle)<0.05):
+                    if(abs(time_sleep_constant*angle)<0.02):
                         print("angle is very low. return")
                         if(angle>0): self.changeduty(-duty_R, -duty_L)
                         else: self.changeduty(duty_R, duty_L)
-                        time.sleep(0.05)
+                        time.sleep(0.02)
                         self.changeduty(0, 0)
                     elif(abs(time_sleep_constant*angle)>3):
                         time_sleep_constant = 3/angle
@@ -138,29 +138,26 @@ class Motor():
         
         time_const = 0.1
         threshold = 3.0
-
+        
         while True:
-            try:
-                if angle_diff > 0:
-                    self.changeduty(duty_R=duty, duty_L=-duty)
-                else:
-                    self.changeduty(duty_R=-duty, duty_L=duty)
-                
-                sleep_time = time_const * math.abs(angle_diff)
+            if angle_diff > 0:
+                self.changeduty(duty_R=duty, duty_L=-duty)
+            else:
+                self.changeduty(duty_R=-duty, duty_L=duty)
+            
+            sleep_time = time_const * math.abs(angle_diff)
+            print("sleep time")
 
-                time.sleep(sleep_time)
-                self.changeduty(0,0)
-                time.sleep(1)
+            time.sleep(sleep_time)
+            self.changeduty(0,0)
+            time.sleep(1)
 
-                self.geomag.get()
-                angle_new = self.geomag.theta_absolute
-                angle_diff = self.angle_difference(angle_target, angle_new)
+            self.geomag.get()
+            angle_new = self.geomag.theta_absolute
+            angle_diff = self.angle_difference(angle_target, angle_new)
 
-                if -threshold < angle_diff < threshold:
-                    break
-            except:
-                self.changeduty(0,0)
-                print("keyboard interrupt")
+            if -threshold < angle_diff < threshold:
+                break
     
     def stack(self, duty_R=50, duty_L=50):
         while True:
