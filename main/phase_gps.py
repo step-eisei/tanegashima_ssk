@@ -17,7 +17,7 @@ class Gps_phase():
         self.gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
         with open(self.gps_name, 'w', newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["lati, longi, g_lati, g_longi, x, y, distance, move, theta_abs, theta_rela, theta_delta, duty, duty_R, duty_L"])
+            writer.writerow(["lati", "longi", "g_lati", "g_longi", "x", "y", "distance", "move", "theta_abs", "theta_rela", "theta_delta", "duty", "duty_R", "duty_L"])
         
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
