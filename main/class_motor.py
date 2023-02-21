@@ -147,7 +147,7 @@ class Motor():
             else:
                 self.changeduty(duty_R=-duty, duty_L=duty)
             
-            sleep_time = time_const * abs(angle_diff)
+            sleep_time = time_const * min(abs(angle_diff),50)
 
             time.sleep(sleep_time)
             self.changeduty(0,0)
