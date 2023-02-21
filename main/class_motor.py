@@ -136,7 +136,7 @@ class Motor():
         elif angle_target < -180:
             angle_target += 360
         
-        time_const = 0.1
+        time_const = 0.01
         threshold = 3.0
 
         try:
