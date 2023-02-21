@@ -11,7 +11,7 @@ import csv
 
 class Subthread:
     
-    def __init__(self, pressure=class_pressure.Pressure(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), distance=class_distance.Distance(), motor=class_motor.Motor()):
+    def __init__(self, pressure, geomag, gps, distance, motor):
         self.pressure = pressure
         self.geomag = geomag
         self.gps = gps
@@ -46,7 +46,7 @@ class Subthread:
 
 def main():
     try:
-        subthread = Subthread()
+        subthread = Subthread(pressure=class_pressure.Pressure(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), distance=class_distance.Distance(), motor=class_motor.Motor())
         subthread.run()
         while True:
             print("processing...")

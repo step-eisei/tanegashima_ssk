@@ -87,46 +87,8 @@ class Motor():
         if(angle<-180): return angle+360
         elif(angle>180): return angle-360
         return angle
-
-    def rotate(self, angle=0, duty_R=10, duty_L=None, threshold_angle=10, time_sleep_constant=0.001):
-        if(angle!=0):
-            if(duty_L==None): duty_L = -duty_R
-            self.geomag.get()
-            theta_past = self.geomag.theta_absolute
-            print(f"theta_past:{theta_past}")
-            for i in range(10):
-                if(angle>0):
-                    print(duty_R, duty_L)
-                    self.changeduty(duty_R, duty_L)
-                else:
-                    print(-duty_R, -duty_L)
-                    self.changeduty(-duty_R, -duty_L)
-                time.sleep(abs(time_sleep_constant*angle))
-                self.changeduty(0, 0)
-                print("stop")
-                time.sleep(3)
-                for j in range(2):
-                    self.geomag.get()
-                    theta_now = self.geomag.theta_absolute
-                    print(f"theta_now:{theta_now}")
-                    change_angle = self.angle_difference(theta_past, theta_now)
-                    print(f"change_angle:{change_angle}, threshold:{threshold_angle}")
-                    if(change_angle > angle-abs(threshold_angle) and change_angle < angle+abs(threshold_angle)): break
-                    elif(change_angle==0): self.stack()
-                    else: time_sleep_constant = time_sleep_constant*angle/change_angle
-                    if(abs(time_sleep_constant*angle)<0.02):
-                        print("angle is very low. return")
-                        if(angle>0): self.changeduty(-duty_R, -duty_L)
-                        else: self.changeduty(duty_R, duty_L)
-                        time.sleep(0.02)
-                        self.changeduty(0, 0)
-                    elif(abs(time_sleep_constant*angle)>3):
-                        time_sleep_constant = 3/angle
-                    else: break
-            print("loop limit.")
-        else: print("Error. angle is not defined.")
     
-    def rotate2(self, angle, duty=10):
+    def rotate(self, angle, duty=10):
         self.geomag.get()
         angle_origin = self.geomag.theta_absolute
         angle_diff = angle
