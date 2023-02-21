@@ -137,7 +137,7 @@ class Motor():
             angle_target += 360
         
         time_const = 0.01
-        threshold = 3.0
+        threshold = 1.0
 
         print(f"target:{angle_target}")
 
