@@ -6,7 +6,7 @@ import class_geomag
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=13, leftIN2=16, geomag=class_geomag.GeoMagnetic()):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=class_geomag.GeoMagnetic()):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
@@ -187,8 +187,8 @@ def main():
         motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(t)
         
-        print("duty5")
-        motor.forward(5, 5, 0.05, tick_dutymax=5)
+        print("duty=8")
+        motor.forward(8, 8, 0.05, tick_dutymax=5)
         time.sleep(t)
         print("stop")
         motor.changeduty(0, 0)
