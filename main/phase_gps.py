@@ -10,8 +10,8 @@ import csv
 import datetime
 
 class Gps_phase():
-    def __init__(self, motor=class_motor.Motor(), gps=class_gps.Gps(), mag=class_geomag.GeoMagnetic(), subthrea=None):
-        #if(subthrea==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor, pressure=)
+    def __init__(self, motor, gps, mag, subthread=None):
+        #if(subthread==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor, pressure=)
         DIFF_JST_FROM_UTC = 9
         jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
         self.gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
@@ -209,7 +209,7 @@ def main():
             line = [row for row in reader]
             rads = [float(line[1][i]) for i in range(3)]
             aves = [float(line[2][i]) for i in range(3)]
-        gps_phase = Gps_phase(mag=class_geomag.GeoMagnetic(True, rads, aves))
+        gps_phase = Gps_phase(motor=class_motor.Motor(), gps=class_gps.Gps(),mag=class_geomag.GeoMagnetic(True, rads, aves))
         gps_phase.run()
     except KeyboardInterrupt:
         gps_phase.motor.end()
