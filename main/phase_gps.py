@@ -37,6 +37,7 @@ class Gps_phase():
         duty_R = duty_L = duty_max
         stack = 0
         theta_delta = 1000
+        moved = 10
         while True:
             x0, y0 = (self.x, self.y)#前回位置
             if(not first): theta_previous = self.theta_relative
