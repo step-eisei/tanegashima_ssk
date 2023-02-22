@@ -104,26 +104,31 @@ class Motor():
 
         print(f"target:{angle_target}")
 
-        for i in range(total):
-            if angle_diff > 0:
-                self.changeduty(duty_R=duty, duty_L=-duty)
-            else:
-                self.changeduty(duty_R=-duty, duty_L=duty)
-            
-            sleep_time = time_const * min(abs(angle_diff),30)
+        try:
+            for i in range(total):
+                if angle_diff > 0:
+                    self.changeduty(duty_R=duty, duty_L=-duty)
+                else:
+                    self.changeduty(duty_R=-duty, duty_L=duty)
+                
+                sleep_time = time_const * min(abs(angle_diff),30)
 
-            time.sleep(sleep_time)
+                time.sleep(sleep_time)
+                self.changeduty(0,0)
+                time.sleep(1)
+
+                self.geomag.get()
+                angle_new = self.geomag.theta_absolute
+                angle_diff = self.angle_difference(angle_new, angle_target)
+                print(f"now:{angle_new}")
+                print(f"diff:{angle_diff}")
+                print("")
+
+                if -threshold < angle_diff < threshold:
+                    break
+        except KeyboardInterrupt:
             self.changeduty(0,0)
-            time.sleep(1)
-
-            self.geomag.get()
-            angle_new = self.geomag.theta_absolute
-            angle_diff = self.angle_difference(angle_new, angle_target)
-            print(f"now:{angle_new}")
-            print(f"diff:{angle_diff}")
-
-            if -threshold < angle_diff < threshold:
-                break
+            print("KeyboardInterrupt")
         
         print(f"count:{i}")
         self.changeduty(0,0)
