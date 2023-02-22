@@ -219,7 +219,8 @@ def main():
             line = [row for row in reader]
             rads = [float(line[1][i]) for i in range(3)]
             aves = [float(line[2][i]) for i in range(3)]
-        gps_phase = Gps_phase(motor=class_motor.Motor(), gps=class_gps.Gps(),mag=class_geomag.GeoMagnetic(True, rads, aves))
+        geomag=class_geomag.GeoMagnetic(True, rads, aves)
+        gps_phase = Gps_phase(motor=class_motor.Motor(geomag=geomag), gps=class_gps.Gps(),mag=geomag)
         gps_phase.run()
     except KeyboardInterrupt:
         gps_phase.motor.end()
