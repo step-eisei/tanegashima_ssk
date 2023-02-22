@@ -54,7 +54,7 @@ class Gps_phase():
                 print("")
                 print("distance < 3")
                 # self.subthread.record(comment="gps")
-                return 0
+                break
             elif(self.distance<7): duty_max = 15
             elif(self.distance<12): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
@@ -116,6 +116,7 @@ class Gps_phase():
         self.motor.changeduty(0, 0)
         time.sleep(1)
         print("gps phase fin.")
+        return 0
 
     # gps, magを取得して更新するメソッド
     def renew_data(self, gps=True, mag=True):
