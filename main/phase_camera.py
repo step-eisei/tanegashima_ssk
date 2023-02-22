@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/pi/tanegashima_ssk/main/yolo/")
+sys.path.append("/home/pi/tanegashima_ssk/main/yolov7/")
 from yolov7 import class_yolo
 import class_motor
 import class_distance
