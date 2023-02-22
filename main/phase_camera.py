@@ -29,7 +29,7 @@ class Phase_camera:
         x1, x2 = c1[0], c2[0]
 
         x_med = (x1 + x2) / 2
-        x_dist = 2 * (x_med - self.image_size[0] / 2) / self.image_size[0]   #-1~1 中央からx方向にどれくらい離れてるか -1~1
+        x_dist = -2 * (x_med - self.image_size[0] / 2) / self.image_size[0]   #-1~1 中央からx方向にどれくらい離れてるか -1~1
         print(f"x_dist:{x_dist}")
         """
         cone_width = (x1-x2) / self.image_size[0] #コーンの横幅が画像の幅を占める割合
