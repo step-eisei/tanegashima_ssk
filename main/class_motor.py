@@ -88,7 +88,7 @@ class Motor():
         elif(angle>180): return angle-360
         return angle
     
-    def rotate(self, angle, duty=10):
+    def rotate(self, angle, duty=10, threshold=3.0):
         self.geomag.get()
         angle_origin = self.geomag.theta_absolute
         angle_diff = angle
@@ -99,7 +99,6 @@ class Motor():
             angle_target += 360
         
         time_const = 0.01
-        threshold = 3.0
         total = 20
 
         print(f"target:{angle_target}")
@@ -175,7 +174,7 @@ def main():
         print("setup")
         motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
 
-        motor.rotate(-180)
+        motor.rotate(-180, threshold=3.0)
         return 
 
         print("forward start")
