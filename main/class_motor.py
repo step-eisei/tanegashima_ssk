@@ -174,7 +174,7 @@ def main():
         print("setup")
         motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
 
-        motor.rotate(-180, threshold=3.0)
+        motor.rotate(30, threshold=3.0)
         return 
 
         print("forward start")
