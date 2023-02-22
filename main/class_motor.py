@@ -98,8 +98,8 @@ class Motor():
         elif angle_target < -180:
             angle_target += 360
         
-        time_const = 0.01
-        total = 20
+        time_const = 0.005
+        total = 10
 
         print(f"target:{angle_target}")
 
@@ -114,7 +114,7 @@ class Motor():
 
                 time.sleep(sleep_time)
                 self.changeduty(0,0)
-                time.sleep(1)
+                time.sleep(0.5)
 
                 self.geomag.get()
                 angle_new = self.geomag.theta_absolute
