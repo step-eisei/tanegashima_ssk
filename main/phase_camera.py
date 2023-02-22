@@ -1,6 +1,6 @@
 import sys
 sys.path.append("/home/pi/tanegashima_ssk/main/yolo/")
-from yolo import class_yolo
+from yolov7 import class_yolo
 import class_motor
 import class_distance
 import class_geomag
