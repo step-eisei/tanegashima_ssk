@@ -53,8 +53,17 @@ class Gps_phase():
                 self.motor.end()
                 print("")
                 print("distance < 3")
+                print("approach goal")
+                print(f"rotate {self.theta_relative} deg.")
+                self.motor.rotate(self.theta_relative)
+                print(f"distance is {self.distance}")
+                self.motor.forward(10,10,0.05,tick_dutymax=5)
+                time.sleep(self.distance*0.3)
+                self.motor.changeduty(0, 0)
+                time.sleep(1)
+                print("gps phase fin.")
                 # self.subthread.record(comment="gps")
-                break
+                return 0
             elif(self.distance<7): duty_max = 15
             elif(self.distance<12): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
@@ -107,16 +116,6 @@ class Gps_phase():
                 writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
             time.sleep(1)#1秒走る
             first = False
-        print("approach goal")
-        print(f"rotate {self.theta_relative} deg.")
-        self.motor.rotate(self.theta_relative)
-        print(f"distance is {self.distance}")
-        self.motor.forward(10,10,0.05,tick_dutymax=5)
-        time.sleep(self.distance*0.3)
-        self.motor.changeduty(0, 0)
-        time.sleep(1)
-        print("gps phase fin.")
-        return 0
 
     # gps, magを取得して更新するメソッド
     def renew_data(self, gps=True, mag=True):
