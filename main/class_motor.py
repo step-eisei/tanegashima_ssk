@@ -7,7 +7,7 @@ import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=class_geomag.GeoMagnetic(rads=[19.545454545454543, 14.500000000000004, 26.07142857142857], aves=[-77.0, 28.136363636363637, -122.8061224489796])):
+    def __init__(self, geomag, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1

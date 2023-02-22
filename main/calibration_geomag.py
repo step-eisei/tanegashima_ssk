@@ -11,7 +11,7 @@ def percentpick(listdata, p):
         max = listdata[len(listdata)-n]
         return max, min
 
-motor = Motor()
+motor = Motor(geomag=class_geomag.GeoMagnetic())
 
 duty = 8
 p = 5
