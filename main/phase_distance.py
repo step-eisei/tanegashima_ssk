@@ -30,21 +30,28 @@ class Distance_phase:
         #self.subthread.phase = 4
         duty = 10
         i = 0
+        print("start")
         while True:
+            print("read")
             self.distance.reading()
             distance = self.distance.distance # get distance
+            print(f"distance:{distance}")
             if(distance > 2 and distance < 500):
                 i = 0
+                print("detected")
                 if(distance < 5): 
-                    self.subthread.record(comment="distance")
+                    #self.subthread.record(comment="distance")
+                    print("finished")
                     return 0
                 else: 
+                    print("forward")
                     self.motor.forward(duty, duty, 0.05, tick_dutymax=5)#距離に応じて前進
                     time.sleep(distance/10)
                     self.motor.changeduty(0,0)
                     #self.geomag.get()
             else:
                 if(i <= 34):
+                    print("rotate")
                     angle = 10*(i+1)
                     if angle > 180:
                         angle = angle - 360
