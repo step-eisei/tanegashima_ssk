@@ -26,7 +26,6 @@ class Phase_camera:
         #self.subthread = subthread
 
         # const
-        self.forward_time = 5
         self.angle_thres = 10
         self.image_size = [640, 480]
   
@@ -59,9 +58,9 @@ class Phase_camera:
         return self.distance.distance
  
 
-    def forward(self): 
+    def forward(self, forward_time): 
         self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
-        time.sleep(self.forward_time)
+        time.sleep(forward_time)
         self.motor.forward(5, 5, 0.05, tick_dutymax=5)
         self.motor.changeduty(0,0)
     
@@ -87,7 +86,8 @@ class Phase_camera:
                     return 0
                             
                 else:
-                    self.forward()
+                    forward_time = min((c2 - c1) /100, 3)
+                    self.forward(forward_time)
 
             else:  # red cone not in the center of image
                 if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
