@@ -73,7 +73,7 @@ class Phase_camera:
         while True:
             dist = self.check_distance()
             print(f"dist:{dist}")
-            if dist <= 100:  # distance of red cone is 1m
+            if dist <= 50:  # distance of red cone is 1m
                 # goto phase_distance
                 print("goto phase_distance")
                 return 0

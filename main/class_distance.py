@@ -53,8 +53,8 @@ class Distance:
 
 
         #外れ値を除外
-        print("")
-        print(distance_data)
+        #print("")
+        #print(distance_data)
         ave = np.mean(distance_data)
         max = 0
         num = 0
@@ -63,7 +63,7 @@ class Distance:
                 num = i
                 max = (ave-distance_data[i])**2
         distance_data = np.delete(distance_data, num)
-        print(distance_data)
+        #print(distance_data)
         self.distance = np.mean(distance_data)
         print(distance)
         GPIO.cleanup([self.TRIG, self.ECHO])
