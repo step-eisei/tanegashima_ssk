@@ -1,3 +1,6 @@
+import sys
+sys.path.append("/home/pi/tanegashima_ssk/main/yolov7/")
+
 import cv2
 import numpy as np
 import torch
