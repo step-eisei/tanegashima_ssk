@@ -23,7 +23,7 @@ class Distance:
         cycle=1
         error=0
         error_count = 0
-        while(cycle<2):
+        while(cycle<6):
             GPIO.setup(self.TRIG,GPIO.OUT)
             GPIO.setup(self.ECHO,GPIO.IN)
             GPIO.output(self.TRIG, GPIO.LOW)
