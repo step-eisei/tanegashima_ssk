@@ -107,7 +107,7 @@ class Motor():
             angle_target += 360
         
         time_const = 0.005
-        total = 10
+        total = 20
 
         print(f"target:{angle_target}")
 
