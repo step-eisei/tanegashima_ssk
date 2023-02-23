@@ -7,6 +7,7 @@ import class_geomag
 #import subthread
 import time
 import math
+import cv2
 
 class Phase_camera:
     def __init__(self, motor=None, yolo=None, distance=None): #, subthread=subthread.Subthread()):
@@ -68,11 +69,13 @@ class Phase_camera:
     def run(self):
         #self.subthread.phase = 3
         i = 0
-
+        j = 0
         while True:
             # take a photo and image-processing
+            j+=1
             print("take photo")
-            c1, c2 = self.yolo.image_process()
+            c1, c2, image = self.yolo.image_process()
+            cv2.imwrite(f"/camera/image{j}.jpg", image)
             print(c1, c2)
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
