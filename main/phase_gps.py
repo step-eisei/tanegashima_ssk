@@ -57,10 +57,10 @@ class Gps_phase():
                     print("approach to goal")
                     print(f"rotate {self.theta_relative} deg.")
                     print(f"distance is {self.distance}")
-                    if(self.distance<0.3): break
+                    if(self.distance<0.5): break
                     self.motor.rotate(self.theta_relative, threshold=5)
                     self.motor.forward(10,10,0.05,tick_dutymax=5)
-                    time.sleep(self.distance*1.5)
+                    time.sleep(self.distance*3)
                     self.motor.changeduty(0, 0)
                     with open(self.gps_name, 'a', newline="") as f:
                         writer = csv.writer(f)
@@ -69,7 +69,7 @@ class Gps_phase():
                 print("gps phase fin.")
                 # self.subthread.record(comment="gps")
                 return 0
-            elif(self.distance<7): duty_max = 15
+            elif(self.distance<7): duty_max = 18
             elif(self.distance<12): duty_max = 20
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             if(moved <= 0.03): stack +=1
