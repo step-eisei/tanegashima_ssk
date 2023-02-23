@@ -10,8 +10,22 @@ import csv
 import datetime
 
 class Gps_phase():
-    def __init__(self, motor, gps, mag, subthread=None):
-        #if(subthread==None): subthrea = subthread.Subthread(geomag=mag, gps=gps, motor=motor, pressure=)
+    def __init__(self, motor=None, gps=None, mag=None):#, subth=None):
+        if motor == None: self.motor = class_motor.Motor()
+        else:             self.motor = motor
+
+        if gps == None:   self.gps = class_gps.Gps()
+        else:             self.gps = gps
+
+        if mag == None:   self.mag = class_geomag.GeoMagnetic()
+        else:             self.mag = mag
+        
+        """
+        if subth == None: self.subthread = subthread.Subthread()
+        else:             self.subthread = subth
+        """
+
+        #データの記録用
         DIFF_JST_FROM_UTC = 9
         jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
         self.gps_name = 'gps/phase_gps' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
@@ -19,17 +33,14 @@ class Gps_phase():
             writer = csv.writer(f)
             writer.writerow(["lati", "longi", "g_lati", "g_longi", "x", "y", "distance", "move", "theta_abs", "theta_rela", "theta_delta", "duty", "duty_R", "duty_L"])
         
+        #ゴールの座標の取得
         with open ('goal.csv', 'r') as f :# goal座標取得プログラムより取得
             reader = csv.reader(f)
             line = [row for row in reader]
             self.goal_lati = float(line[ 1 ] [ 0 ])
             self.goal_longi = float(line[ 1 ] [ 1 ])
-        self.duty_constant=0.5
-        self.motor = motor
-        self.gps = gps
-        self.mag = mag
-        # self.subthread = subthrea
-        self.renew_data()
+
+        self.renew_data() #gpsと地磁気を取得して更新
 
     def run(self, duty_max=25):
         # self.subthread.phase = 2
@@ -220,13 +231,7 @@ class Gps_phase():
 
 def main():
     try:
-        with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
-            reader = csv.reader(f)
-            line = [row for row in reader]
-            rads = [float(line[1][i]) for i in range(3)]
-            aves = [float(line[2][i]) for i in range(3)]
-        geomag=class_geomag.GeoMagnetic(True, rads, aves)
-        gps_phase = Gps_phase(motor=class_motor.Motor(geomag=geomag), gps=class_gps.Gps(),mag=geomag)
+        gps_phase = Gps_phase()
         gps_phase.run()
         gps_phase.motor.end()
     except KeyboardInterrupt:
