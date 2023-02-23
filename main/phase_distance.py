@@ -56,9 +56,9 @@ class Distance_phase:
                     if angle > 180:
                         angle = angle - 360
                     if(i%2 == 0):
-                        self.motor.rotate(angle,threshold_angle = 3) # 左に旋回
+                        self.motor.rotate(angle,threshold= 3) # 左に旋回
                     else: 
-                        self.motor.rotate(-angle,threshold_angle = 3) # 右に旋回
+                        self.motor.rotate(-angle,threshold= 3) # 右に旋回
                     i += 1
                 else:
                     """
