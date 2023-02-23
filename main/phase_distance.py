@@ -9,7 +9,7 @@ import numpy as np
 
 class Distance_phase:
     
-    def __init__(self, distance=None, motor=None, geomag=None):#, subthread=subthread.Subthread()):
+    def __init__(self, distance=None, motor=None):#, geomag=None, subthread=subthread.Subthread()):
         if distance == None:
             self.distance = class_distance.Distance()
         else:
@@ -18,11 +18,12 @@ class Distance_phase:
             self.motor = class_motor.Motor()
         else:
             self.motor = motor
+        """
         if geomag == None:
             self.geomag = self.motor.geomag
         else:
             self.geomag = geomag
-
+        """
         #self.subthread = subthread
     
     def run(self):
@@ -41,7 +42,7 @@ class Distance_phase:
                     self.motor.forward(duty, duty, 0.05, tick_dutymax=5)#距離に応じて前進
                     time.sleep(distance/10)
                     self.motor.changeduty(0,0)
-                    self.geomag.get()
+                    #self.geomag.get()
             else:
                 if(i <= 34):
                     angle = 10*(i+1)
@@ -74,5 +75,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-    pass
-
