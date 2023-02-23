@@ -58,7 +58,7 @@ class Gps_phase():
                     print(f"rotate {self.theta_relative} deg.")
                     self.motor.rotate(self.theta_relative, threshold=5)
                     print(f"distance is {self.distance}")
-                    if(self.distance<0.5): break
+                    if(self.distance<1): break
                     self.motor.forward(10,10,0.05,tick_dutymax=5)
                     time.sleep(self.distance*3)
                     self.motor.changeduty(0, 0)
