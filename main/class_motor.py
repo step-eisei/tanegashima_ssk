@@ -19,7 +19,7 @@ class Motor():
                 rads = [float(line[1][i]) for i in range(3)]
                 aves = [float(line[2][i]) for i in range(3)]
             f.close()
-            self.geomag = geomag=class_geomag.GeoMagnetic(True, rads, aves)
+            self.geomag = class_geomag.GeoMagnetic(True, rads, aves)
         else: self.geomag = geomag
         self.geomag.calibrated = True
         self.duty_R_now = -1
@@ -174,13 +174,8 @@ def main():
     t = 3
     duty = 30
     try:
-        with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
-            reader = csv.reader(f)
-            line = [row for row in reader]
-            rads = [float(line[1][i]) for i in range(3)]
-            aves = [float(line[2][i]) for i in range(3)]
         print("setup")
-        motor = Motor(geomag=class_geomag.GeoMagnetic(True, rads, aves))
+        motor = Motor()
 
         motor.rotate(30, threshold=3.0)
         return 
