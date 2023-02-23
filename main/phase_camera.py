@@ -71,6 +71,12 @@ class Phase_camera:
         i = 0
         j = 0
         while True:
+            dist = self.check_distance()
+            print(f"dist:{dist}")
+            if dist <= 100:  # distance of red cone is 1m
+                # goto phase_distance
+                print("goto phase_distance")
+                return 0
             # take a photo and image-processing
             j+=1
             print("take photo")
@@ -89,7 +95,7 @@ class Phase_camera:
                     return 0
                             
                 else:
-                    forward_time = min((c2[0] - c1[0]) /100, 3)
+                    forward_time = min((c2[0] - c1[0]) /150, 3)
                     self.forward(forward_time)
 
             else:  # red cone not in the center of image
