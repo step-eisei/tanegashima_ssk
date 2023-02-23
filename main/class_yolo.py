@@ -1,5 +1,7 @@
 import sys
 sys.path.append("/home/pi/tanegashima_ssk/main/yolov7/")
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
 
 import cv2
 import numpy as np
