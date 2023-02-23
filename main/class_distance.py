@@ -63,7 +63,7 @@ class Distance:
         distance_data = np.delete(distance_data, num)
         # print(distance_data)
         self.distance = np.mean(distance_data)
-        GPIO.cleanup()
+        GPIO.cleanup([self.TRIG, self.ECHO])
 
 
 def main():
