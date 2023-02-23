@@ -75,7 +75,7 @@ class Phase_camera:
             j+=1
             print("take photo")
             c1, c2, image = self.yolo.image_process()
-            cv2.imwrite(f"/camera/image{j}.jpg", image)
+            cv2.imwrite(f"camera/image{j}.jpg", image)
             print(c1, c2)
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
