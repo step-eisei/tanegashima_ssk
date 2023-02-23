@@ -7,13 +7,21 @@ import class_geomag
 #import subthread
 import time
 import math
-import csv
 
 class Phase_camera:
-    def __init__(self, motor, yolo=class_yolo.CornDetect(), distance=class_distance.Distance()): #, subthread=subthread.Subthread()):
-        self.yolo = yolo
-        self.motor = motor
-        self.distance = distance
+    def __init__(self, motor=None, yolo=None, distance=None): #, subthread=subthread.Subthread()):
+        if yolo == None:
+            self.yolo = class_yolo.CornDetect()
+        else:
+            self.yolo = yolo
+        if motor == None:
+            self.motor = class_motor.Motor()
+        else:
+            self.motor = motor
+        if distance == None:
+            self.distance = class_distance.Distance()
+        else:
+            self.distance = distance
         self.motor.geomag.calibrated = True
         #self.subthread = subthread
 
@@ -102,14 +110,7 @@ class Phase_camera:
     
     
 def main():
-    with open('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
-        reader = csv.reader(f)
-        line = [row for row in reader]
-        rads = [float(line[1][i]) for i in range(3)]
-        aves = [float(line[2][i]) for i in range(3)]
-    f.close()
-    geomag=class_geomag.GeoMagnetic(True, rads, aves)
-    phase_camera = Phase_camera(motor=class_motor.Motor(geomag=geomag))
+    phase_camera = Phase_camera()
     phase_camera.run()
     
 if __name__ == "__main__":
