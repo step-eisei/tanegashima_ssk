@@ -86,7 +86,7 @@ class Phase_camera:
                     return 0
                             
                 else:
-                    forward_time = min((c2 - c1) /100, 3)
+                    forward_time = min((c2[0] - c1[0]) /100, 3)
                     self.forward(forward_time)
 
             else:  # red cone not in the center of image
