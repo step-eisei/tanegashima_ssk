@@ -36,7 +36,7 @@ class Distance_phase:
             self.distance.reading()
             distance = self.distance.distance # get distance
             print(f"distance:{distance}")
-            if(distance > 2 and distance < 100):
+            if(distance > 2 and distance < 200):
                 i = 0
                 print("detected")
                 if(distance < 20): 
@@ -50,9 +50,9 @@ class Distance_phase:
                     self.motor.changeduty(0,0)
                     #self.geomag.get()
             else:
-                if(i <= 17):
+                if(i <= 19):
                     print("rotate")
-                    angle = 20*(i+1)
+                    angle = 18*(i+1)
                     if angle > 180:
                         angle = angle - 360
                     if(i%2 == 0):
@@ -72,7 +72,7 @@ class Distance_phase:
                     """
                     #self.motor.rotate(180, threshold=5)# ゴールと逆向きに旋回
                     self.motor.forward(20,20 ,0.1, tick_dutymax=5)# 1m直進
-                    time.sleep(10)
+                    time.sleep(5)
                     self.motor.changeduty(0,0)
                     return -1
 
