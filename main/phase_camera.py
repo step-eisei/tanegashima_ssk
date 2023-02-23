@@ -62,7 +62,7 @@ class Phase_camera:
     def forward(self, forward_time): 
         self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
         time.sleep(forward_time)
-        self.motor.forward(5, 5, 0.05, tick_dutymax=5)
+        self.motor.forward(10, 10, 0.1, tick_dutymax=5)
         self.motor.changeduty(0,0)
     
     
