@@ -21,6 +21,8 @@ class Distance:
 
         #データ取得
         cycle=1
+        error=0
+        error_count = 0
         while(cycle<2):
             GPIO.setup(self.TRIG,GPIO.OUT)
             GPIO.setup(self.ECHO,GPIO.IN)
@@ -29,14 +31,12 @@ class Distance:
             GPIO.output(self.TRIG, True)
             time.sleep(0.00001)
             GPIO.output(self.TRIG, False)
-            error=0
-            error_count = 0
             debugtime = time.time()
             while GPIO.input(self.ECHO) == 0:
                 signaloff = time.time()
                 if(signaloff-debugtime>1):
                     GPIO.output(self.TRIG, False)
-                    print("overflow")
+                    print("Error. timepass is too long.")
                     error=1
                     error_count+=1
                     break
@@ -52,7 +52,9 @@ class Distance:
                 return -1
 
 
-        #外れ値を除外   
+        #外れ値を除外
+        print("")
+        print(distance_data)
         ave = np.mean(distance_data)
         max = 0
         num = 0
@@ -61,8 +63,9 @@ class Distance:
                 num = i
                 max = (ave-distance_data[i])**2
         distance_data = np.delete(distance_data, num)
-        # print(distance_data)
+        print(distance_data)
         self.distance = np.mean(distance_data)
+        print(distance)
         GPIO.cleanup([self.TRIG, self.ECHO])
 
 
