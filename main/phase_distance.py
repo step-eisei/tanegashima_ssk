@@ -11,10 +11,12 @@ import csv
 class Distance_phase:
     
     def __init__(self, motor, distance=None):#, geomag=None, subthread=subthread.Subthread()):
+        """
         if distance == None:
             self.distance = class_distance.Distance()
         else:
             self.distance = distance
+        """
         self.motor = motor
         """
         if geomag == None:
@@ -31,8 +33,8 @@ class Distance_phase:
         print("start")
         while True:
             print("read")
-            self.distance.reading()
-            distance = self.distance.distance # get distance
+            #self.distance.reading()
+            distance = 5#self.distance.distance # get distance
             print(f"distance:{distance}")
             if(distance > 2 and distance < 500):
                 i = 0
