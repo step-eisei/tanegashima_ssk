@@ -1,5 +1,6 @@
 import time
 
+from picamera2 import Picamera2, Preview
 import cv2
 import numpy as np
 import torch
@@ -13,7 +14,7 @@ from utils.plots import plot_one_box
 from utils.torch_utils import select_device, time_synchronized, TracedModel
 
 class CornDetect:
-    def __init__(self, source='inference/images', weights='weights/yolov7.pt', conf_thres=0.75, iou_thres=0.45,
+    def __init__(self, source='inference/images', weights='/home/pi/tanegashima_ssk/main/yolov7/weights/best.pt', conf_thres=0.25, iou_thres=0.45,
            img_size=640, trace=True, project='runs/detect', name='exp',
            device='cpu', augment=False, agnostic_nms=False, classes=None,
            view_img=False, save_txt=False, save_conf=False, nosave=False, save_img=False):
@@ -49,6 +50,10 @@ class CornDetect:
         # Get names and colors
         self.names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
         self.colors = [[random.randint(0, 255) for _ in range(3)] for _ in self.names]
+        
+        #self.picam2 = Picamera2()
+        #self.picam2.configure(self.picam2.create_preview_configuration(main={"format": 'RGB888', "size": (640*2, 480*2)}))
+        
 
     def take_photo(self):
         camera = cv2.VideoCapture(0)
@@ -57,7 +62,10 @@ class CornDetect:
             print("Failed 0n0")
             return -1
         camera.release()
-        return image
+        #self.picam2.start()
+        #image = self.picam2.capture_array()
+        #self.picam2.stop()
+        return cv2.resize(image,(640,480))
 
     def preprocess_image(self, image):
         # Padded resize
@@ -105,9 +113,9 @@ class CornDetect:
                 c1, c2 = [int(xyxy[0]), int(xyxy[1])], [int(xyxy[2]), int(xyxy[3])]
 
         # Show result (Just for test)
-        # self.show_for_test(image, c1, c2)
+        #self.show_for_test(image, c1, c2)
 
-        return c1, c2
+        return c1, c2, image
 
     def show_for_test(self, image, c1, c2):
         print(c1, c2)
