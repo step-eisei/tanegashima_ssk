@@ -3,10 +3,13 @@ import class_distance
 import class_motor
 import class_geomag
 import subthread
+import time
+import math
+import numpy as np
 
 class Distance_phase:
     
-    def __init__(self, distance=None, motor=None, geomag=None, subthread=subthread.Subthread()):
+    def __init__(self, distance=None, motor=None, geomag=None):#, subthread=subthread.Subthread()):
         if distance == None:
             self.distance = class_distance.Distance()
         else:
@@ -19,33 +22,38 @@ class Distance_phase:
             self.geomag = self.motor.geomag
         else:
             self.geomag = geomag
-            
-        self.subthread = subthread
+
+        #self.subthread = subthread
     
     def run(self):
-        self.subthread.phase = 4
-        duty = 20
+        #self.subthread.phase = 4
+        duty = 10
         i = 0
         while True:
             self.distance.reading()
             distance = self.distance.distance # get distance
-            if(distance > 2 and distance < 200):
-                b = distance/10
+            if(distance > 2 and distance < 500):
+                i = 0
                 if(distance < 5): 
                     self.subthread.record(comment="distance")
                     return 0
                 else: 
-                    self.motor.changeduty(b, b)
-                    self.motor.forward(10,10)#距離に応じて前進
+                    self.motor.forward(duty, duty, 0.05, tick_dutymax=5)#距離に応じて前進
+                    time.sleep(distance/10)
+                    self.motor.changeduty(0,0)
                     self.geomag.get()
             else:
                 if(i <= 34):
+                    angle = 10*(i+1)
+                    if angle > 180:
+                        angle = angle - 360
                     if(i%2 == 0):
-                        self.motor.rotate(10*(i/2+1),threshold_angle = 5*(i/2+1)) # 右に10*(i/2+1)deg旋回
+                        self.motor.rotate(angle,threshold_angle = 3) # 左に旋回
                     else: 
-                        self.motor.rotate(-10*(i-1)/2,threshold_angle = 5*(i-1)/2) # 左に10*(i-1)/2deg旋回
+                        self.motor.rotate(-angle,threshold_angle = 3) # 右に旋回
                     i += 1
                 else:
+                    """
                     # ゴール角度算出
                     theta_gps = math.atan2(self.y, self.x) * 180/math.pi
                     # 機体正面を0として，左を正，右を負とした変数(-180~180)を作成
@@ -53,8 +61,11 @@ class Distance_phase:
                     if(self.theta_relative > 180): self.theta_relative -= 360
                     if(self.theta_relative < -180): self.theta_relative += 360
                     a = 180 - self.theta_relative
-                    self.motor.rotate(a,threshold_angle = 30)# ゴールと逆向きに旋回
-                    self.motor.forward(10,10 ,time_sleep = 0.1)# 1m直進
+                    """
+                    #self.motor.rotate(180, threshold=5)# ゴールと逆向きに旋回
+                    self.motor.forward(20,20 ,0.1, tick_dutymax=5)# 1m直進
+                    time.sleep(10)
+                    self.motor.changeduty(0,0)
                     return -1
 
 def main():
