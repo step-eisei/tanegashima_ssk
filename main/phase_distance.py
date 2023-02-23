@@ -19,9 +19,9 @@ class Distance_phase:
         while True:
             self.distance.reading()
             distance = self.distance.distance # get distance
-            if(self.distance.distance > 2 and self.distance.distance < 200):
-                b = self.distance.distance/10
-                if(self.distance < 5): 
+            if(distance > 2 and distance < 200):
+                b = distance/10
+                if(distance < 5): 
                     self.subthread.record(comment="distance")
                     return 0
                 else: 
