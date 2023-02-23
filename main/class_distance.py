@@ -21,7 +21,7 @@ class Distance:
 
         #データ取得
         cycle=1
-        while(cycle<6):
+        while(cycle<2):
             GPIO.setup(self.TRIG,GPIO.OUT)
             GPIO.setup(self.ECHO,GPIO.IN)
             GPIO.output(self.TRIG, GPIO.LOW)
