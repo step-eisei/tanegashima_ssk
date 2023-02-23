@@ -51,8 +51,9 @@ class Gps_phase():
                 self.motor.forward(5, 5, 0.05, tick_dutymax=2)
                 self.motor.changeduty(0, 0)
                 while True:
-                    time.sleep(5)
                     print("")
+                    print("time sleep for 5 sec.")
+                    time.sleep(5)
                     self.renew_data()
                     print("approach to goal")
                     print(f"rotate {self.theta_relative} deg.")
@@ -65,7 +66,6 @@ class Gps_phase():
                     with open(self.gps_name, 'a', newline="") as f:
                         writer = csv.writer(f)
                         writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
-                time.sleep(1)
                 print("gps phase fin.")
                 # self.subthread.record(comment="gps")
                 return 0
@@ -91,12 +91,13 @@ class Gps_phase():
                 if(abs(duty_R-duty_L)>3): duty_R=duty_L # due to feedback delay
                 theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)
                 # Proportional control
-                if(abs(self.theta_relative)<60):    duty_delta = 1
+                if(abs(self.theta_relative)<8):     duty_delta = 0
+                elif(abs(self.theta_relative)<60):  duty_delta = 1
                 elif(abs(self.theta_relative)<150): duty_delta = 2
                 else:                               duty_delta = 3
                 # Derivative control
-                if(math.floor(abs(self.theta_relative/(3*theta_delta)))<int(duty_max/5)): duty_delta += math.floor(abs(self.theta_relative/(2*theta_delta)))
-                else:                                                       duty_delta += int(duty_max/5)
+                if(math.floor(abs(self.theta_relative/(3*theta_delta)))<int(duty_max/5)):   duty_delta += math.floor(abs(self.theta_relative/(3*theta_delta)))
+                else:                                                                       duty_delta += int(duty_max/5)
                 # adjust duty
                 if(self.theta_relative<0):  duty_R -= duty_delta
                 else:                       duty_L -= duty_delta
