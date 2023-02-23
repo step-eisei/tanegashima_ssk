@@ -106,7 +106,7 @@ class Motor():
         elif angle_target < -180:
             angle_target += 360
         
-        time_const = 0.005
+        time_const = 0.01
         total = 20
 
         print(f"target:{angle_target}")
