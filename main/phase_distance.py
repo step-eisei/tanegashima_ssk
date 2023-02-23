@@ -6,10 +6,20 @@ import subthread
 
 class Distance_phase:
     
-    def __init__(self, distance=class_distance.Distance(), motor=class_motor.Motor(), geomag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
-        self.distance = distance
-        self.motor = motor
-        self.geomag = geomag
+    def __init__(self, distance=None, motor=None, geomag=None, subthread=subthread.Subthread()):
+        if distance == None:
+            self.distance = class_distance.Distance()
+        else:
+            self.distance = distance
+        if motor == None:
+            self.motor = class_motor.Motor()
+        else:
+            self.motor = motor
+        if geomag == None:
+            self.geomag = self.motor.geomag
+        else:
+            self.geomag = geomag
+            
         self.subthread = subthread
     
     def run(self):
