@@ -12,6 +12,7 @@ class Motor():
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
         self.leftIN2 = leftIN2
+        print(f"rightIN1:{self.rightIN1}")
         if geomag == None:
             with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
                 reader = csv.reader(f)
