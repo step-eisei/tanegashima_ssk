@@ -127,12 +127,14 @@ class Motor():
                 self.geomag.get()
                 angle_new = self.geomag.theta_absolute
                 angle_diff = self.angle_difference(angle_new, angle_target)
-                print(f"now:{angle_new}")
-                print(f"diff:{angle_diff}")
-                print("")
+                #print(f"now:{angle_new}")
+                #print(f"diff:{angle_diff}")
+                #print("")
 
                 if -threshold < angle_diff < threshold:
                     break
+            print(f"now:{angle_new}")
+            print(f"diff:{angle_diff}")
         except KeyboardInterrupt:
             self.changeduty(0,0)
             print("KeyboardInterrupt")
