@@ -18,6 +18,7 @@ def take_photo():
     if not success:
         print("Failed 0n0")
         return -1
+    image = cv2.flip(image, -1)
     camera.release()
     return image
 
@@ -66,7 +67,7 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
     return auto_result, alpha, beta
 
 class CornDetect:
-    def __init__(self, weights='weights/best.pt', conf_thres=0.75, iou_thres=0.45, save_img=True,
+    def __init__(self, weights='/home/pi/tanegashima_ssk/main/yolov7/weights/best.pt', conf_thres=0.25, iou_thres=0.45, save_img=True,
                  img_size=640, trace=True, device='cpu', augment=False, agnostic_nms=False, classes=None):
         # Inputs for detection
         self.weights = weights
