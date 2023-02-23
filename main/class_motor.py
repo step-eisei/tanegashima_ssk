@@ -7,7 +7,7 @@ import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, geomag=None, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13):
+    def __init__(self, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13, geomag=None):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
