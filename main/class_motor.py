@@ -7,12 +7,20 @@ import csv
 # right = A, left = B
 
 class Motor():
-    def __init__(self, geomag, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13):
+    def __init__(self, geomag=None, pwm=100, rightIN1=6, rightIN2=5, leftIN1=16, leftIN2=13):
         self.rightIN1 = rightIN1
         self.rightIN2 = rightIN2
         self.leftIN1 = leftIN1
         self.leftIN2 = leftIN2
-        self.geomag = geomag
+        if geomag == None:
+            with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
+                reader = csv.reader(f)
+                line = [row for row in reader]
+                rads = [float(line[1][i]) for i in range(3)]
+                aves = [float(line[2][i]) for i in range(3)]
+            f.close()
+            self.geomag = geomag=class_geomag.GeoMagnetic(True, rads, aves)
+        else: self.geomag = geomag
         self.geomag.calibrated = True
         self.duty_R_now = -1
         self.duty_L_now = -1
