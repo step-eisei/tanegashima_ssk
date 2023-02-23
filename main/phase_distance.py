@@ -6,6 +6,7 @@ import subthread
 import time
 import math
 import numpy as np
+import csv
 
 class Distance_phase:
     
@@ -77,7 +78,14 @@ class Distance_phase:
                     return -1
 
 def main():
-    distance_phase = Distance_phase()
+    with open('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
+        reader = csv.reader(f)
+        line = [row for row in reader]
+        rads = [float(line[1][i]) for i in range(3)]
+        aves = [float(line[2][i]) for i in range(3)]
+    f.close()
+    geomag=class_geomag.GeoMagnetic(True, rads, aves)
+    distance_phase = Distance_phase(motor=class_motor.Motor(geomag=geomag))
     distance_phase.run()
     
 if __name__ == "__main__":
