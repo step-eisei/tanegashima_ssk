@@ -1,8 +1,5 @@
 # main code in tanegashima 2023!
 
-# サブスレッド処理未完了
-# ピン番号等の変数未完了
-
 # class import
 import class_pressure
 import class_nicrom
@@ -24,25 +21,25 @@ def main():
     # class define
     pressure = class_pressure.Pressure()
     nicrom = class_nicrom.Nicrom(pin=21)
-    geomag = class_geomag.GeoMagnetic(calibrated=False)
-    motor = class_motor.Motor(200, 6, 5, 13, 16, geomag=geomag)
-    distance = class_distance.Distance(9, 11)
+    geomag = class_geomag.GeoMagnetic()
+    motor = class_motor.Motor(geomag=geomag)
+    distance = class_distance.Distance()
     gps = class_gps.Gps()
-    yolo = class_yolo()
+    yolo = class_yolo.CornDetect()
     # phase define
-    subthrea = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance, motor=motor)
-    land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure, subthread=subthrea)
-    deployment = phase_deployment.Deploy(motor, nicrom, distance, geomag, subthrea)
-    gps_phase = phase_gps.Gps_phase(motor, gps, geomag, subthrea)
-    camera = phase_camera.Phase_camera(yolo, geomag, gps, motor, distance, subthrea)
-    distance_phase = phase_distance.Distance_phase(distance, motor, geomag, subthrea)
+    subth = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance, motor=motor)
+    land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure, subthread=subth)
+    deployment = phase_deployment.Deploy(motor=motor, nicrom=nicrom, dist_sens=distance, mag=geomag, subth=subth)
+    gps_phase = phase_gps.Gps_phase(motor, gps, geomag, subth)
+    camera = phase_camera.Phase_camera(motor=motor, yolo=yolo, distance=distance)
+    distance_phase = phase_distance.Distance_phase(distance=distance, motor=motor)
     # main code
     try:
         goal = False
         land.run()
         deployment.run()
         while True:
-            gps_phase.run(50)
+            gps_phase.run()
             return_camera = camera.run()
             if(return_camera == 0):
                 return_distance = distance_phase.run()
