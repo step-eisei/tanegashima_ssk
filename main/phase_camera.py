@@ -3,29 +3,27 @@ sys.path.append("/home/pi/tanegashima_ssk/main/yolov7/")
 from yolov7 import class_yolo
 import class_motor
 import class_distance
-import class_geomag
 #import subthread
 import time
 import math
 import cv2
 
 class Phase_camera:
-    def __init__(self, motor=None, yolo=None, distance=None): #, subthread=subthread.Subthread()):
-        if yolo == None:
-            self.yolo = class_yolo.CornDetect()
-        else:
-            self.yolo = yolo
-        if motor == None:
-            self.motor = class_motor.Motor()
-        else:
-            self.motor = motor
-        if distance == None:
-            self.distance = class_distance.Distance()
-        else:
-            self.distance = distance
-        self.motor.geomag.calibrated = True
-        #self.subthread = subthread
+    def __init__(self, motor=None, yolo=None, distance=None): #, subthread=None):
+        if yolo == None:     self.yolo = class_yolo.CornDetect()
+        else:                self.yolo = yolo
 
+        if motor == None:     self.motor = class_motor.Motor()
+        else:                 self.motor = motor
+        self.motor.geomag.calibrated = True
+
+        if distance == None:  self.distance = class_distance.Distance()
+        else:                 self.distance = distance
+
+        """
+        if subthread == None: self.subthread = subthread.Subthread()
+        else:                 self.subthread = subthread
+        """
         # const
         self.angle_thres = 10
         self.image_size = [640, 480]
@@ -34,10 +32,10 @@ class Phase_camera:
     def calc_angle(self, c1, c2):
         if c1 == [-1, -1]:
             return 180
-        x1, x2 = c1[0], c2[0]
+        x1, x2 = c1[0], c2[0] #コーンの左と右のx座標
 
-        x_med = (x1 + x2) / 2
-        x_dist = -2 * (x_med - self.image_size[0] / 2) / self.image_size[0]   #-1~1 中央からx方向にどれくらい離れてるか -1~1
+        x_med = (x1 + x2) / 2 #コーンの中央が画像のどの位置にいるか
+        x_dist = -2 * (x_med - self.image_size[0] / 2) / self.image_size[0]   #中央からx方向にどれくらい離れてるか -1~1まで取る
         print(f"x_dist:{x_dist}")
         """
         cone_width = (x1-x2) / self.image_size[0] #コーンの横幅が画像の幅を占める割合
@@ -48,7 +46,7 @@ class Phase_camera:
         """
 
         c = 1 #調整用の定数
-        angle = math.degrees(math.atan(c * x_dist))
+        angle = math.degrees(math.atan(c * x_dist)) #コーンに向くまでの角度を計算 c=1の場合 -45~45度
         print(f"angle:{angle}")
         return angle
     
@@ -57,7 +55,6 @@ class Phase_camera:
         self.distance.reading()
 
         return self.distance.distance
- 
 
     def forward(self, forward_time): 
         self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
@@ -68,21 +65,24 @@ class Phase_camera:
     
     def run(self):
         #self.subthread.phase = 3
-        i = 0
-        j = 0
+        i = 0 #コーンが見つからずその場で回転した回数
+        j = 0 #写真の番号
+
         while True:
-            dist = self.check_distance()
+            dist = self.check_distance() #距離を測る
             print(f"dist:{dist}")
-            if dist <= 50:  # distance of red cone is 1m
+
+            if dist <= 50:  # distance of red cone is within 50cm
                 # goto phase_distance
                 print("goto phase_distance")
                 return 0
+            
             # take a photo and image-processing
-            j+=1
             print("take photo")
             c1, c2, image = self.yolo.image_process()
+            j+=1
             cv2.imwrite(f"camera/image{j}.jpg", image)
-            print(c1, c2)
+            print(c1, c2) #print the coordinates of the cone
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
                 print("cone is in the centre")
@@ -91,24 +91,25 @@ class Phase_camera:
                 forward_time = min((c2[0] - c1[0]) /200, 3)
                 self.forward(forward_time)
 
-            elif 50 < dist < 100: # cone is in front and near
-                print("cone is near")
-                print("forward")
-                i = 0
-                self.motor.forward(15, 15, 0.05, tick_dutymax=5)#距離に応じて前進
-                time.sleep(dist/30)
-                self.motor.changeduty(0,0)
-
-            else:  # red cone not in the center of image
-                if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
+            else:  # red cone is NOT in the center of image
+                if c1 != [-1, -1] and c2 != [-1, -1]: # red cone is in the image
                     print("cone is detected")
                     i = 0
                     angle = self.calc_angle(c1, c2)
                     self.motor.rotate(angle)
                 
-                else:  # red cone not in image
+                else:  # red cone is NOT in the image
                     print("cone is NOT in the image")
-                    if i < 12: 
+
+                    if 50 < dist < 100: # コーンがカメラで見つからなくても、距離センサが反応すれば前進する
+                        i = 0
+                        print("cone is near")
+                        print("forward")
+                        self.motor.forward(15, 15, 0.05, tick_dutymax=5)#距離に応じて前進
+                        time.sleep(dist/30)
+                        self.motor.changeduty(0,0)
+
+                    elif i < 12: #その場で回転
                         i += 1
                         self.motor.rotate(30)
                     
