@@ -56,9 +56,9 @@ class Gps_phase():
                     self.renew_data()
                     print("approach to goal")
                     print(f"rotate {self.theta_relative} deg.")
+                    self.motor.rotate(self.theta_relative, threshold=5)
                     print(f"distance is {self.distance}")
                     if(self.distance<0.5): break
-                    self.motor.rotate(self.theta_relative, threshold=5)
                     self.motor.forward(10,10,0.05,tick_dutymax=5)
                     time.sleep(self.distance*3)
                     self.motor.changeduty(0, 0)
