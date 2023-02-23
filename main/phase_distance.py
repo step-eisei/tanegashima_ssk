@@ -6,18 +6,18 @@ import subthread
 import time
 import math
 import numpy as np
-import csv
 
 class Distance_phase:
     
-    def __init__(self, motor, distance=None):#, geomag=None, subthread=subthread.Subthread()):
-        """
+    def __init__(self, distance=None, motor=None):#, geomag=None, subthread=subthread.Subthread()):
         if distance == None:
             self.distance = class_distance.Distance()
         else:
             self.distance = distance
-        """
-        self.motor = motor
+        if motor == None:
+            self.motor = class_motor.Motor()
+        else:
+            self.motor = motor
         """
         if geomag == None:
             self.geomag = self.motor.geomag
@@ -33,8 +33,8 @@ class Distance_phase:
         print("start")
         while True:
             print("read")
-            #self.distance.reading()
-            distance = 5#self.distance.distance # get distance
+            self.distance.reading()
+            distance = self.distance.distance # get distance
             print(f"distance:{distance}")
             if(distance > 2 and distance < 500):
                 i = 0
@@ -77,14 +77,7 @@ class Distance_phase:
                     return -1
 
 def main():
-    with open('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
-        reader = csv.reader(f)
-        line = [row for row in reader]
-        rads = [float(line[1][i]) for i in range(3)]
-        aves = [float(line[2][i]) for i in range(3)]
-    f.close()
-    geomag=class_geomag.GeoMagnetic(True, rads, aves)
-    distance_phase = Distance_phase(motor=class_motor.Motor(geomag=geomag))
+    distance_phase = Distance_phase()
     distance_phase.run()
     
 if __name__ == "__main__":
