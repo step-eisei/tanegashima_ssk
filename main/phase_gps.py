@@ -10,7 +10,7 @@ import csv
 import datetime
 
 class Gps_phase():
-    def __init__(self, motor=None, gps=None, mag=None):#, subth=None):
+    def __init__(self, motor=None, gps=None, mag=None, subth=None):
         if motor == None: self.motor = class_motor.Motor()
         else:             self.motor = motor
 
@@ -20,10 +20,8 @@ class Gps_phase():
         if mag == None:   self.mag = class_geomag.GeoMagnetic()
         else:             self.mag = mag
         
-        """
-        if subth == None: self.subthread = subthread.Subthread()
+        if subth == None: self.subthread = subthread.Subthread(motor=self.motor, gps=self.gps, geomag=self.mag)
         else:             self.subthread = subth
-        """
 
         #データの記録用
         DIFF_JST_FROM_UTC = 9
@@ -43,7 +41,7 @@ class Gps_phase():
         self.renew_data() #gpsと地磁気を取得して更新
 
     def run(self, duty_max=25):
-        # self.subthread.phase = 2
+        self.subthread.phase = 2
         first = True
         duty_R = duty_L = duty_max
         stack = 0
@@ -78,7 +76,7 @@ class Gps_phase():
                         writer = csv.writer(f)
                         writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
                 print("gps phase fin.")
-                # self.subthread.record(comment="gps")
+                self.subthread.record(comment="gps")
                 return 0
             elif(self.distance<7): duty_max = 18
             elif(self.distance<12): duty_max = 20
@@ -97,7 +95,7 @@ class Gps_phase():
                 if (self.motor.angle_difference(theta_previous, self.theta_relative)<30): self.motor.stack() #動いてなければスタック処理
                 first = True
                 stack = 0
-                # self.subthread.record(comment="notmove")
+                #self.subthread.record(comment="notmove")
             else:
                 if(abs(duty_R-duty_L)>3): duty_R=duty_L # due to feedback delay
                 theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)

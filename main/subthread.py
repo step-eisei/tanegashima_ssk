@@ -11,12 +11,18 @@ import csv
 
 class Subthread:
     
-    def __init__(self, pressure, geomag, gps, distance, motor):
-        self.pressure = pressure
-        self.geomag = geomag
-        self.gps = gps
-        self.distance = distance
-        self.motor = motor
+    def __init__(self, pressure=None, geomag=None, gps=None, distance=None, motor=None):
+        if pressure == None: self.pressure = class_pressure.Pressure()
+        else:                self.pressure = pressure
+        if motor == None:    self.motor  = class_motor.Motor()
+        else:                self.motor = motor()
+        if motor == None:    self.geomag =   class_geomag.GeoMagnetic()
+        else:                self.geomag = self.motor.geomag()
+        if gps == None:      self.gps = class_gps.Gps()
+        else:                self.gps = gps
+        if distance == None: self.distance = class_distance.Distance()
+        else:                self.distance = distance
+
         self.time_start = time.time()
         self.phase = 0
         self.phaselist = ["land", "deployment", "gps", "camera", "distance"]
@@ -46,7 +52,7 @@ class Subthread:
 
 def main():
     try:
-        subthread = Subthread(pressure=class_pressure.Pressure(), geomag=class_geomag.GeoMagnetic(), gps=class_gps.Gps(), distance=class_distance.Distance(), motor=class_motor.Motor())
+        subthread = Subthread()
         subthread.run()
         while True:
             print("processing...")

@@ -10,7 +10,6 @@ class Distance:
         self.TRIG = TRIG
         self.ECHO = ECHO
         self.distance = -1
-        pass
 
     def reading(self):
 
@@ -19,7 +18,7 @@ class Distance:
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
 
-        #データ取得
+        #データ取得 5回値を取ってその平均を取る
         cycle=1
         error=0
         error_count = 0
@@ -66,6 +65,7 @@ class Distance:
         #print(distance_data)
         self.distance = np.mean(distance_data)
         print(distance)
+        
         GPIO.cleanup([self.TRIG, self.ECHO])
 
 
