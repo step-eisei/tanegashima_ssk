@@ -13,7 +13,6 @@ class Motor():
         self.leftIN1 = leftIN1
         self.leftIN2 = leftIN2
         if geomag == None:
-            print("geomag")
             with open ('calibration_lsm303.csv', 'r') as f :# goal座標取得プログラムより取得
                 reader = csv.reader(f)
                 line = [row for row in reader]

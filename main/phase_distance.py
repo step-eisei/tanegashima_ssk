@@ -16,7 +16,6 @@ class Distance_phase:
             self.distance = distance
         if motor == None:
             self.motor = class_motor.Motor()
-            print("motor")
         else:
             self.motor = motor
         """
