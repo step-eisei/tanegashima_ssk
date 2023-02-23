@@ -86,17 +86,18 @@ class Phase_camera:
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
                 print("cone is in the centre")
+                print("forward")
                 i = 0
-                dist = self.check_distance()
-                print(f"dist:{dist}")
-                if dist <= 1:  # distance of red cone is 1m
-                    # goto phase_distance
-                    print("goto phase_distance")
-                    return 0
-                            
-                else:
-                    forward_time = min((c2[0] - c1[0]) /200, 3)
-                    self.forward(forward_time)
+                forward_time = min((c2[0] - c1[0]) /200, 3)
+                self.forward(forward_time)
+
+            elif 50 < dist < 100: # cone is in front and near
+                print("cone is near")
+                print("forward")
+                i = 0
+                self.motor.forward(15, 15, 0.05, tick_dutymax=5)#距離に応じて前進
+                time.sleep(dist/30)
+                self.motor.changeduty(0,0)
 
             else:  # red cone not in the center of image
                 if c1 != [-1, -1] and c2 != [-1, -1]: # red cone in image
@@ -115,7 +116,7 @@ class Phase_camera:
                         self.forward()
 
                         print("back to phase_gps")
-                        #return -1
+                        return -1
     
     
 def main():

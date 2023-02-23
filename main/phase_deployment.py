@@ -8,12 +8,21 @@ import class_geomag
 import subthread
 
 class Deploy():
-    def __init__(self, motor=class_motor.Motor(), nicrom=class_nicrom.Nicrom(), dist_sens=class_distance.Distance(), mag=class_geomag.GeoMagnetic(), subthread=subthread.Subthread()):
-        self.motor = motor
-        self.nicrom = nicrom
-        self.dist_sens = dist_sens
-        self.mag = mag
-        self.subthread = subthread
+    def __init__(self, motor=None, nicrom=None, dist_sens=None, mag=None, subth=None):
+        if motor == None:     self.motor = class_motor.Motor()
+        else:                 self.motor = motor
+
+        if nicrom == None:    self.nicrom = class_nicrom.Nicrom()
+        else:                 self.nicrom = nicrom
+
+        if dist_sens == None: self.dist_sens = class_distance.Distance()
+        else:                 self.dist_sens = dist_sens
+
+        if mag == None:       self.mag = class_geomag.GeoMagnetic()
+        else:                 self.mag = mag
+        
+        if subth == None:     self.subthread = subthread.Subthread()
+        else:                 self.subthread = subth
     
     def run(self, time_heat=10, duty=60, duty_calibrate=5, percent=5):
         self.subthread.phase = 1
@@ -36,7 +45,7 @@ class Deploy():
                 ang0 = self.mag.theta_absolute
                 #初期値
 
-                self.motor.rotate(45, threshold_angle=45)
+                self.motor.rotate(45, threshold=20)
                 self.mag.get()
                 ang1 = self.mag.theta_absolute
                 #移動後の位置取得
