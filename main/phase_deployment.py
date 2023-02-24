@@ -58,7 +58,7 @@ class Deploy():
                 else:
                     opend == False
         self.nicrom.end()
-        self.subthread.record(comment="open")
+        #self.subthread.record(comment="open")
         #両方Trueでループ終了
 
         ang0=0.0 #初期化
