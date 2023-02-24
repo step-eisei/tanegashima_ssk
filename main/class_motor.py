@@ -96,7 +96,7 @@ class Motor():
         elif(angle>180): return angle-360
         return angle
     
-    def rotate(self, angle, duty=20, threshold=3.0):
+    def rotate(self, angle, duty=5, threshold=3.0):
         self.geomag.get()
         angle_new = self.geomag.theta_absolute
         angle_diff = angle
@@ -131,9 +131,9 @@ class Motor():
                 angle_diff = self.angle_difference(angle_new, angle_target)
                 overshoot = abs(angle_changed)-abs(angle_diff)
                 if overshoot > 10:
-                    duty = max(duty-int(overshoot/10), 10)
+                    duty = max(duty-int(overshoot/10), 5)
                 elif overshoot < -10:
-                    duty = min(duty+1, 20)
+                    duty = min(duty+int(overshoot/10), 20)
                 #print(f"now:{angle_new}")
                 #print(f"diff:{angle_diff}")
                 #print("")
