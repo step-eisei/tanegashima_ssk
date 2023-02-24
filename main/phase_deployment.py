@@ -23,10 +23,18 @@ class Deploy():
 
         #-------展開検知---------
         while not(opend) or not(moved): #開くかつ動くまで
+            count=0
             self.dist_sens.reading()
             distance = self.dist_sens.distance
-            if distance >= 100: opend = True
-            #カメラによる展開
+            
+            if distance >= 10:  #展開判定の閾値：１０
+                count=count+1
+            else:
+                count=0
+            
+            if count>=3:
+                opend = True 
+            #距離センサによる展開
 
             if opend == False:
                 self.nicrom.heat(t=time_heat)
