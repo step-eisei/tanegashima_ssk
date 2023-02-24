@@ -25,7 +25,7 @@ class Deploy():
         else:                 self.subthread = subth
         """
 
-    def run(self, time_heat=10, duty=10, duty_calibrate=8, percent=5):
+    def run(self, time_heat=10, duty=15, duty_calibrate=8, percent=5):
         #self.subthread.phase = 1
 
         print("heat start")
@@ -39,7 +39,7 @@ class Deploy():
         #前進
         print("forward")
         self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
-        time.sleep(6)
+        time.sleep(10)
         self.motor.changeduty(0, 0)
         print("stop")
         time.sleep(1)
