@@ -23,7 +23,7 @@ def take_photo():
     if not success:
         print("Failed 0n0")
         return -1
-    image = cv2.flip(image, -1)
+    #image = cv2.flip(image, -1)
     camera.release()
     return image
 
