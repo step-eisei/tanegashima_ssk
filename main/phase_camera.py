@@ -16,6 +16,7 @@ class Phase_camera:
         if motor == None:     self.motor = class_motor.Motor()
         else:                 self.motor = motor
         self.motor.geomag.calibrated = True
+        self.geomag = self.motor.geomag
 
         if distance == None:  self.distance = class_distance.Distance()
         else:                 self.distance = distance
@@ -55,12 +56,33 @@ class Phase_camera:
         self.distance.reading()
 
         return self.distance.distance
-
+    
+    def angle_difference(self, from_angle, to_angle):
+        angle = to_angle-from_angle
+        if(angle<-180): return angle+360
+        elif(angle>180): return angle-360
+        return angle
+    
     def forward(self, forward_time): 
+        self.geomag.get()
+        angle_before = self.geomag.theta_absolute
+
         self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
         time.sleep(forward_time)
         self.motor.forward(10, 10, 0.1, tick_dutymax=5)
         self.motor.changeduty(0,0)
+
+        self.geomag.get()
+        angle_after = self.geomag.theta_absolute
+        angle_diff = self.angle_difference(angle_before, angle_after)
+        c = 10
+        if angle_diff > 0:
+            angle_diff += forward_time * c
+        elif angle_diff < 0:
+            angle_diff -= forward_time * c
+        angle_diff += 10
+
+        self.motor.rotate(-angle_diff)
     
     
     def run(self):
@@ -72,7 +94,7 @@ class Phase_camera:
             dist = self.check_distance() #距離を測る
             print(f"dist:{dist}")
 
-            if dist <= 50:  # distance of red cone is within 50cm
+            if 20 <= dist <= 50:  # distance of red cone is within 50cm
                 # goto phase_distance
                 print("goto phase_distance")
                 return 0
