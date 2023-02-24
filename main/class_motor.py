@@ -96,7 +96,7 @@ class Motor():
         elif(angle>180): return angle-360
         return angle
     
-    def rotate(self, angle, duty=10, threshold=3.0):
+    def rotate(self, angle, duty=20, threshold=3.0):
         self.geomag.get()
         angle_origin = self.geomag.theta_absolute
         angle_diff = angle
