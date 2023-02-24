@@ -15,7 +15,7 @@ class Nicrom():
     
     def end(self):
         GPIO.output(self.pin, False)
-        GPIO.cleanup()
+        GPIO.cleanup(self.pin)
 
 def main():
     nicrom = Nicrom()
