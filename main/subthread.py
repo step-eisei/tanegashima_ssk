@@ -15,9 +15,8 @@ class Subthread:
         if pressure == None: self.pressure = class_pressure.Pressure()
         else:                self.pressure = pressure
         if motor == None:    self.motor  = class_motor.Motor()
-        else:                self.motor = motor()
-        if motor == None:    self.geomag =   class_geomag.GeoMagnetic()
-        else:                self.geomag = self.motor.geomag()
+        else:                self.motor = motor
+        self.geomag = self.motor.geomag
         if gps == None:      self.gps = class_gps.Gps()
         else:                self.gps = gps
         if distance == None: self.distance = class_distance.Distance()

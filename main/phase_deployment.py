@@ -18,24 +18,27 @@ class Deploy():
         if dist_sens == None: self.dist_sens = class_distance.Distance()
         else:                 self.dist_sens = dist_sens
 
-        if mag == None:       self.mag = class_geomag.GeoMagnetic()
-        else:                 self.mag = mag
+        self.mag = self.motor.geomag
         
+        """
         if subth == None:     self.subthread = subthread.Subthread()
         else:                 self.subthread = subth
-    
-    def run(self, time_heat=10, duty=60, duty_calibrate=5, percent=5):
-        self.subthread.phase = 1
+        """
+
+    def run(self, time_heat=10, duty=30, duty_calibrate=15, percent=5):
+        #self.subthread.phase = 1
         opend = False #距離センサでカプセルが取れたか確認
         moved = False #その後その場で回転して動けているか
+        dist_list = []
         #最初は閉まってるかつ止まってる
 
         #-------展開検知---------
         while not(opend) or not(moved): #開くかつ動くまで
-            self.dist_sens.reading()
-            distance = self.dist_sens.distance
-            if distance >= 100: opend = True
-            #カメラによる展開
+            #距離センサで展開の判定
+            for i in range(3):
+                self.dist_sens.reading()
+                dist_list.append(self.dist_sens.distance)
+            if min(dist_list) >= 30: opend = True
 
             if opend == False:
                 self.nicrom.heat(t=time_heat)
@@ -112,6 +115,14 @@ class Deploy():
         self.mag.aves = [(self.maxs[i] + self.mins[i])/2 for i in range(3)]
 
         self.mag.calibrated = True
+
+        with open('lsm303.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerows(self.maglist)
+        with open('calibration_lsm303.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(["x, y, z"])
+            writer.writerows([self.motor.geomag.rads, self.motor.geomag.aves])
 
 def main():
     deploy_phase = Deploy()
