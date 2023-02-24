@@ -127,13 +127,13 @@ class Motor():
                 angle_old = angle_new
                 self.geomag.get()
                 angle_new = self.geomag.theta_absolute
+
                 angle_changed = self.angle_difference(angle_old, angle_new)
                 angle_diff = self.angle_difference(angle_new, angle_target)
+                
                 overshoot = abs(angle_changed)-abs(angle_diff)
-                if overshoot > 10:
-                    duty = max(duty-int(overshoot/10), 10)
-                elif overshoot < -10:
-                    duty = min(duty+int(overshoot/10), 20)
+                duty = duty - int(overshoot/10)
+                duty = min(max(duty, 10),20)
                 #print(f"now:{angle_new}")
                 #print(f"diff:{angle_diff}")
                 #print("")
