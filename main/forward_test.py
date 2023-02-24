@@ -34,6 +34,7 @@ class Test:
             angle_diff -= forward_time * c
         angle_diff += 10
 
+        print(-angle_diff)
         self.motor.rotate(-angle_diff)
 
 test = Test()
