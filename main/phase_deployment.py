@@ -29,8 +29,8 @@ class Deploy():
         #self.subthread.phase = 1
 
         print("heat start")
-        #self.nicrom.heat(t=time_heat)
-        #self.nicrom.end()
+        self.nicrom.heat(t=time_heat)
+        self.nicrom.end()
         print("end")
 
         #self.subthread.record(comment="open")
@@ -40,6 +40,7 @@ class Deploy():
         print("forward")
         self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(10)
+        self.motor.forward(10, 10, 0.1, tick_dutymax=5)
         self.motor.changeduty(0, 0)
         print("stop")
         time.sleep(1)
