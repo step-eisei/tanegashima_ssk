@@ -27,6 +27,7 @@ class Test:
         self.geomag.get()
         angle_after = self.geomag.theta_absolute
         angle_diff = self.angle_difference(angle_before, angle_after)
+        print(angle_diff)
         c = 10
         if angle_diff > 0:
             angle_diff += forward_time * c
