@@ -17,7 +17,7 @@ class Gps_phase():
         if gps == None:   self.gps = class_gps.Gps()
         else:             self.gps = gps
 
-        mag = self.motor.geomag
+        self.mag = self.motor.geomag
 
         """
         if mag == None:   self.mag = class_geomag.GeoMagnetic()
