@@ -44,16 +44,16 @@ class Deploy():
                 self.nicrom.heat(t=time_heat)
                 #開いてない⇒再加熱
             else:
-                self.mag.get()
-                ang0 = self.mag.theta_absolute
+                #self.mag.get()
+                #ang0 = self.mag.theta_absolute
                 #初期値
 
-                self.motor.rotate(45, threshold=20)
-                self.mag.get()
-                ang1 = self.mag.theta_absolute
+                #self.motor.rotate(45, threshold=20)
+                #self.mag.get()
+                #ang1 = self.mag.theta_absolute
                 #移動後の位置取得
 
-                if (ang1 - ang0) >= 10: #動けているか判定
+                if True: #(ang1 - ang0) >= 10: #動けているか判定
                     moved == True
                 else:
                     opend == False
@@ -64,6 +64,7 @@ class Deploy():
         ang0=0.0 #初期化
         ang1=0.0
 
+        """"
         #-------前進,旋回によるスタック検知---------
 
         #前進
@@ -74,6 +75,7 @@ class Deploy():
         self.calibrate(duty_calibrate, p=percent)
         self.subthread.record(comment="deployment")
         print("deployment phase finish")
+        """
 
     def percentpick(self, listdata, p):
         n = int(len(listdata) *p/100)
