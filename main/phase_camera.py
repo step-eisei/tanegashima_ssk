@@ -88,7 +88,7 @@ class Phase_camera:
                 print("cone is in the centre")
                 print("forward")
                 i = 0
-                forward_time = min((c2[0] - c1[0]) /200, 3)
+                forward_time = min(200/(c2[0] - c1[0]), 3)
                 self.forward(forward_time)
 
             else:  # red cone is NOT in the center of image
