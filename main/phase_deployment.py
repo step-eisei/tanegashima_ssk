@@ -59,7 +59,7 @@ class Deploy():
         return max, min
 
     def calibrate(self, duty=8, p=5):
-        self.mag_list = []
+        mag_list = []
         time_all = 60
         duration = 0.5
 
@@ -87,11 +87,11 @@ class Deploy():
         with open(self.recordname, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["magx", "magy", "magz"])
-            writer.writerows(self.mag_list)
+            writer.writerows(mag_list)
 
-        magxs = [self.mag_list[i][0] for i in range(len(self.mag_list))]
-        magys = [self.mag_list[i][1] for i in range(len(self.mag_list))]
-        magzs = [self.mag_list[i][2] for i in range(len(self.mag_list))]
+        magxs = [mag_list[i][0] for i in range(len(mag_list))]
+        magys = [mag_list[i][1] for i in range(len(mag_list))]
+        magzs = [mag_list[i][2] for i in range(len(mag_list))]
 
         # 最大値，最小値の算出
         Xmax, Xmin = self.percentpick(magxs, p)
