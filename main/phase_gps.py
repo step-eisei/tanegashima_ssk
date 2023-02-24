@@ -17,9 +17,12 @@ class Gps_phase():
         if gps == None:   self.gps = class_gps.Gps()
         else:             self.gps = gps
 
+        mag = self.motor.geomag()
+
+        """
         if mag == None:   self.mag = class_geomag.GeoMagnetic()
         else:             self.mag = mag
-        
+        """
         """"
         if subth == None: self.subthread = subthread.Subthread(motor=self.motor, gps=self.gps, geomag=self.mag)
         else:             self.subthread = subth
