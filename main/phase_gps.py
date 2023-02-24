@@ -76,7 +76,7 @@ class Gps_phase():
                         writer = csv.writer(f)
                         writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
                 print("gps phase fin.")
-                self.subthread.record(comment="gps")
+                #self.subthread.record(comment="gps")
                 return 0
             elif(self.distance<7): duty_max = 18
             elif(self.distance<12): duty_max = 20
