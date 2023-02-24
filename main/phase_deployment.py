@@ -28,19 +28,25 @@ class Deploy():
     def run(self, time_heat=10, duty=30, duty_calibrate=8, percent=5):
         #self.subthread.phase = 1
 
+        print("heat start")
         self.nicrom.heat(t=time_heat)
         self.nicrom.end()
+        print("end")
 
         #self.subthread.record(comment="open")
 
 
         #前進
+        print("forward")
         self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
         time.sleep(3)
         self.motor.changeduty(0, 0)
+        print("stop")
         time.sleep(1)
         # この時点で地磁気データが使えないので，スタック検知が難しいのが課題
+        print("calibration start")
         self.calibrate(duty_calibrate, p=percent)
+        print("end")
 
         #self.subthread.record(comment="deployment")
         print("deployment phase finish")
