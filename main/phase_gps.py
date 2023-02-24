@@ -20,9 +20,10 @@ class Gps_phase():
         if mag == None:   self.mag = class_geomag.GeoMagnetic()
         else:             self.mag = mag
         
+        """"
         if subth == None: self.subthread = subthread.Subthread(motor=self.motor, gps=self.gps, geomag=self.mag)
         else:             self.subthread = subth
-
+        """
         #データの記録用
         DIFF_JST_FROM_UTC = 9
         jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
