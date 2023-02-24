@@ -131,9 +131,9 @@ class Motor():
                 angle_diff = self.angle_difference(angle_new, angle_target)
                 overshoot = abs(angle_changed)-abs(angle_diff)
                 if overshoot > 10:
-                    duty = max(duty-2, 10)
+                    duty = max(duty-int(overshoot/10), 10)
                 elif overshoot < -10:
-                    duty = min(duty+2, 20)
+                    duty = min(duty+1, 20)
                 #print(f"now:{angle_new}")
                 #print(f"diff:{angle_diff}")
                 #print("")
