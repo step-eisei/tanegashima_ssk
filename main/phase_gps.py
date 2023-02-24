@@ -42,7 +42,7 @@ class Gps_phase():
         self.renew_data() #gpsと地磁気を取得して更新
 
     def run(self, duty_max=25):
-        self.subthread.phase = 2
+        #elf.subthread.phase = 2
         first = True
         duty_R = duty_L = duty_max
         stack = 0
