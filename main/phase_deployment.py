@@ -25,7 +25,7 @@ class Deploy():
         else:                 self.subthread = subth
         """
 
-    def run(self, time_heat=10, duty=10, duty_calibrate=8, percent=5):
+    def run(self, time_heat=10, duty=15, duty_calibrate=8, percent=5):
         #self.subthread.phase = 1
 
         print("heat start")
