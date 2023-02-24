@@ -70,7 +70,9 @@ class Phase_camera:
         self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
         time.sleep(forward_time)
         self.motor.forward(10, 10, 0.1, tick_dutymax=5)
+        
         self.motor.changeduty(0,0)
+        time.sleep(1)
 
         self.geomag.get()
         angle_after = self.geomag.theta_absolute
