@@ -18,64 +18,32 @@ class Deploy():
         if dist_sens == None: self.dist_sens = class_distance.Distance()
         else:                 self.dist_sens = dist_sens
 
-        self.mag = self.motor.geomag
+        self.geomag = self.motor.geomag
         
         """
         if subth == None:     self.subthread = subthread.Subthread()
         else:                 self.subthread = subth
         """
 
-    def run(self, time_heat=10, duty=30, duty_calibrate=15, percent=5):
+    def run(self, time_heat=10, duty=30, duty_calibrate=8, percent=5):
         #self.subthread.phase = 1
-        opend = False #距離センサでカプセルが取れたか確認
-        moved = False #その後その場で回転して動けているか
-        dist_list = []
-        #最初は閉まってるかつ止まってる
 
-        #-------展開検知---------
-        while not(opend) or not(moved): #開くかつ動くまで
-            #距離センサで展開の判定
-            for i in range(3):
-                self.dist_sens.reading()
-                dist_list.append(self.dist_sens.distance)
-            if min(dist_list) >= 30: opend = True
-
-            if opend == False:
-                self.nicrom.heat(t=time_heat)
-                #開いてない⇒再加熱
-            else:
-                #self.mag.get()
-                #ang0 = self.mag.theta_absolute
-                #初期値
-
-                #self.motor.rotate(45, threshold=20)
-                #self.mag.get()
-                #ang1 = self.mag.theta_absolute
-                #移動後の位置取得
-
-                if True: #(ang1 - ang0) >= 10: #動けているか判定
-                    moved == True
-                else:
-                    opend == False
+        self.nicrom.heat(t=time_heat)
         self.nicrom.end()
+
         #self.subthread.record(comment="open")
-        #両方Trueでループ終了
 
-        ang0=0.0 #初期化
-        ang1=0.0
-
-        """"
-        #-------前進,旋回によるスタック検知---------
 
         #前進
         self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
-        time.sleep(2)
+        time.sleep(1)
         self.motor.changeduty(0, 0)
+        time.sleep(1)
         # この時点で地磁気データが使えないので，スタック検知が難しいのが課題
         self.calibrate(duty_calibrate, p=percent)
-        self.subthread.record(comment="deployment")
+
+        #self.subthread.record(comment="deployment")
         print("deployment phase finish")
-        """
 
     def percentpick(self, listdata, p):
         n = int(len(listdata) *p/100)
@@ -84,14 +52,28 @@ class Deploy():
         max = listdata[len(listdata)-n]
         return max, min
 
-    def calibrate(self, duty=10, p=5):
+    def calibrate(self, duty=8, p=5):
         self.mag_list = []
+        time_all = 60
+        duration = 0.5
 
+        t = 0
+        mag_list = []
         self.motor.changeduty(duty, -duty)
-        for i in range(300):
-            self.mag.get()
-            self.mag_list.append((self.mag.x, self.mag.y, self.mag.z))
-            time.sleep(0.05)
+        while t <= time_all:
+            try:
+                self.geomag.get()
+                mag_list.append((self.motor.geomag.x, self.motor.geomag.y, self.motor.geomag.z))
+                print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(self.geomag.x, self.geomag.y, self.geomag.z) + f"t:{t}")
+                print('')
+            except:
+                print("error") 
+            time.sleep(duration)
+            t+=duration
+
+        self.motor.changeduty(0,0)
+        time.sleep(1)
+
         # csv save
         DIFF_JST_FROM_UTC = 9
         jp_time = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
@@ -113,10 +95,10 @@ class Deploy():
         self.maxs = [Xmax, Ymax, Zmax]
         self.mins = [Xmin, Ymin, Zmin]
 
-        self.mag.rads = [(self.maxs[i] - self.mins[i])/2 for i in range(3)]
-        self.mag.aves = [(self.maxs[i] + self.mins[i])/2 for i in range(3)]
+        self.geomag.rads = [(self.maxs[i] - self.mins[i])/2 for i in range(3)]
+        self.geomag.aves = [(self.maxs[i] + self.mins[i])/2 for i in range(3)]
 
-        self.mag.calibrated = True
+        self.geomag.calibrated = True
 
         with open('lsm303.csv', 'w') as f:
             writer = csv.writer(f)
