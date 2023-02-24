@@ -36,7 +36,7 @@ class Deploy():
 
         #前進
         self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
-        time.sleep(1)
+        time.sleep(3)
         self.motor.changeduty(0, 0)
         time.sleep(1)
         # この時点で地磁気データが使えないので，スタック検知が難しいのが課題
