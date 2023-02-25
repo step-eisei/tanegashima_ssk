@@ -38,6 +38,7 @@ def main():
     # main code
     try:
         goal = False
+        """"
         land.run()
         sleep_time = 240
         try:
@@ -46,7 +47,7 @@ def main():
                 print(f"{t}秒経過")
         except KeyboardInterrupt: 
             print("deployment start")
-
+        """
         deployment.run()
         while True:
             gps_phase.run()
