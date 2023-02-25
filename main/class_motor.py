@@ -140,13 +140,13 @@ class Motor():
 
                 if -threshold < angle_diff < threshold:
                     break
-            print(f"now:{angle_new}")
-            print(f"diff:{angle_diff}")
+            print(f"now   :{angle_new}")
+            print(f"diff  :{angle_diff}")
         except KeyboardInterrupt:
             self.changeduty(0,0)
             print("\nKeyboardInterrupt")
         
-        print(f"count:{i}")
+        print(f"count :{i}")
         self.changeduty(0,0)
     
     def stack(self, duty_R=50, duty_L=50):
