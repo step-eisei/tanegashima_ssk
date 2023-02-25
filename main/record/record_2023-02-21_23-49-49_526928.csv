@@ -1,0 +1,3 @@
+comment,time,phase,balo,latitude,longitude,duty_R,duty_L,theta,corn,distance
+threading,0.0005793571472167969,land,-1,-1,-1,-1,-1,-1,corn,-1
+threading,10.006973266601562,land,-1,-1,-1,-1,-1,-1,corn,-1
