@@ -21,6 +21,7 @@ class Subthread:
         if distance == None: self.distance = class_distance.Distance()
         else:                self.distance = distance
 
+    def filemake(self):
         self.time_start = time.time()
         self.phase = 0
         self.phaselist = ["land", "deployment", "gps", "camera", "distance"]
@@ -43,6 +44,7 @@ class Subthread:
     
     def run(self):
         self.thread = threading.Thread(target=self.record, args={True})
+        self.filemake()
         self.thread.setDaemon(True)
         print("threading start.")
         self.thread.start()
