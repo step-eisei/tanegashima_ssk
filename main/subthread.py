@@ -42,7 +42,7 @@ class Subthread:
             else: break
     
     def run(self):
-        self.thread = threading.Thread(target=self.record(False))
+        self.thread = threading.Thread(target=self.record(True))
         self.thread.setDaemon(True)
         print("threading start.")
         self.thread.start()
