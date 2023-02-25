@@ -103,7 +103,8 @@ class CornDetect:
     # Preprocess image (not important)
     def preprocess_image(self, image):
         # Adjust brightness and contrast
-        resized_img, _, _ = automatic_brightness_and_contrast(image)
+        #resized_img, _, _ = automatic_brightness_and_contrast(image)
+        resized_img = image
 
         # Padded resize
         resized_img = letterbox(resized_img, self.img_size, stride=self.stride)[0]
