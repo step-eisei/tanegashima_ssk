@@ -64,9 +64,11 @@ class Distance_phase:
 
 def main():
     try:
-        subth = subthread.Subthread()
+        distance = class_distance.Distance()
+        motor = class_motor.Motor()
+        subth = subthread.Subthread(distance=distance, motor=motor)
         subth.run()
-        distance_phase = Distance_phase(subth=subth)
+        distance_phase = Distance_phase(distance=distance,motor=motor,subth=subth)
         distance_phase.run()
         distance_phase.motor.end()
     except KeyboardInterrupt:
