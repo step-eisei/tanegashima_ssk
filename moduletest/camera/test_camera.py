@@ -49,6 +49,7 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
 camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
 camera.set(cv2.CAP_PROP_AUTO_WB, 1)
 print(camera.get(cv2.CAP_PROP_AUTO_EXPOSURE))
+camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
 time.sleep(3)
 success, image = camera.read()
 #image, _, _ = automatic_brightness_and_contrast(image)
