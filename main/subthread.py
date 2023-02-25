@@ -45,8 +45,8 @@ class Subthread:
     def run(self):
         self.thread = threading.Thread(target=self.record(True))
         self.thread.setDaemon(True)
-        self.thread.start()
         print("threading start.")
+        self.thread.start()
 
 def main():
     try:
