@@ -15,7 +15,9 @@ class Distance_phase:
         if motor == None:    self.motor = class_motor.Motor()
         else:                self.motor = motor
         
-        if subth == None:    self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+        if subth == None:
+            self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+            self.subth.run()
         else:                self.subth = subth
 
 

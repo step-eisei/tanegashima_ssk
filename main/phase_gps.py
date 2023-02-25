@@ -18,7 +18,9 @@ class Gps_phase():
 
         self.mag = self.motor.geomag
 
-        if subth == None: self.subth = subthread.Subthread(gps=self.gps, motor=self.motor)
+        if subth == None:
+            self.subth = subthread.Subthread(gps=self.gps, motor=self.motor)
+            self.subth.run()
         else:             self.subth = subth
         
         #データの記録用
@@ -39,7 +41,7 @@ class Gps_phase():
         self.renew_data() #gpsと地磁気を取得して更新
 
     def run(self, duty_max=25):
-        #elf.subth.phase = 2
+        elf.subth.phase = 2
         first = True
         duty_R = duty_L = duty_max
         stack = 0
@@ -74,7 +76,7 @@ class Gps_phase():
                         writer = csv.writer(f)
                         writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
                 print("gps phase fin.")
-                #self.subth.record(comment="gps")
+                self.subth.record(comment="gps")
                 return 0
             elif(self.distance<7): duty_max = 18
             elif(self.distance<12): duty_max = 20
@@ -93,7 +95,7 @@ class Gps_phase():
                 if (self.motor.angle_difference(theta_previous, self.theta_relative)<30): self.motor.stack() #動いてなければスタック処理
                 first = True
                 stack = 0
-                #self.subth.record(comment="notmove")
+                self.subth.record(comment="notmove")
             else:
                 if(abs(duty_R-duty_L)>3): duty_R=duty_L # due to feedback delay
                 theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)
@@ -112,7 +114,7 @@ class Gps_phase():
                 duty_R += duty_difference
                 duty_L += duty_difference
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5) # motor
-                # self.subth.record(comment="dutychange")
+                self.subth.record(comment="dutychange")
             print("")
             print(f"now  GPS            :{self.gps.latitude, self.gps.longitude}")
             print(f"goal GPS            :{self.goal_lati, self.goal_longi}")

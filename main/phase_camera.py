@@ -21,7 +21,9 @@ class Phase_camera:
         if distance == None:  self.distance = class_distance.Distance()
         else:                 self.distance = distance
 
-        if subth == None: self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+        if subth == None:
+            self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+            self.subth.run()
         else:             self.subth = subth
 
         # const
@@ -88,10 +90,10 @@ class Phase_camera:
 
         print(f"rotate angle    :{-angle_diff}")
         self.motor.rotate(-angle_diff)
-    
+        print("")
     
     def run(self):
-        #self.subth.phase = 3
+        self.subth.phase = 3
         i = 0 #コーンが見つからずその場で回転した回数
         j = 0 #写真の番号
 

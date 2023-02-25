@@ -19,7 +19,9 @@ class Deploy():
 
         self.geomag = self.motor.geomag
         
-        if subth == None:     self.subth = subthread.Subthread(distance=self.dist_sens, motor=self.motor)
+        if subth == None:
+            self.subth = subthread.Subthread(distance=self.dist_sens, motor=self.motor)
+            self.subth.run()
         else:                 self.subth = subth
 
 

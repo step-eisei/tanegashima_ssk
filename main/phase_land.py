@@ -8,7 +8,9 @@ class Land:
         if get_pressure == None: self.get_pressure = class_pressure.Pressure()
         else:                    self.get_pressure = get_pressure
 
-        if subth == None:        self.subth = subthread.Subthread(pressure=self.get_pressure)
+        if subth == None:
+            self.subth = subthread.Subthread(pressure=self.get_pressure)
+            self.subth.run()
         else:                    self.subth = subth
 
         self.sky=sky   #上空まで上がったか判定するときの大気圧の変化の閾値 要調整
