@@ -63,6 +63,7 @@ class Phase_camera:
         return angle
     
     def forward(self, forward_time): 
+        print("\nforward method")
         self.geomag.get()
         angle_before = self.geomag.theta_absolute
 
@@ -75,7 +76,9 @@ class Phase_camera:
         self.geomag.get()
         angle_after = self.geomag.theta_absolute
         angle_diff = self.angle_difference(angle_before, angle_after)
-        print(angle_diff)
+        print(f"before angle    :{angle_before}")
+        print(f"after angle     :{angle_after}")
+        print(f"difference angle:{angle_diff}")
         c = 10
         if angle_diff > 0:
             angle_diff += forward_time * c
@@ -83,7 +86,7 @@ class Phase_camera:
             angle_diff -= forward_time * c
         angle_diff += 10
 
-        print(-angle_diff)
+        print(f"rotate angle    :{-angle_diff}")
         self.motor.rotate(-angle_diff)
     
     
