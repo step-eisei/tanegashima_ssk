@@ -38,6 +38,7 @@ def main():
     # main code
     try:
         goal = False
+        subth.run()
         """"
         land.run()
         sleep_time = 240
