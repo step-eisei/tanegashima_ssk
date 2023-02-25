@@ -33,17 +33,16 @@ class Subthread:
     
     def record(self, loop=False, comment="threading"):
         while(True):
-            pass
             time_now = time.time()
             with open(self.recordname, "a", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow([comment, time_now-self.time_start, self.phaselist[self.phase], self.pressure.pressure, self.gps.latitude, self.gps.longitude, self.motor.duty_R_now, self.motor.duty_L_now, self.geomag.theta_absolute, "corn", self.distance.distance])
             print("regularly record.")
-            if(loop): time.sleep(10)
+            if(loop): time.sleep(1)
             else: break
     
     def run(self):
-        self.thread = threading.Thread(target=self.record(True))
+        self.thread = threading.Thread(target=self.record(False))
         self.thread.setDaemon(True)
         print("threading start.")
         self.thread.start()
