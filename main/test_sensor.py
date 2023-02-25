@@ -34,7 +34,7 @@ def main():
         print("Nicrom testing")
         for i in range(5):
             print(f"count down: {5-i}")
-            time.sleep(5)
+            time.sleep(1)
         print("10 sec. heating...")
         nicrom.heat(10)
         print("fin. GPIO end")
@@ -71,9 +71,9 @@ def main():
     for i in [10, 15, 20, 25, 30]:
         try:
             print(f"forward duty {i} testing...")
-            for i in range(5):
-                print(f"count down: {5-i}")
-                time.sleep(5)
+            for j in range(5):
+                print(f"count down: {5-j}")
+                time.sleep(1)
             motor.forward(i, i, 0.05, tick_dutymax=5)
         except KeyboardInterrupt:
             motor.changeduty(0, 0)
@@ -83,9 +83,9 @@ def main():
         for j in [30, 60, 90]:
             try:
                 print(f"rotate duty {i} {j}deg testing...")
-                for i in range(5):
-                    print(f"count down: {5-i}")
-                    time.sleep(5)
+                for k in range(5):
+                    print(f"count down: {5-k}")
+                    time.sleep(1)
                 motor.rotate(j, i)
             except KeyboardInterrupt:
                 motor.changeduty(0, 0)
