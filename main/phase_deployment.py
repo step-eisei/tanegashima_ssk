@@ -4,11 +4,10 @@ import time
 import class_motor
 import class_nicrom
 import class_distance
-import class_geomag
 import subthread
 
 class Deploy():
-    def __init__(self, motor=None, nicrom=None, dist_sens=None, mag=None, subth=None):
+    def __init__(self, motor=None, nicrom=None, dist_sens=None, subth=None):
         if motor == None:     self.motor = class_motor.Motor()
         else:                 self.motor = motor
 
@@ -20,20 +19,19 @@ class Deploy():
 
         self.geomag = self.motor.geomag
         
-        """
-        if subth == None:     self.subthread = subthread.Subthread()
-        else:                 self.subthread = subth
-        """
+        if subth == None:     self.subth = subthread.Subthread(distance=self.dist_sens, motor=self.motor)
+        else:                 self.subth = subth
+
 
     def run(self, time_heat=10, duty=30, duty_calibrate=8, percent=5):
-        #self.subthread.phase = 1
+        #self.subth.phase = 1
 
         print("heat start")
         self.nicrom.heat(t=time_heat)
         self.nicrom.end()
         print("end")
 
-        #self.subthread.record(comment="open")
+        #self.subth.record(comment="open")
 
 
         #前進
@@ -49,7 +47,7 @@ class Deploy():
         self.calibrate(duty_calibrate, p=percent)
         print("end")
 
-        #self.subthread.record(comment="deployment")
+        #self.subth.record(comment="deployment")
         print("deployment phase finish")
 
     def percentpick(self, listdata, p):

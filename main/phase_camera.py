@@ -3,13 +3,13 @@ sys.path.append("/home/pi/tanegashima_ssk/main/yolov7/")
 import class_yolo
 import class_motor
 import class_distance
-#import subthread
+import subthread
 import time
 import math
 import cv2
 
 class Phase_camera:
-    def __init__(self, motor=None, yolo=None, distance=None): #, subthread=None):
+    def __init__(self, motor=None, yolo=None, distance=None, subth=None):
         if yolo == None:     self.yolo = class_yolo.CornDetect()
         else:                self.yolo = yolo
 
@@ -21,10 +21,9 @@ class Phase_camera:
         if distance == None:  self.distance = class_distance.Distance()
         else:                 self.distance = distance
 
-        """
-        if subthread == None: self.subthread = subthread.Subthread()
-        else:                 self.subthread = subthread
-        """
+        if subth == None: self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+        else:             self.subth = subth
+
         # const
         self.angle_thres = 10
         self.image_size = [640, 480]
@@ -89,7 +88,7 @@ class Phase_camera:
     
     
     def run(self):
-        #self.subthread.phase = 3
+        #self.subth.phase = 3
         i = 0 #コーンが見つからずその場で回転した回数
         j = 0 #写真の番号
 

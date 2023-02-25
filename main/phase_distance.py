@@ -1,7 +1,6 @@
 # 距離フェーズ
 import class_distance
 import class_motor
-import class_geomag
 import subthread
 import time
 import math
@@ -9,20 +8,19 @@ import numpy as np
 
 class Distance_phase:
     
-    def __init__(self, distance=None, motor=None):#, subth=None):
+    def __init__(self, distance=None, motor=None, subth=None):
         if distance == None: self.distance = class_distance.Distance()
         else:                self.distance = distance
 
         if motor == None:    self.motor = class_motor.Motor()
         else:                self.motor = motor
         
-        """
-        if subth == None:    self.subthread = subthread.Subthread()
-        else:                self.subthread = subth
-        """
+        if subth == None:    self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+        else:                self.subth = subth
+
 
     def run(self):
-        #self.subthread.phase = 4
+        #self.subth.phase = 4
         duty = 10
         i = 0
 
@@ -37,7 +35,7 @@ class Distance_phase:
                 i = 0
                 print("detected")
                 if(distance < 20): 
-                    #self.subthread.record(comment="distance")
+                    #self.subth.record(comment="distance")
                     print("finished")
                     return 0
                 else: 

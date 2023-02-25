@@ -1,6 +1,5 @@
 # サブスレッド処理
 import class_pressure
-import class_geomag
 import class_gps
 import class_distance
 import class_motor
@@ -11,7 +10,7 @@ import csv
 
 class Subthread:
     
-    def __init__(self, pressure=None, geomag=None, gps=None, distance=None, motor=None):
+    def __init__(self, pressure=None, gps=None, distance=None, motor=None):
         if pressure == None: self.pressure = class_pressure.Pressure()
         else:                self.pressure = pressure
         if motor == None:    self.motor  = class_motor.Motor()

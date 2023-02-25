@@ -27,12 +27,12 @@ def main():
     gps = class_gps.Gps()
     yolo = class_yolo.CornDetect()
     # phase define
-    subth = subthread.Subthread(pressure=pressure, geomag=geomag, gps=gps, distance=distance, motor=motor)
-    land = phase_land.Land(sky=0.1, land=0.01, pressure=pressure, subthread=subth)
-    deployment = phase_deployment.Deploy(motor=motor, nicrom=nicrom, dist_sens=distance, mag=geomag, subth=subth)
-    gps_phase = phase_gps.Gps_phase(motor, gps, geomag, subth)
-    camera = phase_camera.Phase_camera(motor=motor, yolo=yolo, distance=distance)
-    distance_phase = phase_distance.Distance_phase(distance=distance, motor=motor)
+    subth = subthread.Subthread(pressure=pressure, gps=gps, distance=distance, motor=motor)
+    land = phase_land.Land(sky=0.1, land=0.01, get_pressure=pressure, subth=subth)
+    deployment = phase_deployment.Deploy(motor=motor, nicrom=nicrom, dist_sens=distance, subth=subth)
+    gps_phase = phase_gps.Gps_phase(motor, gps, subth)
+    camera = phase_camera.Phase_camera(motor=motor, yolo=yolo, distance=distance, subth=subth)
+    distance_phase = phase_distance.Distance_phase(distance=distance, motor=motor, subth=subth)
     # main code
     try:
         goal = False
