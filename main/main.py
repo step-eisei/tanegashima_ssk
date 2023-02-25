@@ -54,7 +54,7 @@ def main():
         print("GPIO closed.")
         print("enjoy!")
     except KeyboardInterrupt:
-        print("forced termination.")
+        print("\nInterrupted.")
         motor.end()
         print("GPIO closed.")
         print("not enjoy.")

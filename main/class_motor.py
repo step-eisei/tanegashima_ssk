@@ -144,7 +144,7 @@ class Motor():
             print(f"diff:{angle_diff}")
         except KeyboardInterrupt:
             self.changeduty(0,0)
-            print("KeyboardInterrupt")
+            print("\nKeyboardInterrupt")
         
         print(f"count:{i}")
         self.changeduty(0,0)
@@ -216,7 +216,7 @@ def main():
 
     except KeyboardInterrupt:
         motor.end()
-        print("Interrupted")
+        print("\nInterrupted")
 
 if __name__ == "__main__":
     print("main")

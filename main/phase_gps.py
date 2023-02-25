@@ -232,7 +232,7 @@ def main():
         gps_phase.motor.end()
     except KeyboardInterrupt:
         gps_phase.motor.end()
-        print("terminated.")
+        print("\nterminated.")
 
 if __name__=="__main__":
     main()

@@ -57,7 +57,7 @@ def main():
             time.sleep(10)
     except KeyboardInterrupt:
         subthread.motor.end()
-        print("terminated.")
+        print("\nInterrupted.")
 
 if __name__ == "__main__":
     main()

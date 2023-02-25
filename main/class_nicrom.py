@@ -28,6 +28,7 @@ def main():
         print("end")
     except:
         nicrom.end()
+        print("\nerror.")
 
 if __name__ == "__main__":
     main()

@@ -63,9 +63,12 @@ class Land:
         self.subth.record(comment="land")
 
 def main(sky=0.1, land=0.01): #上空判定，地上判定の閾値
-    land_check=Land(sky=sky, land=land) #land更新
-    print("start")
-    land_check.run()
+    try:
+        land_check=Land(sky=sky, land=land) #land更新
+        print("start")
+        land_check.run()
+    except KeyboardInterrupt:
+        print("\nInterrupted.")
 
 
 if __name__ == "__main__":

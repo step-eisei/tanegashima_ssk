@@ -61,8 +61,13 @@ class Distance_phase:
                     return -1
 
 def main():
-    distance_phase = Distance_phase()
-    distance_phase.run()
+    try:
+        distance_phase = Distance_phase()
+        distance_phase.run()
+        distance_phase.motor.end()
+    except KeyboardInterrupt:
+        distance_phase.motor.end()
+        print("\nInterrupted.")
     
 if __name__ == "__main__":
     main()

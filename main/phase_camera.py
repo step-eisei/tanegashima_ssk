@@ -145,8 +145,12 @@ class Phase_camera:
     
     
 def main():
-    phase_camera = Phase_camera()
-    phase_camera.run()
-    
+    try:
+        phase_camera = Phase_camera()
+        phase_camera.run()
+        phase_camera.motor.end()
+    except KeyboardInterrupt:
+        phase_camera.motor.end()
+        print("\nInterrupted.")
 if __name__ == "__main__":
     main()

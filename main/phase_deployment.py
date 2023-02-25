@@ -114,8 +114,13 @@ class Deploy():
             writer.writerows([self.motor.geomag.rads, self.motor.geomag.aves])
 
 def main():
-    deploy_phase = Deploy()
-    deploy_phase.run()
+    try:
+        deploy_phase = Deploy()
+        deploy_phase.run()
+        deploy_phase.motor.end()
+    except KeyboardInterrupt:
+        deploy_phase.motor.end()
+        print("\nInterrupted.")
 
 if __name__=="__main__":
     main()
