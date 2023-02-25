@@ -50,7 +50,12 @@ class Subthread:
 def main():
     try:
         subthread = Subthread()
-        subthread.run()
+        thread = threading.Thread(target=subthread.record(True))
+        thread.setDaemon(True)
+        print("threading start.")
+        thread.start()
+        
+        # subthread.run()
         while True:
             print("processing...")
             time.sleep(10)
