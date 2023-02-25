@@ -17,6 +17,8 @@ import phase_distance
 # others
 import subthread
 
+import time
+
 def main():
     # class define
     pressure = class_pressure.Pressure()
@@ -37,6 +39,14 @@ def main():
     try:
         goal = False
         land.run()
+        sleep_time = 240
+        try:
+            for t in range(sleep_time):
+                time.sleep(1)
+                print(f"{t}秒経過")
+        except KeyboardInterrupt: 
+            print("deployment start")
+
         deployment.run()
         while True:
             gps_phase.run()
