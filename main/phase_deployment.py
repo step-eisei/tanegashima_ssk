@@ -26,14 +26,14 @@ class Deploy():
 
 
     def run(self, time_heat=10, duty=30, duty_calibrate=8, percent=5):
-        #self.subth.phase = 1
+        self.subth.phase = 1
 
         print("heat start")
         self.nicrom.heat(t=time_heat)
         self.nicrom.end()
         print("end")
 
-        #self.subth.record(comment="open")
+        self.subth.record(comment="open")
 
 
         #前進
@@ -49,7 +49,7 @@ class Deploy():
         self.calibrate(duty_calibrate, p=percent)
         print("end")
 
-        #self.subth.record(comment="deployment")
+        self.subth.record(comment="deployment")
         print("deployment phase finish")
 
     def percentpick(self, listdata, p):

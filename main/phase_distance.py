@@ -22,7 +22,7 @@ class Distance_phase:
 
 
     def run(self):
-        #self.subth.phase = 4
+        self.subth.phase = 4
         duty = 10
         i = 0
 
@@ -37,7 +37,7 @@ class Distance_phase:
                 i = 0
                 print("detected")
                 if(distance < 20): 
-                    #self.subth.record(comment="distance")
+                    self.subth.record(comment="distance")
                     print("finished")
                     return 0
                 else: 
