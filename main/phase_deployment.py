@@ -109,11 +109,11 @@ class Deploy():
 
         with open('lsm303.csv', 'w') as f:
             writer = csv.writer(f)
-            writer.writerows(self.maglist)
+            writer.writerows(mag_list)
         with open('calibration_lsm303.csv', 'w') as f:
             writer = csv.writer(f)
             writer.writerow(["x, y, z"])
-            writer.writerows([self.motor.geomag.rads, self.motor.geomag.aves])
+            writer.writerows([self.geomag.rads, self.geomag.aves])
 
 def main():
     try:
