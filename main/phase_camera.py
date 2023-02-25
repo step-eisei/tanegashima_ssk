@@ -81,7 +81,7 @@ class Phase_camera:
         print(f"before angle    :{angle_before}")
         print(f"after angle     :{angle_after}")
         print(f"difference angle:{angle_diff}")
-        c = 10
+        c = 15
         if angle_diff > 0:
             angle_diff += forward_time * c
         elif angle_diff < 0:

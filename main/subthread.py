@@ -38,7 +38,7 @@ class Subthread:
                 writer = csv.writer(f)
                 writer.writerow([comment, time_now-self.time_start, self.phaselist[self.phase], self.pressure.pressure, self.gps.latitude, self.gps.longitude, self.motor.duty_R_now, self.motor.duty_L_now, self.geomag.theta_absolute, "corn", self.distance.distance])
             print("regularly record.")
-            if(loop): time.sleep(1)
+            if(loop): time.sleep(3)
             else: break
     
     def run(self):
