@@ -49,6 +49,7 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
 
 alpha = 1.0
 beta = 0.0
+print(sys.argv[0])
 if sys.argv[0] != None:
       alpha = sys.argv[0]
       beta = sys.argv[1]
