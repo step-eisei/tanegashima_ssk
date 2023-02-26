@@ -186,8 +186,8 @@ def main():
         print("setup")
         motor = Motor()
 
-        motor.rotate(40, threshold=1.0)
-        return 
+        # motor.rotate(40, threshold=1.0)
+        # return 
 
         print("forward start")
         motor.forward(duty, duty, 0.05, tick_dutymax=5)
