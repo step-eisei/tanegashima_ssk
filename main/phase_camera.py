@@ -48,7 +48,7 @@ class Phase_camera:
         """
 
         c = 1 #調整用の定数
-        angle = math.degrees(math.atan(c * x_dist)) #コーンに向くまでの角度を計算 c=1の場合 -45~45度
+        angle = math.degrees(math.atan(c * x_dist))*30/45 #コーンに向くまでの角度を計算 c=1の場合 -45~45度
         print(f"angle:{angle}")
         return angle
     

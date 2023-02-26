@@ -61,7 +61,7 @@ class Deploy():
 
     def calibrate(self, duty=15, p=5):
         mag_list = []
-        time_all = 60
+        time_all = 30
         duration = 0.5
 
         t = 0
