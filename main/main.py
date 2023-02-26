@@ -49,7 +49,7 @@ def main():
         except KeyboardInterrupt: 
             print("deployment start")
         """
-        #deployment.run()
+        deployment.run()
         while True:
             gps_phase.run()
             return_camera = camera.run()
