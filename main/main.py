@@ -23,8 +23,8 @@ def main():
     # class define
     pressure = class_pressure.Pressure()
     nicrom = class_nicrom.Nicrom(pin=21)
-    geomag = class_geomag.GeoMagnetic()
-    motor = class_motor.Motor(geomag=geomag)
+    motor = class_motor.Motor()
+    #geomag = motor.geomag
     distance = class_distance.Distance()
     gps = class_gps.Gps()
     yolo = class_yolo.CornDetect()
@@ -49,7 +49,7 @@ def main():
         except KeyboardInterrupt: 
             print("deployment start")
         """
-        deployment.run()
+        #deployment.run()
         while True:
             gps_phase.run()
             return_camera = camera.run()
