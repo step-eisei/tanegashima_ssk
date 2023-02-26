@@ -42,6 +42,7 @@ class Motor():
         self.pwms["leftIN2"].start(0)
     
     def changeduty(self, duty_R, duty_L):
+        duty_L = duty_L * 1.2
         if duty_R > 0:
             self.pwms["rightIN1"].ChangeDutyCycle(abs(duty_R))
             self.pwms["rightIN2"].ChangeDutyCycle(0)
