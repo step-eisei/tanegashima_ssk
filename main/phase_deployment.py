@@ -46,7 +46,7 @@ class Deploy():
         time.sleep(1)
         # この時点で地磁気データが使えないので，スタック検知が難しいのが課題
         print("calibration start")
-        self.calibrate(duty_calibrate, p=percent)
+        #self.calibrate(duty_calibrate, p=percent)
         print("end")
 
         self.subth.record(comment="deployment")
