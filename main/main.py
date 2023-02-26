@@ -39,8 +39,16 @@ def main():
     try:
         goal = False
         subth.run()
-        """"
-        land.run()
+        try:
+            land.run()
+        except KeyboardInterrupt:
+            print("Keyboard Interrupt")
+            print("SKIP land phase")
+            print("proceed to deployment phase")
+        except Exception:
+            print("ERROR: land phase")
+            print("proceed to deployment phase")  
+        """      
         sleep_time = 240
         try:
             for t in range(sleep_time):
@@ -52,7 +60,12 @@ def main():
         deployment.run()
         while True:
             gps_phase.run()
-            return_camera = camera.run()
+            try:
+                return_camera = camera.run()
+            except Exception:
+                print("ERROR: camera phase")
+                print("proceed to distance phase")
+                return_camera = 0
             if(return_camera == 0):
                 return_distance = distance_phase.run()
                 if(return_distance == 0): goal = True
