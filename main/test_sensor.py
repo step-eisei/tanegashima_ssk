@@ -101,6 +101,7 @@ def main():
             key = cv2.waitKey(1)
             if key == ord('q'): 
                 break
+    cv2.destroyWindow('image')
     camera.release()
 
     print("\nCornDetect importing...")
