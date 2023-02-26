@@ -40,7 +40,7 @@ class Gps_phase():
 
         self.renew_data() #gpsと地磁気を取得して更新
 
-    def run(self, duty_max=25):
+    def run(self, duty_max=35):
         self.subth.phase = 2
         first = True
         duty_R = duty_L = duty_max
@@ -78,8 +78,8 @@ class Gps_phase():
                 print("gps phase fin.")
                 self.subth.record(comment="gps")
                 return 0
-            elif(self.distance<7): duty_max = 18
-            elif(self.distance<12): duty_max = 20
+            elif(self.distance<7): duty_max = 20
+            elif(self.distance<12): duty_max = 28
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             if(moved <= 0.03): stack +=1
             else             : stack = 0
@@ -102,8 +102,8 @@ class Gps_phase():
                 # Proportional control
                 if(abs(self.theta_relative)<8):     duty_delta = 0
                 elif(abs(self.theta_relative)<60):  duty_delta = 1
-                elif(abs(self.theta_relative)<150): duty_delta = 2
-                else:                               duty_delta = 3
+                elif(abs(self.theta_relative)<150): duty_delta = 3
+                else:                               duty_delta = 5
                 # Derivative control
                 if(math.floor(abs(self.theta_relative/(3*theta_delta)))<int(duty_max/5)):   duty_delta += math.floor(abs(self.theta_relative/(3*theta_delta)))
                 else:                                                                       duty_delta += int(duty_max/5)
