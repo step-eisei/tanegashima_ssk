@@ -96,10 +96,12 @@ def main():
         while True:
             #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
             #image, _, _ = automatic_brightness_and_contrast(image)
+            success, image = camera.read()
             cv2.imshow('image', image)
             key = cv2.waitKey(1)
             if key == ord('q'): 
                 break
+    camera.release()
 
     print("\nCornDetect importing...")
     past = time.time()
