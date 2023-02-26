@@ -47,14 +47,10 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
     return auto_result, alpha, beta
 	
 camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
-print(camera.get(cv2.CAP_PROP_AUTO_EXPOSURE))
-print(camera.get(cv2.CAP_PROP_AUTO_WB))
 camera.set(cv2.CAP_PROP_AUTO_WB, 1)
 camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
-print(camera.get(cv2.CAP_PROP_AUTO_EXPOSURE))
-print(camera.get(cv2.CAP_PROP_AUTO_WB))
-time.sleep(3)
 success, image = camera.read()
+#image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
 #image, _, _ = automatic_brightness_and_contrast(image)
 cv2.imwrite("test.jpg", image)
 print(image.shape)
@@ -64,16 +60,17 @@ while True:
 	if not success:
 		print('failed 0n0')
 		break
-	#image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
-	# print(image)
-	#print(color_ave(image))
-	#image = adjust_color(image)
-	#print(color_ave(image))
+    #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
 	#image, _, _ = automatic_brightness_and_contrast(image)
 	cv2.imshow('image', image)
 	key = cv2.waitKey(1)
 	if key == ord('q'): 
 		break
+
+success, image = camera.read()
+#image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
+#image, _, _ = automatic_brightness_and_contrast(image)
+cv2.imwrite("test_after.jpg", image)
 
 camera.release()
 	
