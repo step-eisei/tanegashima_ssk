@@ -84,6 +84,19 @@ def main():
     for i in range(20):
         print(f"lati:{gps.latitude}, longi:{gps.longitude}")
         time.sleep(0.5)
+    
+    camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
+    success, image = camera.read()
+    if not success:
+        print("failed")
+    else:
+        while True:
+            #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
+            #image, _, _ = automatic_brightness_and_contrast(image)
+            cv2.imshow('image', image)
+            key = cv2.waitKey(1)
+            if key == ord('q'): 
+                break
 
     print("\nCornDetect importing...")
     past = time.time()
