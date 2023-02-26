@@ -69,7 +69,7 @@ class Phase_camera:
         self.geomag.get()
         angle_before = self.geomag.theta_absolute
 
-        self.motor.forward(duty_R=28, duty_L=30, time_sleep=0.05, tick_dutymax=5)
+        self.motor.forward(duty_R=26, duty_L=30, time_sleep=0.05, tick_dutymax=5)
         time.sleep(forward_time)
         self.motor.forward(10, 10, 0.1, tick_dutymax=5)
         self.motor.changeduty(0,0)
@@ -88,8 +88,9 @@ class Phase_camera:
             angle_diff -= forward_time * c
         angle_diff += 10
 
-        print(f"rotate angle    :{-angle_diff}")
-        self.motor.rotate(-angle_diff)
+        if(abs(angle_after-angle_before) >= 30):
+            print(f"rotate angle    :{-angle_diff}")
+            self.motor.rotate(-angle_diff)
         print("")
     
     def run(self):
@@ -101,7 +102,7 @@ class Phase_camera:
             dist = self.check_distance() #距離を測る
             print(f"dist:{dist}")
 
-            if 20 <= dist <= 50:  # distance of red cone is within 50cm
+            if 20 <= dist <= 60:  # distance of red cone is within 60cm
                 # goto phase_distance
                 print("goto phase_distance")
                 return 0
@@ -118,6 +119,7 @@ class Phase_camera:
                 print("forward")
                 i = 0
                 forward_time = min(200/(c2[0] - c1[0]), 3)
+                
                 self.forward(forward_time)
 
             else:  # red cone is NOT in the center of image
@@ -130,12 +132,13 @@ class Phase_camera:
                 else:  # red cone is NOT in the image
                     print("cone is NOT in the image")
 
-                    if 50 < dist < 100: # コーンがカメラで見つからなくても、距離センサが反応すれば前進する
+                    if 20 < dist < 100: # コーンがカメラで見つからなくても、距離センサが反応すれば前進する
                         i = 0
                         print("cone is near")
                         print("forward")
-                        self.motor.forward(15, 15, 0.05, tick_dutymax=5)#距離に応じて前進
-                        time.sleep(dist/30)
+                        #self.motor.forward(30, 30, 0.05, tick_dutymax=5)#距離に応じて前進
+                        #time.sleep(dist/30)
+                        self.forward(dist/50)
                         self.motor.changeduty(0,0)
 
                     elif i < 12: #その場で回転
