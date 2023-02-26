@@ -109,7 +109,7 @@ def main():
     yolo = class_yolo.CornDetect()
     print(f"success. time:{time.time()-past}")
     while True:
-        image = yolo.agnostic_nmstake_photo()
+        image = yolo.take_photo()
         c1, c2, estimated_image = yolo.test.estimate(image)
         adjusted_image, _, _ = yolo.automatic_brightness_and_contrast(estimated_image)
         print(c1, c2)
@@ -120,6 +120,7 @@ def main():
         key = cv2.waitKey(0)
         if key == ord('q'):
             break
+    camera.release()
 
 
 if __name__ == "__main__":
