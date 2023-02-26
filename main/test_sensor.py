@@ -87,6 +87,7 @@ def main():
     
     print("camera test")
     camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
+    camera.set(cv2.CAP_PROP_EXPOSURE, 1)
     #camera.set(cv2.CAP_PROP_AUTO_WB, 1)
     #camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
     success, image = camera.read()

@@ -3,6 +3,7 @@ sys.path.append("/home/pi/tanegashima_ssk/main/yolov7/")
 import os
 os.environ["OMP_NUM_THREADS"] = "1"
 
+import time
 import cv2
 import numpy as np
 import torch
@@ -18,7 +19,15 @@ from utils.torch_utils import select_device, TracedModel
 
 # Take photo
 def take_photo():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
+    camera.set(cv2.CAP_PROP_EXPOSURE, 1)
+
+    sleep_time = 1
+    rep = 100
+    for i in range(rep):
+        time.sleep(sleep_time/rep)
+        success, image = camera.read()
+        
     success, image = camera.read()
     if not success:
         print("Failed 0n0")
