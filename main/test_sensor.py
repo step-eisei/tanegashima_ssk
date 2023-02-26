@@ -110,13 +110,13 @@ def main():
     yolo = class_yolo.CornDetect()
     print(f"success. time:{time.time()-past}")
     while True:
-        image = yolo.take_photo()
+        image = class_yolo.take_photo()
         c1, c2, estimated_image = yolo.test.estimate(image)
-        adjusted_image, _, _ = yolo.automatic_brightness_and_contrast(estimated_image)
+        #adjusted_image, _, _ = class_yolo.automatic_brightness_and_contrast(estimated_image)
         print(c1, c2)
 
         cv2.imshow('estimated image', estimated_image)
-        cv2.imshow('adjusted image', adjusted_image)
+        #cv2.imshow('adjusted image', adjusted_image)
 
         key = cv2.waitKey(0)
         if key == ord('q'):
