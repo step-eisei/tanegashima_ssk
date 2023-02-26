@@ -39,7 +39,7 @@ class Deploy():
         #前進
         print("forward")
         self.motor.forward(duty, duty, 0.05, tick_dutymax=5)
-        time.sleep(10)
+        time.sleep(5)
         self.motor.forward(10, 10, 0.1, tick_dutymax=5)
         self.motor.changeduty(0, 0)
         print("stop")
