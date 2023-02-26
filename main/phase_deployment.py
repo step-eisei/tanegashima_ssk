@@ -25,7 +25,7 @@ class Deploy():
         else:                 self.subth = subth
 
 
-    def run(self, time_heat=10, duty=30, duty_calibrate=8, percent=5):
+    def run(self, time_heat=10, duty=30, duty_calibrate=15, percent=5):
         self.subth.phase = 1
 
         print("heat start")
@@ -59,7 +59,7 @@ class Deploy():
         max = listdata[len(listdata)-n]
         return max, min
 
-    def calibrate(self, duty=8, p=5):
+    def calibrate(self, duty=15, p=5):
         mag_list = []
         time_all = 60
         duration = 0.5
