@@ -150,22 +150,23 @@ class Motor():
         self.changeduty(0,0)
     
     def stack(self, duty_R=30, duty_L=30):
+        self.geomag.get()
+        theta_stack = self.geomag.theta_absolute
         while True:
-            self.rotate(90, threshold=20)
+            self.geomag.get()
+            theta_past = self.geomag.theta_absolute
+            self.rotate(130, threshold=20)
             for i in range(random.randint(1, 3)):
                 self.forward(duty_R=random.randint(int(duty_R/2), duty_R), duty_L=random.randint(int(duty_L/2), duty_L), time_sleep=0.05, tick_dutymax=5)
                 time.sleep(1)
                 self.changeduty(0, 0)
                 time.sleep(0.5)
             self.geomag.get()
-            theta_past = self.geomag.theta_absolute
-            self.rotate(90, threshold=30)
-            self.geomag.get()
             theta_now = self.geomag.theta_absolute
             if (self.angle_difference(theta_past, theta_now)<30): print("stack")
             else: break
-            duty_R=-duty_R
-            duty_L=-duty_L
+        self.geomag.get()
+        self.rotate(self.angle_difference(self.geomag.theta_absolute,theta_stack)+90)
     
     def end(self):
         self.pwms["rightIN1"].stop()
