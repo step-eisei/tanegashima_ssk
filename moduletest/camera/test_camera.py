@@ -52,8 +52,11 @@ camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
 success, image = camera.read()
 #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
 #image, _, _ = automatic_brightness_and_contrast(image)
-cv2.imwrite("test.jpg", image)
-print(image.shape)
+if not success:
+      print("failed")
+else:
+      cv2.imwrite("test.jpg", image)
+      print(image.shape)
 while True: 
 	
 	success, image = camera.read()
@@ -70,7 +73,11 @@ while True:
 success, image = camera.read()
 #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
 #image, _, _ = automatic_brightness_and_contrast(image)
-cv2.imwrite("test_after.jpg", image)
+if not success:
+      print("failed")
+else:
+      cv2.imwrite("test.jpg", image)
+      print(image.shape)
 
 camera.release()
 	
