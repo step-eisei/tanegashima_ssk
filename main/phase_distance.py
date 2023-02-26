@@ -36,7 +36,7 @@ class Distance_phase:
             if(distance > 2 and distance < 200):
                 i = 0
                 print("detected")
-                if(distance < 10): 
+                if(distance < 20): 
                     self.motor.forward(30, 30, 0.05, tick_dutymax=5)
                     time.sleep(0.5)
                     self.subth.record(comment="distance")
