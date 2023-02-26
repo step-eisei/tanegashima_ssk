@@ -13,7 +13,7 @@ def percentpick(listdata, p):
 
 motor = Motor(geomag=class_geomag.GeoMagnetic())
 
-duty = 8
+duty = 15
 p = 5
 time_all = 60
 duration = 0.5
