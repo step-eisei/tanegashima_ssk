@@ -136,6 +136,21 @@ def main():
         if keyboard.is_pressed("n"):
             print("Gps skip")
             break
+    
+    print("\ncamera")
+    camera = cv2.VideoCapture(0)
+    success, image = camera.read()
+    if not success:
+        print('failed 0n0')
+    else:
+        while True:
+            #image, _, _ = automatic_brightness_and_contrast(image)
+            #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50) 
+            cv2.imshow('image', image)
+            key = cv2.waitKey(1)
+            if key == ord('q'): 
+                break
+    camera.release()
 
     print("\nCornDetect importing...")
     past = time.time()
