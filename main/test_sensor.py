@@ -111,7 +111,7 @@ def main():
     print(f"success. time:{time.time()-past}")
     while True:
         image = class_yolo.take_photo()
-        c1, c2, estimated_image = yolo.test.estimate(image)
+        c1, c2, estimated_image = yolo.estimate(image)
         #adjusted_image, _, _ = class_yolo.automatic_brightness_and_contrast(estimated_image)
         print(c1, c2)
 
