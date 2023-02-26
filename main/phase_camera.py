@@ -27,7 +27,7 @@ class Phase_camera:
         else:                 self.subth = subth
 
         # const
-        self.angle_thres = 10
+        self.angle_thres = 15
         self.image_size = [640, 480]
   
     # calculate angle from photo
@@ -69,7 +69,7 @@ class Phase_camera:
         self.geomag.get()
         angle_before = self.geomag.theta_absolute
 
-        self.motor.forward(30, 30, time_sleep=0.05, tick_dutymax=5)
+        self.motor.forward(duty_R=28, duty_L=30, time_sleep=0.05, tick_dutymax=5)
         time.sleep(forward_time)
         self.motor.forward(10, 10, 0.1, tick_dutymax=5)
         self.motor.changeduty(0,0)

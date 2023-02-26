@@ -23,7 +23,7 @@ class Distance_phase:
 
     def run(self):
         self.subth.phase = 4
-        duty = 10
+        duty = 15
         i = 0
 
         print("start")
