@@ -85,10 +85,13 @@ def main():
         print(f"lati:{gps.latitude}, longi:{gps.longitude}")
         time.sleep(0.5)
     
+    print("camera test")
     camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
+    #camera.set(cv2.CAP_PROP_AUTO_WB, 1)
+    #camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
     success, image = camera.read()
     if not success:
-        print("failed")
+        print("camera failed")
     else:
         while True:
             #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
