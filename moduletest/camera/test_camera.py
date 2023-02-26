@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 from matplotlib import pyplot as plt
+import sys
 
 def automatic_brightness_and_contrast(image, clip_hist_percent=25):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -45,32 +46,38 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
 
     auto_result = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
     return auto_result, alpha, beta
-	
+
+alpha = 1.0
+beta = 0.0
+if sys.argv[0] != None:
+      alpha = sys.argv[0]
+      beta = sys.argv[1]
 camera = cv2.VideoCapture(0, cv2.CAP_V4L2)
 print(cv2.CAP_PROP_AUTO_EXPOSURE)
 #camera.set(cv2.CAP_PROP_AUTO_WB, 1)
 camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
 success, image = camera.read()
-#image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
+image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
 #image, _, _ = automatic_brightness_and_contrast(image)
 if not success:
-      print("failed")
+    print("failed")
 else:
-      cv2.imwrite("test.jpg", image)
-      print(image.shape)
+    cv2.imwrite("test.jpg", image)
+    print(image.shape)
 while True: 
 	
-	success, image = camera.read()
-	if not success:
-		print('failed 0n0')
-		break
-    #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
-	#image, _, _ = automatic_brightness_and_contrast(image)
-	cv2.imshow('image', image)
-	key = cv2.waitKey(1)
-	if key == ord('q'): 
-		break
-
+    success, image = camera.read()
+    if not success:
+        print('failed 0n0')
+        break
+    image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+    #image, _, _ = automatic_brightness_and_contrast(image)
+    cv2.imshow('image', image)
+    key = cv2.waitKey(1)
+    if key == ord('q'): 
+        break
+              
+cv2.destroyWindow('image')
 success, image = camera.read()
 #image = cv2.convertScaleAbs(image, alpha=1.0, beta=-50)
 #image, _, _ = automatic_brightness_and_contrast(image)
