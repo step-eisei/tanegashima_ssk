@@ -76,7 +76,7 @@ class Gps_phase():
                         writer = csv.writer(f)
                         writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
                 print("gps phase fin.")
-                self.subth.record(comment="gps")
+                self.subth.record(comment="gps", coneangle=self.theta_relative)
                 return 0
             elif(self.distance<7): duty_max = 20
             elif(self.distance<12): duty_max = 28
@@ -92,7 +92,7 @@ class Gps_phase():
                 self.motor.stack() #動いてなければスタック処理
                 first = True
                 stack = 0
-                self.subth.record(comment="notmove")
+                self.subth.record(comment="notmove", coneangle=self.theta_relative)
             else:
                 if(abs(duty_R-duty_L)>3): duty_R=duty_L # due to feedback delay
                 theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)
@@ -111,7 +111,7 @@ class Gps_phase():
                 duty_R += duty_difference
                 duty_L += duty_difference
                 self.motor.forward(duty_R, duty_L, time_sleep=0.05, tick_dutymax=5) # motor
-                self.subth.record(comment="dutychange")
+                self.subth.record(comment="dutychange", coneangle=self.theta_relative)
             print("")
             print(f"now  GPS            :{self.gps.latitude, self.gps.longitude}")
             print(f"goal GPS            :{self.goal_lati, self.goal_longi}")

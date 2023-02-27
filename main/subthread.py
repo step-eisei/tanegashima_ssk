@@ -29,14 +29,14 @@ class Subthread:
         self.recordname = 'record/record_' + str(jp_time).replace(' ', '_').replace(':', '-').replace('.', '_') + '.csv'
         with open(self.recordname, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["comment", "time", "phase", "balo", "latitude", "longitude", "duty_R", "duty_L", "theta", "corn", "distance"])
+            writer.writerow(["comment", "time", "phase", "balo", "latitude", "longitude", "duty_R", "duty_L", "theta", "cornangle", "distance"])
     
-    def record(self, loop=False, comment="threading"):
+    def record(self, loop=False, comment="threading", coneangle=None):
         while(True):
             time_now = time.time()
             with open(self.recordname, "a", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow([comment, time_now-self.time_start, self.phaselist[self.phase], self.pressure.pressure, self.gps.latitude, self.gps.longitude, self.motor.duty_R_now, self.motor.duty_L_now, self.geomag.theta_absolute, "corn", self.distance.distance])
+                writer.writerow([comment, time_now-self.time_start, self.phaselist[self.phase], self.pressure.pressure, self.gps.latitude, self.gps.longitude, self.motor.duty_R_now, self.motor.duty_L_now, self.geomag.theta_absolute, coneangle, self.distance.distance])
             print("regularly record.")
             if(loop): time.sleep(3)
             else: break

@@ -105,7 +105,7 @@ class Phase_camera:
             if 20 <= dist <= 60:  # distance of red cone is within 60cm
                 # goto phase_distance
                 print("goto phase_distance")
-                self.subth.record(comment="camera")
+                self.subth.record(comment="camera", coneangle=0)
                 return 0
             
             # take a photo and image-processing
@@ -120,7 +120,7 @@ class Phase_camera:
                 print("forward")
                 i = 0
                 forward_time = min(200/(c2[0] - c1[0]), 3)
-                self.subth.record(comment="cameraapproachcone")
+                self.subth.record(comment="cameraapproachcone", coneangle=0)
                 self.forward(forward_time)
 
             else:  # red cone is NOT in the center of image
@@ -128,7 +128,7 @@ class Phase_camera:
                     print("cone is detected")
                     i = 0
                     angle = self.calc_angle(c1, c2)
-                    self.subth.record(comment="rotateforcone")
+                    self.subth.record(comment="rotateforcone", coneangle=angle)
                     self.motor.rotate(angle)
                 
                 else:  # red cone is NOT in the image
@@ -140,7 +140,7 @@ class Phase_camera:
                         print("forward")
                         #self.motor.forward(30, 30, 0.05, tick_dutymax=5)#距離に応じて前進
                         #time.sleep(dist/30)
-                        self.subth.record(comment="distanceapproachcone")
+                        self.subth.record(comment="distanceapproachcone", coneangle=0)
                         self.forward(dist/50)
                         self.motor.changeduty(0,0)
 

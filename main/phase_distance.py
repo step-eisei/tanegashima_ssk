@@ -39,12 +39,12 @@ class Distance_phase:
                 if(distance < 20): 
                     self.motor.forward(30, 30, 0.05, tick_dutymax=5)
                     time.sleep(0.5)
-                    self.subth.record(comment="distanceend")
+                    self.subth.record(comment="distanceend", coneangle=0)
                     print("finished")
                     return 0
                 else: 
                     print("forward")
-                    self.subth.record(comment="approachtocone")
+                    self.subth.record(comment="approachtocone", coneangle=0)
                     self.motor.forward(duty, duty, 0.05, tick_dutymax=5)#距離に応じて前進
                     time.sleep(distance/20)
                     self.motor.changeduty(0,0)
