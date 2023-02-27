@@ -108,7 +108,7 @@ class Motor():
             angle_target += 360
         
         time_const = 0.01
-        total = 20
+        total = 10
 
         print(f"target:{angle_target}")
 
@@ -163,7 +163,7 @@ class Motor():
             time.sleep(0.5)
             self.geomag.get()
             theta_now = self.geomag.theta_absolute
-            if (self.angle_difference(theta_past, theta_now)<30): print("stack")
+            if (self.angle_difference(theta_past, theta_now)<10): print("stack")
             else: break
         self.geomag.get()
         self.rotate(self.angle_difference(self.geomag.theta_absolute,theta_stack)+90)
