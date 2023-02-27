@@ -1,0 +1,8 @@
+comment,time,phase,balo,latitude,longitude,duty_R,duty_L,theta,cornangle,distance
+threading,0.0012280941009521484,distance,-1,-1,-1,-1,-1,-1,,-1
+approachtocone,1.5605533123016357,distance,-1,0.0,0.0,-1,-1,-1,0,153.9454460144043
+threading,3.0046615600585938,distance,-1,0.0,0.0,15.0,18.0,-1,,153.9454460144043
+threading,6.008056640625,distance,-1,0.0,0.0,15.0,18.0,-1,,153.9454460144043
+threading,9.011638641357422,distance,-1,0.0,0.0,15.0,18.0,-1,,153.9454460144043
+threading,12.013621807098389,distance,-1,0.0,0.0,5,6.0,-1,,15.380561351776123
+distanceend,13.739802598953247,distance,-1,0.0,0.0,30.0,36.0,-1,0,15.380561351776123

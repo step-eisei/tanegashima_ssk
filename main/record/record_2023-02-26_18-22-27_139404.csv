@@ -1,0 +1,8 @@
+comment,time,phase,balo,latitude,longitude,duty_R,duty_L,theta,corn,distance
+threading,0.0013408660888671875,camera,-1,-1,-1,-1,-1,-1,corn,-1
+threading,3.0047528743743896,camera,-1,0.0,0.0,-1,-1,-1,corn,92.65017509460449
+threading,6.0068745613098145,camera,-1,0.0,0.0,-1,-1,-1,corn,92.65017509460449
+threading,9.010435581207275,camera,-1,0.0,0.0,-1,-1,-1,corn,92.65017509460449
+threading,12.01404070854187,camera,-1,0.0,0.0,-1,-1,-1,corn,92.65017509460449
+threading,15.017668008804321,camera,-1,0.0,0.0,-1,-1,-1,corn,92.65017509460449
+threading,18.0214364528656,camera,-1,0.0,0.0,-1,-1.2,-33.9477233364785,corn,92.65017509460449
