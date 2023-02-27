@@ -21,9 +21,9 @@ class Phase_camera:
         if distance == None:  self.distance = class_distance.Distance()
         else:                 self.distance = distance
 
-        if subth == None:     
-            self.subth = subthread.Subthread(distance=self.distance, motor=self.motor) 
-            self.subth.run()           
+        if subth == None:
+            self.subth = subthread.Subthread(distance=self.distance, motor=self.motor)
+            self.subth.run()
         else:                 self.subth = subth
 
         # const
@@ -105,6 +105,7 @@ class Phase_camera:
             if 20 <= dist <= 60:  # distance of red cone is within 60cm
                 # goto phase_distance
                 print("goto phase_distance")
+                self.subth.record(comment="camera")
                 return 0
             
             # take a photo and image-processing
@@ -119,7 +120,7 @@ class Phase_camera:
                 print("forward")
                 i = 0
                 forward_time = min(200/(c2[0] - c1[0]), 3)
-                
+                self.subth.record(comment="cameraapproachcone")
                 self.forward(forward_time)
 
             else:  # red cone is NOT in the center of image
@@ -127,6 +128,7 @@ class Phase_camera:
                     print("cone is detected")
                     i = 0
                     angle = self.calc_angle(c1, c2)
+                    self.subth.record(comment="rotateforcone")
                     self.motor.rotate(angle)
                 
                 else:  # red cone is NOT in the image
@@ -138,16 +140,18 @@ class Phase_camera:
                         print("forward")
                         #self.motor.forward(30, 30, 0.05, tick_dutymax=5)#距離に応じて前進
                         #time.sleep(dist/30)
+                        self.subth.record(comment="distanceapproachcone")
                         self.forward(dist/50)
                         self.motor.changeduty(0,0)
 
                     elif i < 12: #その場で回転
                         i += 1
+                        self.subth.record(comment="notcameracone")
                         self.motor.rotate(30)
                     
                     else:  # back to phase_GPS
                         self.forward()
-
+                        self.subth.record(comment="notcameraphase")
                         print("back to phase_gps")
                         return -1
     

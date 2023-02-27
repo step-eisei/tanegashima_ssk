@@ -80,6 +80,7 @@ def main():
         print("enjoy!")
     except KeyboardInterrupt:
         print("\nInterrupted.")
+        subth.record(comment="endmain")
         motor.end()
         print("GPIO closed.")
         print("not enjoy.")

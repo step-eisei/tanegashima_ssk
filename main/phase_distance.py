@@ -39,11 +39,12 @@ class Distance_phase:
                 if(distance < 20): 
                     self.motor.forward(30, 30, 0.05, tick_dutymax=5)
                     time.sleep(0.5)
-                    self.subth.record(comment="distance")
+                    self.subth.record(comment="distanceend")
                     print("finished")
                     return 0
                 else: 
                     print("forward")
+                    self.subth.record(comment="approachtocone")
                     self.motor.forward(duty, duty, 0.05, tick_dutymax=5)#距離に応じて前進
                     time.sleep(distance/20)
                     self.motor.changeduty(0,0)
@@ -51,6 +52,7 @@ class Distance_phase:
                 if(i <= 19):#その場で旋回してコーンを探す
                     print("rotate")
                     angle = 18*(i+1)
+                    self.subth.record(comment="rotateforcone")
                     if angle > 180:
                         angle = angle - 360
                     if(i%2 == 0):
@@ -60,6 +62,7 @@ class Distance_phase:
                     i += 1
                 else:# 現在位置から直進して離れてフェーズを離れる
                     self.motor.forward(20,20 ,0.1, tick_dutymax=5)
+                    self.subth.record(comment="notdistancephase")
                     time.sleep(5)
                     self.motor.changeduty(0,0)
                     return -1
