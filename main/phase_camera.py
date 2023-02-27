@@ -113,14 +113,16 @@ class Phase_camera:
             c1, c2, image = self.yolo.image_process()
             j+=1
             cv2.imwrite(f"camera/image{j}.jpg", image)
+            self.subth.record(comment=f"took photo saved as camera/image{j}.jpg")
             print(c1, c2) #print the coordinates of the cone
 
             if abs(self.calc_angle(c1, c2)) <= self.angle_thres:  # red cone in the center of image
                 print("cone is in the centre")
+                self.subth.record(comment=f"cone is in the centre")
                 print("forward")
                 i = 0
                 forward_time = min(200/(c2[0] - c1[0]), 3)
-                self.subth.record(comment="cameraapproachcone", coneangle=0)
+                self.subth.record(comment="[camera] approach cone", coneangle=0)
                 self.forward(forward_time)
 
             else:  # red cone is NOT in the center of image
@@ -128,30 +130,33 @@ class Phase_camera:
                     print("cone is detected")
                     i = 0
                     angle = self.calc_angle(c1, c2)
-                    self.subth.record(comment="rotateforcone", coneangle=angle)
+                    self.subth.record(comment=f"cone is in the image", coneangle=angle)
+                    self.subth.record(comment="rotate for cone")
                     self.motor.rotate(angle)
                 
                 else:  # red cone is NOT in the image
                     print("cone is NOT in the image")
+                    self.subth.record(comment=f"cone is NOT in the image")
 
                     if 20 < dist < 100: # コーンがカメラで見つからなくても、距離センサが反応すれば前進する
                         i = 0
-                        print("cone is near")
+                        print("cone is close")
+                        self.subth.record(comment=f"dist sens detected", coneangle=0)
                         print("forward")
                         #self.motor.forward(30, 30, 0.05, tick_dutymax=5)#距離に応じて前進
                         #time.sleep(dist/30)
-                        self.subth.record(comment="distanceapproachcone", coneangle=0)
+                        self.subth.record(comment="[dist] approach cone")
                         self.forward(dist/50)
                         self.motor.changeduty(0,0)
 
                     elif i < 12: #その場で回転
                         i += 1
-                        self.subth.record(comment="notcameracone")
+                        self.subth.record(comment="can not find cone rotate")
                         self.motor.rotate(30)
                     
                     else:  # back to phase_GPS
                         self.forward()
-                        self.subth.record(comment="notcameraphase")
+                        self.subth.record(comment="back to gps phase")
                         print("back to phase_gps")
                         return -1
     
