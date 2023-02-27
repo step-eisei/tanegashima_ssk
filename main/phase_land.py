@@ -64,7 +64,7 @@ class Land:
         self.land_pressure()
         self.subth.record(comment="land")
 
-def main(sky=0.5, land=0.08): #上空判定，地上判定の閾値
+def main(sky=0.5, land=0.1): #上空判定，地上判定の閾値
     try:
         land_check=Land(sky=sky, land=land) #land更新
         print("start")
