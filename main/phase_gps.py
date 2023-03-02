@@ -84,15 +84,15 @@ class Gps_phase():
             if(moved <= 0.18): stack +=1
             else             : stack = 0
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
-            elif (stack > 2):
-                print("stacking judge")
-                # 動けていない場合
-                self.motor.changeduty(0, 0)
-                time.sleep(1)
-                self.motor.stack() #動いてなければスタック処理
-                first = True
-                stack = 0
-                self.subth.record(comment="notmove", coneangle=self.theta_relative)
+            # elif (stack > 2):
+            #     print("stacking judge")
+            #     # 動けていない場合
+            #     self.motor.changeduty(0, 0)
+            #     time.sleep(1)
+            #     self.motor.stack() #動いてなければスタック処理
+            #     first = True
+            #     stack = 0
+            #     self.subth.record(comment="notmove", coneangle=self.theta_relative)
             else:
                 if(abs(duty_R-duty_L)>3): duty_R=duty_L # due to feedback delay
                 theta_delta = self.motor.angle_difference(self.theta_relative, theta_previous)
