@@ -27,7 +27,9 @@ class Gps:
                     self.gps.update(x)
                 self.latitude = self.gps.latitude[0]
                 self.longitude = self.gps.longitude[0]
-            except: time.sleep(1)
+            except:
+                print("gps error.")
+                time.sleep(1)
 
     # def getgps(self):
     #     h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
