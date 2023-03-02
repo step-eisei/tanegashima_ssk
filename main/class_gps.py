@@ -19,13 +19,15 @@ class Gps:
         self.s = serial.Serial('/dev/serial0', 9600, timeout=10)
         self.s.readline() # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
         while True:
-            sentence = self.s.readline().decode('utf-8') # GPSデーターを読み、文字列に変換する
-            if sentence[0] != '$': # 先頭が'$'でなければ捨てる
-                continue
-            for x in sentence: # 読んだ文字列を解析してGPSオブジェクトにデーターを追加、更新する
-                self.gps.update(x)
-            self.latitude = self.gps.latitude[0]
-            self.longitude = self.gps.longitude[0]
+            try:
+                sentence = self.s.readline().decode('utf-8') # GPSデーターを読み、文字列に変換する
+                if sentence[0] != '$': # 先頭が'$'でなければ捨てる
+                    continue
+                for x in sentence: # 読んだ文字列を解析してGPSオブジェクトにデーターを追加、更新する
+                    self.gps.update(x)
+                self.latitude = self.gps.latitude[0]
+                self.longitude = self.gps.longitude[0]
+            except: time.sleep(1)
 
     # def getgps(self):
     #     h = self.gps.timestamp[0] if self.gps.timestamp[0] < 24 else self.gps.timestamp[0] - 24
