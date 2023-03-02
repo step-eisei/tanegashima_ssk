@@ -1,0 +1,4 @@
+comment,time,phase,balo,latitude,longitude,duty_R,duty_L,theta,cornangle,distance
+threading,0.0019371509552001953,camera,-1,-1,-1,-1,-1,-1,,-1
+camera,1.5312368869781494,camera,-1,36.111558333333335,140.098815,-1,-1,-1,0,50.97198486328125
+threading,3.0058319568634033,camera,-1,36.111558333333335,140.098815,-1,-1,-1,,50.97198486328125
