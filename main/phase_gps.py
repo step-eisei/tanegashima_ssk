@@ -228,6 +228,7 @@ class Gps_phase():
 def main():
     try:
         gps_phase = Gps_phase()
+        print("init")
         gps_phase.run()
         gps_phase.motor.end()
     except KeyboardInterrupt:
