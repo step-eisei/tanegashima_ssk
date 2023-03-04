@@ -47,21 +47,21 @@ class Gps_phase():
         stack = 0
         theta_delta = 1000
         moved = 10
-        print("a")
         while True:
-            print("b")
             x0, y0 = (self.x, self.y)#前回位置
             if(not first): theta_previous = self.theta_relative
-            print("c")
             while True:
                 self.renew_data()
                 if(self.distance<50): break
+            print("a")
             if(self.distance<3): # goto camera phase
+                print("b")
                 with open(self.gps_name, 'a', newline="") as f:
                     writer = csv.writer(f)
                     writer.writerow([self.gps.latitude, self.gps.longitude, self.goal_lati, self.goal_longi, self.x, self.y, self.distance, moved, self.mag.theta_absolute, self.theta_relative, theta_delta, duty_max, duty_R, duty_L])
                 self.motor.forward(5, 5, 0.05, tick_dutymax=2)
                 self.motor.changeduty(0, 0)
+                print("c")
                 while True:
                     print("")
                     print("time sleep for 5 sec.")
@@ -83,9 +83,11 @@ class Gps_phase():
                 return 0
             elif(self.distance<7): duty_max = 20
             elif(self.distance<12): duty_max = 28
+            print("d")
             moved = math.sqrt((self.x - x0) ** 2 + (self.y - y0) ** 2)#前ループからどれくらい動いたか
             if(moved <= 0.18): stack +=1
             else             : stack = 0
+            print("e")
             if(first): self.motor.forward(duty_R, duty_L, 0.05, tick_dutymax=5)
             # elif (stack > 2):
             #     print("stacking judge")
