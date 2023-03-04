@@ -47,9 +47,12 @@ class Gps_phase():
         stack = 0
         theta_delta = 1000
         moved = 10
+        print("a")
         while True:
+            print("b")
             x0, y0 = (self.x, self.y)#前回位置
             if(not first): theta_previous = self.theta_relative
+            print("c")
             while True:
                 self.renew_data()
                 if(self.distance<50): break
