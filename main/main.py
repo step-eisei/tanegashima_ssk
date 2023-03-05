@@ -48,7 +48,7 @@ def main():
         except Exception:
             print("ERROR: land phase")
             print("proceed to deployment phase")  
-             
+        """    
         sleep_time = 240
         try:
             for t in range(sleep_time):
@@ -56,7 +56,7 @@ def main():
                 print(f"{t}秒経過")
         except KeyboardInterrupt: 
             print("deployment start")
-        
+        """
         deployment.run()
         while True:
             gps_phase.run()
