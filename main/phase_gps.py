@@ -52,6 +52,7 @@ class Gps_phase():
             if(not first): theta_previous = self.theta_relative
             while True:
                 self.renew_data()
+                print(self.distance)
                 if(self.distance<1000): break
             if(self.distance<3): # goto camera phase
                 with open(self.gps_name, 'a', newline="") as f:
