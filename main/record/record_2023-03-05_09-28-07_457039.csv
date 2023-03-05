@@ -1,0 +1,4 @@
+comment,time,phase,balo,latitude,longitude,duty_R,duty_L,theta,cornangle,distance
+threading,0.0011341571807861328,land,-1,-1,-1,-1,-1,-1,,-1
+threading,3.003753185272217,gps,-1,30.374705,130.959505,-1,-1,-22.98716147032515,,-1
+threading,6.00606107711792,gps,-1,30.374705,130.959505,-1,-1,-23.368678266063917,,-1
