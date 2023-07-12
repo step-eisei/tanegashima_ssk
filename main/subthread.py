@@ -1,4 +1,5 @@
 # サブスレッド処理
+sys.path.append("/home/pi/NSE2023")
 import class_pressure
 import class_gps
 import class_distance
